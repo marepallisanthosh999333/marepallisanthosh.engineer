@@ -19,61 +19,51 @@ interface ClientInfo {
 
 export const sendContactEmail = async (formData: ContactFormData): Promise<{ success: boolean; message: string }> => {
   try {
-    console.log('Sending email with data:', formData);
+    console.log('Sending contact form with data:', formData);
     
     // Get client information
     const clientInfo = await getClientInfo();
     console.log('Client info:', clientInfo);
     
-    // Prepare the email data
-    const emailData = {
+    // Prepare the submission data
+    const submissionData = {
       ...formData,
-      clientInfo,
-      recipientEmail: 'marepallisanthosh.999333@gmail.com'
+      clientInfo
     };
 
-    console.log('Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
-    console.log('Making request to:', `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`);
+    console.log('Sending to local API endpoint: /api/contact');
 
-    // Send to Supabase Edge Function
-    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+    // Send to local API endpoint
+    const response = await fetch('/api/contact', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(emailData),
+      body: JSON.stringify(submissionData),
     });
 
     console.log('Response status:', response.status);
     
-    const responseText = await response.text();
-    console.log('Raw response:', responseText);
-    
-    let result;
-    try {
-      result = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error('Failed to parse response as JSON:', parseError);
-      throw new Error('Invalid response from server');
-    }
-    
+    const result = await response.json();
     console.log('Response result:', result);
     
     if (!response.ok) {
-      throw new Error(result.error || 'Failed to send email');
+      throw new Error(result.error || 'Failed to submit contact form');
     }
 
-    return { success: true, message: 'Email sent successfully!' };
+    return { 
+      success: true, 
+      message: result.message || 'Thank you for your message! I\'ll get back to you soon.' 
+    };
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error submitting contact form:', error);
     console.error('Error details:', {
       message: error instanceof Error ? error.message : 'Unknown error',
       stack: error instanceof Error ? error.stack : undefined
     });
     return { 
       success: false, 
-      message: error instanceof Error ? error.message : 'Failed to send email. Please try again.' 
+      message: error instanceof Error ? error.message : 'Failed to submit your message. Please try again.' 
     };
   }
 };
