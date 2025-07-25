@@ -76,26 +76,28 @@ const Experience = () => {
 
                     <p className="text-gray-600 mb-6 leading-relaxed">{experience.description}</p>
 
-                    <div className="mb-6">
-                      <h5 className="text-gray-900 font-medium mb-3">Key Achievements:</h5>
-                      <ul className="space-y-2">
-                        {experience.achievements.map((achievement, achievementIndex) => (
-                          <li key={achievementIndex} className="text-gray-600 text-sm flex items-start">
-                            <span className="text-green-500 mr-2">•</span>
-                            {achievement}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h5 className="text-gray-900 font-semibold mb-3 text-left">Key Achievements:</h5>
+                        <ul className="space-y-2">
+                          {experience.achievements.map((achievement, achievementIndex) => (
+                            <li key={achievementIndex} className="text-gray-600 text-sm flex items-start">
+                              <span className="text-green-500 mr-2 mt-1">•</span>
+                              <span>{achievement}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
 
-                    <div>
-                      <h5 className="text-gray-900 font-medium mb-3">Technologies Used:</h5>
-                      <div className="flex flex-wrap gap-2">
-                        {experience.technologies.map((tech) => (
-                          <span key={tech} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                            {tech}
-                          </span>
-                        ))}
+                      <div>
+                        <h5 className="text-gray-900 font-semibold mb-3 text-left">Technologies Used:</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {experience.technologies.map((tech) => (
+                            <span key={tech} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

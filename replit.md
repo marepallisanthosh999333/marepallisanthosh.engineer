@@ -26,12 +26,13 @@ Currently migrating from Bolt to Replit environment. The project uses Supabase E
 - Created PostgreSQL database with Drizzle ORM integration
 - Migrated Supabase Edge Functions to Express server routes
 - Updated portfolio content with actual resume details:
-  - About section reflects AI/ML student background
-  - Experience shows actual internships (SmartBridge, EduNet Foundation)
+  - About section reflects AI/ML student background as data science enthusiast
+  - Experience shows actual internships (SmartBridge Data Analytics, EduNet Foundation AIML)
   - Projects showcase real data science work (sentiment analysis, stock prediction, options pricing)
-  - Skills updated to reflect data science and ML technologies
+  - Skills updated to reflect data science and ML technologies (Python, TensorFlow, Tableau)
 - Contact form now stores submissions in PostgreSQL database
 - Removed all Supabase dependencies
+- Fixed side heading alignment issues in Experience section with improved grid layout
 
 ## User Preferences
 - Focus on clean, professional design
