@@ -13,15 +13,10 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/$1"
+      "dest": "/server/index.ts"
     }
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "server/index.ts": {
-      "runtime": "nodejs18.x"
-    }
   }
 }
