@@ -4,43 +4,30 @@ import { Calendar, MapPin, Briefcase } from 'lucide-react';
 const Experience = () => {
   const experiences = [
     {
-      title: 'Senior Financial Analyst',
-      company: 'TechCorp Solutions',
-      period: '2022 - Present',
-      location: 'San Francisco, CA',
-      description: 'Leading financial analysis for enterprise operations serving 100k+ users. Architected financial models and mentored junior analysts.',
+      title: 'Data Analytics Intern',
+      company: 'SmartBridge',
+      period: 'May 2025 - Jul 2025',
+      location: 'Remote',
+      description: 'Mastered data visualization and dashboard creation with Tableau during a 2-month internship focused on Data Analytics.',
       achievements: [
-        'Reduced reporting time by 40% through process optimization',
-        'Led quarterly forecasting and improved accuracy by 25%',
-        'Implemented automated dashboards reducing manual work by 60%'
+        'Analyzed complex datasets to identify key trends and generate actionable business insights',
+        'Designed and presented 5+ interactive Tableau dashboards to visualize key performance indicators',
+        'Improved data accessibility through enhanced visualization techniques'
       ],
-      technologies: ['Excel', 'Python', 'SQL', 'Tableau', 'SAP']
+      technologies: ['Tableau', 'Data Analytics', 'Dashboard Creation', 'Data Visualization']
     },
     {
-      title: 'Financial Analyst',
-      company: 'StartupXYZ',
-      period: '2020 - 2022',
-      location: 'Vijayawada, AP',
-      description: 'Developed core financial models for a fintech platform, working closely with product and strategy teams to deliver data-driven insights.',
+      title: 'AIML Trainee Intern',
+      company: 'EduNet Foundation',
+      period: 'May 2024 - Jun 2024',
+      location: 'Remote',
+      description: 'Completed intensive 6-week training in practical model development, data analysis, and ML principles.',
       achievements: [
-        'Built real-time financial dashboard with automated reporting',
-        'Implemented budget tracking system with variance analysis',
-        'Developed mobile-responsive financial reporting system'
+        'Utilized the IBM SkillsBuild platform to apply algorithms on diverse datasets',
+        'Applied learned techniques to a capstone project processing over 10,000 product reviews',
+        'Achieved sentiment classification on large-scale dataset for real-world application'
       ],
-      technologies: ['Power BI', 'Python', 'MongoDB', 'Excel', 'QuickBooks']
-    },
-    {
-      title: 'Junior Financial Analyst',
-      company: 'Digital Agency Co',
-      period: '2019 - 2020',
-      location: 'Vijayawada, AP',
-      description: 'Created financial reports and analysis for various clients across different industries.',
-      achievements: [
-        'Delivered 15+ client financial reports on time and within budget',
-        'Improved financial model accuracy by average of 35%',
-        'Established reporting templates used across all projects'
-      ],
-      technologies: ['Excel', 'Access', 'SPSS', 'R', 'Tableau']
+      technologies: ['Python', 'IBM SkillsBuild', 'Machine Learning', 'Data Preprocessing', 'Model Evaluation']
     }
   ];
 
@@ -53,7 +40,7 @@ const Experience = () => {
               Professional Experience
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A journey through different roles and companies, each contributing to my growth as a financial analyst.
+              A journey through internships and practical experiences, contributing to my growth as a data scientist and ML enthusiast.
             </p>
           </div>
 

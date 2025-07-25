@@ -21,8 +21,8 @@ const About = () => {
               About Me
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              I'm a passionate financial analyst with 5+ years of experience creating data-driven solutions 
-              that make a difference.
+              Data science and ML enthusiast with strong foundations in time series, NLP, and algorithmic trading. 
+              Proficient in Python, TensorFlow; familiar with deploying models and dashboards.
             </p>
           </div>
 
@@ -36,15 +36,15 @@ const About = () => {
             <div>
               <h3 className="text-2xl font-semibold mb-6 text-gray-900">My Journey</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Started as a curious college student tinkering with financial models and data analysis, I've evolved into a 
-                financial analyst who loves solving complex problems with elegant solutions. My journey 
-                has taken me through startups and established companies, where I've learned the importance 
-                of both technical excellence and business-centered insights.
+                Currently pursuing B.Tech in AI/ML at Aditya College of Engineering and Technology, I've gained 
+                practical experience through 2 internships and developed 3 end-to-end projects. My journey has 
+                taken me from theoretical understanding to hands-on implementation of machine learning models, 
+                focusing on real-world applications in sentiment analysis, stock prediction, and financial modeling.
               </p>
               <p className="text-gray-600 mb-6 leading-relaxed">
-                I believe that great analysis is not just about clean data, but about creating insights 
-                that genuinely improve business decisions. Whether it's a complex financial model or a 
-                comprehensive market analysis, I approach each project with curiosity, creativity, and attention to detail.
+                I believe that great data science is not just about clean algorithms, but about creating models 
+                that solve real problems. Whether it's analyzing product reviews, predicting stock movements, or 
+                building financial tools, I approach each project with curiosity, technical rigor, and attention to detail.
               </p>
               <div className="flex flex-wrap gap-3">
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Problem Solver</span>
@@ -62,7 +62,7 @@ const About = () => {
                 />
                 <div className="text-center">
                   <h4 className="text-xl font-semibold text-gray-900 mb-2">Marepalli Santhosh</h4>
-                  <p className="text-gray-600">Financial Analyst</p>
+                  <p className="text-gray-600">AI/ML Student & Data Science Enthusiast</p>
                 </div>
               </div>
             </div>
@@ -78,9 +78,9 @@ const About = () => {
             <div className="text-center group">
               <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Code2 size={48} className="mx-auto mb-4 text-blue-600 animate-float" />
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">Data Analysis</h3>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Machine Learning</h3>
                 <p className="text-gray-600">
-                  Creating comprehensive financial models and analysis that drive strategic business decisions.
+                  Building intelligent models for sentiment analysis, time series forecasting, and predictive analytics.
                 </p>
               </div>
             </div>
@@ -88,9 +88,9 @@ const About = () => {
             <div className="text-center group">
               <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Palette size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '1s' }} />
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">Strategic Planning</h3>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Data Visualization</h3>
                 <p className="text-gray-600">
-                  Developing strategic insights that provide exceptional value across all business units.
+                  Creating interactive dashboards and visualizations with Tableau, Matplotlib, and Seaborn.
                 </p>
               </div>
             </div>
@@ -98,9 +98,9 @@ const About = () => {
             <div className="text-center group">
               <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Rocket size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '2s' }} />
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">Performance First</h3>
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">Model Optimization</h3>
                 <p className="text-gray-600">
-                  Optimizing financial processes for efficiency, accuracy, and maximum business impact.
+                  Optimizing ML models for accuracy, efficiency, and real-world deployment readiness.
                 </p>
               </div>
             </div>

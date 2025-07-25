@@ -4,58 +4,31 @@ import { ExternalLink, Github } from 'lucide-react';
 const Projects = () => {
   const projects = [
     {
-      title: 'E-Commerce Platform',
-      description: 'A full-stack e-commerce solution with React, Node.js, and Stripe integration. Features include user authentication, product management, shopping cart, and payment processing.',
+      title: 'Sentiment Analysis of Product Reviews',
+      description: 'Engineered a sentiment analysis pipeline to classify customer reviews, employing NLTK for text preprocessing and TF-IDF for feature extraction. Achieved 88% accuracy on a dataset of 10,000+ reviews.',
       image: 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-      liveUrl: '#',
-      githubUrl: '#',
+      tags: ['Python', 'NLTK', 'Scikit-learn', 'Matplotlib', 'TF-IDF'],
+      liveUrl: 'https://github.com/marepallisanthosh999333',
+      githubUrl: 'https://github.com/marepallisanthosh999333',
       featured: true
     },
     {
-      title: 'Task Management App',
-      description: 'A collaborative project management tool with real-time updates, drag-and-drop functionality, and team collaboration features.',
+      title: 'Stock Price Movement Prediction',
+      description: 'Developed a time-series forecasting model using an LSTM neural network with TensorFlow to predict the next day\'s closing price of NIFTY 50 stocks. Utilized 5 years of historical data for training and backtesting.',
       image: 'https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['Vue.js', 'Socket.io', 'MongoDB', 'Express'],
-      liveUrl: '#',
-      githubUrl: '#',
+      tags: ['Python', 'TensorFlow', 'LSTM', 'Pandas', 'Time Series'],
+      liveUrl: 'https://github.com/marepallisanthosh999333',
+      githubUrl: 'https://github.com/marepallisanthosh999333',
       featured: true
     },
     {
-      title: 'Weather Dashboard',
-      description: 'A responsive weather application with location-based forecasts, interactive maps, and historical weather data visualization.',
+      title: 'Options Pricing Model (Black-Scholes)',
+      description: 'Implemented the Black-Scholes-Merton model to calculate the theoretical price of European call and put options. Developed a tool to compute and visualize "the Greeks" for option risk analysis.',
       image: 'https://images.pexels.com/photos/3183165/pexels-photo-3183165.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['React', 'TypeScript', 'Chart.js', 'OpenWeather API'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: false
-    },
-    {
-      title: 'Social Media Analytics',
-      description: 'A comprehensive analytics dashboard for social media metrics with data visualization and automated reporting features.',
-      image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['Next.js', 'Python', 'PostgreSQL', 'D3.js'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: false
-    },
-    {
-      title: 'Crypto Portfolio Tracker',
-      description: 'Real-time cryptocurrency portfolio tracking with price alerts, historical analysis, and market news integration.',
-      image: 'https://images.pexels.com/photos/3183181/pexels-photo-3183181.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['React', 'Node.js', 'WebSockets', 'CoinGecko API'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: false
-    },
-    {
-      title: 'Learning Management System',
-      description: 'A comprehensive LMS with course creation, student progress tracking, video streaming, and interactive assessments.',
-      image: 'https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&w=500',
-      tags: ['React', 'Express', 'MongoDB', 'AWS S3'],
-      liveUrl: '#',
-      githubUrl: '#',
-      featured: false
+      tags: ['Python', 'NumPy', 'SciPy', 'Pandas', 'Financial Modeling'],
+      liveUrl: 'https://github.com/marepallisanthosh999333',
+      githubUrl: 'https://github.com/marepallisanthosh999333',
+      featured: true
     }
   ];
 
@@ -71,12 +44,12 @@ const Projects = () => {
               Featured Projects
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A collection of my recent work showcasing different technologies and problem-solving approaches.
+              A collection of my data science and machine learning projects showcasing practical applications in sentiment analysis, financial modeling, and predictive analytics.
             </p>
           </div>
 
           {/* Featured Projects */}
-          <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {featuredProjects.map((project, index) => (
               <div key={project.title} className="group bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
                 <div className="relative overflow-hidden">
@@ -119,10 +92,11 @@ const Projects = () => {
             ))}
           </div>
 
-          {/* Other Projects */}
-          <div>
-            <h3 className="text-2xl font-semibold mb-8 text-center text-gray-900">Other Notable Projects</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Additional Projects Section - Can be added later */}
+          {otherProjects.length > 0 && (
+            <div>
+              <h3 className="text-2xl font-semibold mb-8 text-center text-gray-900">Other Notable Projects</h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {otherProjects.map((project, index) => (
                 <div key={project.title} className="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
                   <div className="relative overflow-hidden">
@@ -169,11 +143,12 @@ const Projects = () => {
                 </div>
               ))}
             </div>
-          </div>
+            </div>
+          )}
 
           <div className="text-center mt-12">
             <a
-              href="https://github.com"
+              href="https://github.com/marepallisanthosh999333"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium"

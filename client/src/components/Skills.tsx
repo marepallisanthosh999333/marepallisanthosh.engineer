@@ -3,33 +3,33 @@ import React from 'react';
 const Skills = () => {
   const skillCategories = [
     {
-      title: 'Frontend',
+      title: 'Programming Languages',
       skills: [
-        { name: 'React', level: 95 },
-        { name: 'TypeScript', level: 90 },
-        { name: 'Tailwind CSS', level: 92 },
-        { name: 'Next.js', level: 88 },
-        { name: 'Vue.js', level: 80 },
+        { name: 'Python', level: 90 },
+        { name: 'SQL', level: 85 },
+        { name: 'Java', level: 75 },
+        { name: 'C++', level: 70 },
+        { name: 'Shell', level: 65 },
       ]
     },
     {
-      title: 'Backend',
+      title: 'Data Science & ML',
       skills: [
-        { name: 'Node.js', level: 90 },
-        { name: 'Python', level: 85 },
-        { name: 'PostgreSQL', level: 88 },
-        { name: 'MongoDB', level: 82 },
-        { name: 'Docker', level: 78 },
+        { name: 'Scikit-learn', level: 88 },
+        { name: 'TensorFlow', level: 85 },
+        { name: 'Pandas', level: 92 },
+        { name: 'NumPy', level: 90 },
+        { name: 'NLTK', level: 85 },
       ]
     },
     {
-      title: 'Tools & Others',
+      title: 'Visualization & Tools',
       skills: [
-        { name: 'Git', level: 95 },
-        { name: 'AWS', level: 80 },
-        { name: 'Figma', level: 85 },
-        { name: 'Jest', level: 88 },
-        { name: 'GraphQL', level: 75 },
+        { name: 'Tableau', level: 88 },
+        { name: 'Matplotlib', level: 85 },
+        { name: 'Seaborn', level: 82 },
+        { name: 'Git', level: 80 },
+        { name: 'Jupyter', level: 90 },
       ]
     }
   ];
@@ -43,7 +43,7 @@ const Skills = () => {
               Skills & Technologies
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              A comprehensive toolkit for building modern web applications from concept to deployment.
+              A comprehensive toolkit for data science, machine learning, and analytics from data preprocessing to model deployment.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ const Skills = () => {
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-semibold mb-8 text-gray-900">Currently Learning</h3>
             <div className="flex flex-wrap justify-center gap-4">
-              {['Rust', 'WebAssembly', 'Three.js', 'Blockchain', 'AI/ML'].map((tech) => (
+              {['Deep Learning', 'Computer Vision', 'Big Data', 'Cloud Computing', 'Docker'].map((tech) => (
                 <span 
                   key={tech}
                   className="bg-orange-100 border border-orange-200 text-orange-700 px-4 py-2 rounded-full font-medium"
