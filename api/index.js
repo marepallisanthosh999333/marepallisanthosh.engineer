@@ -1,21 +1,15 @@
 import "dotenv/config";
-import express from "express";
 import { Resend } from "resend";
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// API routes
-app.post("/api/contact", async (req, res) => {
+export default async function handler(req, res) {
+  // Only handle POST requests to /api/contact
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method not allowed' });
+  }
+
   try {
     const { name, email, message } = req.body;
 
@@ -47,14 +41,4 @@ app.post("/api/contact", async (req, res) => {
       error: error.message 
     });
   }
-});
-
-// Serve static files from dist/public
-app.use(express.static(path.join(__dirname, "../dist/public")));
-
-// Catch all handler: send back index.html
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/public/index.html"));
-});
-
-export default app;
+}
