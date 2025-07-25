@@ -54,11 +54,11 @@ const About = () => {
             </div>
             
             <div className="relative">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transform hover:scale-105 transition-transform duration-300">
                 <img
                   src="/me.png"
                   alt="Profile"
-                  className="w-full h-64 object-cover rounded-xl mb-6"
+                  className="w-full h-64 object-cover rounded-3xl mb-6"
                 />
                 <div className="text-center">
                   <h4 className="text-xl font-semibold text-gray-900 mb-2">Marepalli Santhosh</h4>
@@ -76,7 +76,7 @@ const About = () => {
             style={{ transitionDelay: cardsVisible ? '400ms' : '0ms' }}
           >
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Code2 size={48} className="mx-auto mb-4 text-blue-600 animate-float" />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Machine Learning</h3>
                 <p className="text-gray-600">
@@ -86,7 +86,7 @@ const About = () => {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Palette size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '1s' }} />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Data Visualization</h3>
                 <p className="text-gray-600">
@@ -96,7 +96,7 @@ const About = () => {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
                 <Rocket size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '2s' }} />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Model Optimization</h3>
                 <p className="text-gray-600">

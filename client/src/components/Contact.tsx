@@ -70,7 +70,7 @@ const Contact = () => {
               
               <div className="space-y-6 mb-8">
                 <div className="flex items-center space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
+                  <div className="bg-blue-100 p-3 rounded-2xl">
                     <Mail size={24} className="text-blue-600" />
                   </div>
                   <div>
@@ -85,7 +85,7 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-center space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
+                  <div className="bg-blue-100 p-3 rounded-2xl">
                     <Phone size={24} className="text-blue-600" />
                   </div>
                   <div>
@@ -100,7 +100,7 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-center space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
+                  <div className="bg-blue-100 p-3 rounded-2xl">
                     <MapPin size={24} className="text-blue-600" />
                   </div>
                   <div>
@@ -124,7 +124,7 @@ const Contact = () => {
                     href="https://github.com/marepallisanthosh999333"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300"
+                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-2xl transition-colors duration-300"
                   >
                     <Github size={20} className="text-black" fill="currentColor" />
                   </a>
@@ -132,7 +132,7 @@ const Contact = () => {
                     href="https://www.linkedin.com/in/marepalli-santhosh-42b16a284/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300"
+                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-2xl transition-colors duration-300"
                   >
                     <Linkedin size={20} className="text-black" fill="currentColor" />
                   </a>
@@ -140,14 +140,14 @@ const Contact = () => {
                     href="https://leetcode.com/u/marepallisanthosh999333/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-full transition-colors duration-300"
+                    className="bg-gray-100 hover:bg-gray-200 p-3 rounded-2xl transition-colors duration-300"
                   >
                     <LeetCodeIcon size={20} className="text-black" />
                   </a>
                 </div>
               </div>
 
-              <div className="mt-8 bg-gray-50 rounded-2xl p-6 border border-gray-100">
+              <div className="mt-8 bg-gray-50 rounded-3xl p-6 border border-gray-100">
                 <h4 className="text-gray-900 font-medium mb-3">Response Time</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">
                   I typically respond to all inquiries within 24 hours. For urgent projects, 
@@ -158,7 +158,7 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div>
-              <form onSubmit={handleSubmit} className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
+              <form onSubmit={handleSubmit} className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
                 <h3 className="text-2xl font-semibold mb-6 text-gray-900">Send a Message</h3>
                 
                 <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -173,7 +173,7 @@ const Contact = () => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+                      className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                       placeholder="Your name"
                     />
                   </div>
@@ -188,7 +188,7 @@ const Contact = () => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+                      className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -205,7 +205,7 @@ const Contact = () => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
+                    className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -221,7 +221,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200 resize-none"
+                    className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200 resize-none"
                     placeholder="Tell me about your project..."
                   ></textarea>
                 </div>
@@ -229,7 +229,7 @@ const Contact = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full px-8 py-4 rounded-lg text-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${
+                  className={`w-full px-8 py-4 rounded-2xl text-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2 ${
                     isSubmitting 
                       ? 'bg-gray-400 cursor-not-allowed' 
                       : 'bg-blue-600 hover:bg-blue-700'
@@ -249,14 +249,14 @@ const Contact = () => {
                 </button>
 
                 {submitStatus === 'success' && (
-                  <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+                  <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-2xl">
                     <p className="font-medium">✅ Message sent successfully!</p>
                     <p className="text-sm">Thank you for reaching out. I'll get back to you soon!</p>
                   </div>
                 )}
 
                 {submitStatus === 'error' && (
-                  <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+                  <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-2xl">
                     <p className="font-medium">❌ Failed to send message</p>
                     <p className="text-sm">Please try again or contact me directly at marepallisanthosh.999333@gmail.com</p>
                   </div>

@@ -54,7 +54,7 @@ const Experience = () => {
                 <div className="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-gray-50"></div>
 
                 <div className={`ml-16 md:ml-0 ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                  <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
+                  <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h3 className="text-xl font-semibold text-gray-900 mb-1">{experience.title}</h3>

@@ -51,7 +51,7 @@ const Projects = () => {
           {/* Featured Projects */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {featuredProjects.map((project, index) => (
-              <div key={project.title} className="group bg-gray-50 rounded-2xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
+              <div key={project.title} className="group bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
                 <div className="relative overflow-hidden">
                   <img
                     src={project.image}
