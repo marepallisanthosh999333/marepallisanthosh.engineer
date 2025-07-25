@@ -17,14 +17,14 @@ const Hero = () => {
                 I'am <span className="text-blue-600">Marepalli Santhosh</span>
               </h2>
               <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight animate-fadeInUp delay-300">
-                Financial Analyst
+                Data Scientist
               </h3>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400">
               <a
                 href="#contact"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 text-center transform hover:scale-105"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"
               >
                 Contact
               </a>
@@ -32,7 +32,7 @@ const Hero = () => {
                 href="/MAREPALLI_SANTHOSH_RESUME (2).pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 text-center transform hover:scale-105"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"
               >
                 Download Resume
               </a>

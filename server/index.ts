@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -60,11 +61,10 @@ app.use((req, res, next) => {
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
+  server.listen(port, "0.0.0.0", () => {
+    console.log(`\n🚀 Server running on:`);
+    console.log(`   Local:   http://localhost:${port}`);
+    console.log(`   Network: http://0.0.0.0:${port}`);
+    console.log(`\n📱 Open your browser and visit the Local URL above\n`);
   });
 })();

@@ -151,7 +151,7 @@ const Projects = () => {
               href="https://github.com/marepallisanthosh999333"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-all duration-300 font-medium"
+              className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-3xl transition-all duration-300 font-medium"
             >
               <Github size={20} />
               <span>View All Projects on GitHub</span>

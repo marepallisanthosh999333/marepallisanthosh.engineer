@@ -10,9 +10,8 @@ const Footer = () => {
             © 2025 Marepalli Santhosh. All rights reserved.
           </div>
           <div className="flex items-center space-x-1 text-gray-500 text-sm">
-            <span>Made with</span>
+            <span>Hi</span>
             <Heart size={16} className="text-red-500 fill-current" />
-            <span>using React & Tailwind CSS</span>
           </div>
         </div>
       </div>
