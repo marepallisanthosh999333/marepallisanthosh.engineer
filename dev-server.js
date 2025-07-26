@@ -1,5 +1,13 @@
-import "dotenv/config";
-import { Resend } from "resend";
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { Resend } from 'resend';
+
+// Load environment variables
+dotenv.config();
+
+const app = express();
+const PORT = 3001;
 
 // Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -15,41 +23,38 @@ function getClientIP(req) {
   );
 }
 
-export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  // Only handle POST requests to /api/contact
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
+// API route - Direct implementation
+app.post('/api/contact', async (req, res) => {
+  console.log('📧 Contact form submission received:', req.body);
+  console.log('🌐 Headers:', req.headers);
+  
   try {
-    const { name, email, message } = req.body;
+    const { name, email, message, subject, clientInfo } = req.body;
 
     if (!name || !email || !message) {
+      console.log('❌ Missing required fields');
       return res.status(400).json({ 
         message: "Name, email, and message are required" 
       });
     }
 
     // Get client information
-    const clientIP = getClientIP(req);
-    const userAgent = req.headers['user-agent'] || 'Unknown';
+    const clientIP = clientInfo?.ip || getClientIP(req);
+    const userAgent = clientInfo?.userAgent || req.headers['user-agent'] || 'Unknown';
     const timestamp = new Date().toISOString();
     const ipLookupLink = `https://ipapi.co/${clientIP}/json`;
 
+    console.log('🚀 Sending email with Resend...');
+    console.log('📧 To:', process.env.TO_EMAIL || 'marepallisanthosh.999333@gmail.com');
+    console.log('🔑 API Key:', process.env.RESEND_API_KEY ? 'Set (' + process.env.RESEND_API_KEY.substring(0, 10) + '...)' : 'Not set');
+
     const emailData = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["marepallisanthosh.999333@gmail.com"],
+      to: [process.env.TO_EMAIL || "marepallisanthosh.999333@gmail.com"],
       subject: `🎯 New Contact Form Submission`,
       html: `
         <!DOCTYPE html>
@@ -92,7 +97,7 @@ export default async function handler(req, res) {
                 </div>
                 <div class="field">
                   <span class="label">Subject:</span>
-                  <span class="value">Portfolio Contact</span>
+                  <span class="value">${subject || 'Portfolio Contact'}</span>
                 </div>
                 <div class="field">
                   <span class="label">Message:</span>
@@ -140,13 +145,23 @@ export default async function handler(req, res) {
       `,
     });
 
-    console.log("Email sent successfully:", emailData);
+    console.log('✅ Email sent successfully!');
+    console.log('📊 Resend response:', emailData);
+    
     res.json({ message: "Email sent successfully!" });
   } catch (error) {
-    console.error("Failed to send email:", error);
+    console.error('❌ Error sending email:', error);
+    console.error('🔍 Error details:', error.message);
     res.status(500).json({ 
       message: "Failed to send email",
       error: error.message 
     });
   }
-}
+});
+
+app.listen(PORT, () => {
+  console.log(`🚀 Dev API server running on http://localhost:${PORT}`);
+  console.log(`📧 Contact endpoint: http://localhost:${PORT}/api/contact`);
+  console.log(`🔑 Resend API Key: ${process.env.RESEND_API_KEY ? 'Loaded' : 'Missing'}`);
+  console.log(`📬 Email recipient: ${process.env.TO_EMAIL || 'marepallisanthosh.999333@gmail.com'}`);
+});
