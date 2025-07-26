@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,6 +10,9 @@ import Footer from './components/Footer';
 import AnimatedSection from './components/AnimatedSection';
 
 function App() {
+  useEffect(() => {
+    document.title = 'Marepalli Santhosh Portfolio';
+  }, []);
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
       <Header />
