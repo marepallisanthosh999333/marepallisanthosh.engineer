@@ -33,7 +33,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { name, email, message } = req.body;
+    const { name, email, subject, message } = req.body;
 
     if (!name || !email || !message) {
       return res.status(400).json({ 
@@ -50,7 +50,7 @@ export default async function handler(req, res) {
     const emailData = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: ["marepallisanthosh.999333@gmail.com"],
-      subject: `🎯 New Contact Form Submission`,
+      subject: subject ? `🎯 ${subject}` : `🎯 New Contact Form Submission`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
                 </div>
                 <div class="field">
                   <span class="label">Subject:</span>
-                  <span class="value">Portfolio Contact</span>
+                  <span class="value">${subject || 'Portfolio Contact'}</span>
                 </div>
                 <div class="field">
                   <span class="label">Message:</span>
