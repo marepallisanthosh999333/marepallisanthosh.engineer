@@ -29,7 +29,7 @@ const Hero = () => {
                 Contact
               </a>
               <a
-                href="/MAREPALLI_SANTHOSH_RESUME (2).pdf"
+                href="/MAREPALLI_SANTHOSH_RESUME99.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"

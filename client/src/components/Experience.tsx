@@ -106,7 +106,7 @@ const Experience = () => {
 
           <div className="text-center mt-16">
             <a
-              href="/MAREPALLI_SANTHOSH_RESUME (2).pdf"
+              href="/MAREPALLI_SANTHOSH_RESUME99.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-3xl text-lg font-medium transition-all duration-300"
