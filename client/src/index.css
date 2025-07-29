@@ -117,6 +117,40 @@
 
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
+  /* Fix mobile navigation menu background and positioning */
+  header.fixed {
+    background-color: #ffffff !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+  }
+  
+  /* Ensure mobile menu has solid background and proper layering */
+  .md\\:hidden.mt-4.pb-4 {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    background-color: #ffffff !important;
+    z-index: 1000 !important;
+    padding-top: 6rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    margin-top: 0 !important;
+  }
+  
+  /* Style the mobile menu links container */
+  .md\\:hidden.mt-4.pb-4 .flex.flex-col.space-y-4 {
+    padding-top: 2rem;
+  }
+  
+  /* Enhance mobile menu link styling */
+  .md\\:hidden.mt-4.pb-4 a {
+    font-size: 1.125rem !important;
+    padding: 0.75rem 0 !important;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+  }
+
   /* Fix header overlap - add top padding to main content */
   #home {
     padding-top: 80px;
