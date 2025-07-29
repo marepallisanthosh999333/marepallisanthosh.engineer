@@ -4,11 +4,11 @@ import LeetCodeIcon from './LeetCodeIcon';
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative bg-white">
-      <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+    <section id="home" className="min-h-screen flex items-center justify-center relative bg-white w-full">
+      <div className="container mx-auto px-6 w-full">
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto w-full">
           {/* Left Content */}
-          <div className="space-y-8 animate-fadeInUp">
+          <div className="space-y-8 animate-fadeInUp w-full">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight animate-fadeInUp">
                 Hi,
@@ -21,7 +21,7 @@ const Hero = () => {
               </h3>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400">
+            <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400 justify-center lg:justify-start">
               <a
                 href="#contact"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"
@@ -38,7 +38,7 @@ const Hero = () => {
               </a>
             </div>
 
-            <div className="flex items-center space-x-6 pt-4 animate-fadeInUp delay-500">
+            <div className="flex items-center space-x-6 pt-4 animate-fadeInUp delay-500 justify-center lg:justify-start">
               <a
                 href="https://www.linkedin.com/in/marepalli-santhosh-42b16a284/"
                 target="_blank"
@@ -67,9 +67,9 @@ const Hero = () => {
           </div>
 
           {/* Right Content - Profile Image */}
-          <div className="flex justify-center lg:justify-end animate-fadeInUp delay-300">
+          <div className="flex justify-center lg:justify-end animate-fadeInUp delay-300 w-full">
             <div className="relative">
-              <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-full bg-blue-600 relative overflow-hidden transform transition-all duration-500 hover:scale-105">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-full bg-blue-600 relative overflow-hidden transform transition-all duration-500 hover:scale-105 mx-auto">
                 <img
                   src="/me.png"
                   alt="Marepalli Santhosh"

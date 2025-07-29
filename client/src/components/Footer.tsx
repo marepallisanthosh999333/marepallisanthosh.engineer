@@ -4,8 +4,8 @@ import LeetCodeIcon from './LeetCodeIcon';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="container mx-auto px-6">
+    <footer className="bg-gray-900 text-white py-16 w-full">
+      <div className="container mx-auto px-6 w-full">
         <div className="text-center">
           {/* Main Title */}
           <h2 className="text-4xl font-bold mb-6">Marepalli Santhosh</h2>

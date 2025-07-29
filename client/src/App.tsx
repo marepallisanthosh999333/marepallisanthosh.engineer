@@ -14,9 +14,9 @@ function App() {
     document.title = 'Marepalli Santhosh Portfolio';
   }, []);
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden w-full">
       <Header />
-      <main>
+      <main className="w-full">
         <Hero />
         <AnimatedSection>
           <About />

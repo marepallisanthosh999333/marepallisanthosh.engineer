@@ -10,6 +10,39 @@
   * {
     box-sizing: border-box;
   }
+  
+  /* Ensure proper centering and prevent overflow issues */
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  /* Fix container centering globally */
+  .container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100% !important;
+  }
+}
+
+@layer components {
+  /* Standardized container with proper centering */
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    width: 100%;
+  }
+  
+  /* Ensure grid layouts are properly centered */
+  .centered-grid {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 
 @layer utilities {
@@ -55,6 +88,19 @@
     animation: scaleIn 0.6s ease-out forwards;
     opacity: 0;
     transform: scale(0.8);
+  }
+  
+  /* Fix text and element alignment */
+  .text-balance {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Prevent layout shifts */
+  .layout-stable {
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -115,8 +161,14 @@
   animation: float 3s ease-in-out infinite;
 }
 
-/* Mobile Responsive Styles */
+/* Enhanced Mobile Responsive Styles */
 @media (max-width: 768px) {
+  /* Reset any problematic positioning */
+  * {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
   /* Fix mobile navigation menu background and positioning */
   header.fixed {
     background-color: #ffffff !important;
@@ -156,44 +208,120 @@
     padding-top: 80px;
   }
   
-  /* Stack the main content - change grid to single column */
+  /* Force single column layout on mobile and center everything */
   .grid.lg\\:grid-cols-2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
     gap: 2rem;
+    place-items: center;
+    text-align: center;
   }
   
-  /* Adjust heading font sizes for mobile */
+  /* Fix any grid that should be single column on mobile */
+  .grid.md\\:grid-cols-2,
+  .grid.lg\\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+    place-items: center;
+  }
+  
+  /* Adjust heading font sizes for mobile and center them */
   .text-5xl.md\\:text-6xl {
     font-size: 2.5rem !important;
+    text-align: center !important;
   }
   
   .text-4xl.md\\:text-5xl {
     font-size: 2rem !important;
+    text-align: center !important;
   }
   
   /* Center and adjust profile picture */
   .w-80.h-80.lg\\:w-96.lg\\:h-96 {
-    width: 16rem;
-    height: 16rem;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 16rem !important;
+    height: 16rem !important;
+    margin: 30px auto 0 auto !important;
   }
   
   /* Center the profile picture container */
   .flex.justify-center.lg\\:justify-end {
     justify-content: center !important;
-    margin-top: 30px;
+    margin: 30px auto 0 auto !important;
+    display: flex !important;
   }
   
-  /* Ensure buttons stack properly on very small screens */
+  /* Ensure buttons stack properly and are centered */
   .flex.flex-col.sm\\:flex-row {
-    flex-direction: column;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
-  /* Reduce container padding on mobile */
+  /* Force center alignment for all mobile content */
   .container.mx-auto.px-6 {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
   }
+  
+  /* Center all sections on mobile */
+  section {
+    text-align: center !important;
+  }
+  
+  /* Ensure all content containers are centered */
+  .max-w-6xl.mx-auto,
+  .max-w-4xl.mx-auto,
+  .max-w-3xl.mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Additional Global Layout Fixes */
+@media (min-width: 769px) {
+  /* Ensure desktop layout is properly centered */
+  .container {
+    max-width: 1200px !important;
+  }
+  
+  /* Fix desktop grid layouts */
+  .grid.lg\\:grid-cols-2,
+  .grid.md\\:grid-cols-2,
+  .grid.lg\\:grid-cols-3 {
+    justify-items: center;
+    align-items: center;
+  }
+}
+
+/* Global layout stability fixes */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent horizontal scrolling */
+* {
+  max-width: 100%;
+}
+
+/* Ensure all sections take full width */
+section {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Fix any flex containers that might cause issues */
+.flex {
+  max-width: 100%;
+}
+
+/* Additional container fixes */
+.max-w-6xl,
+.max-w-4xl,
+.max-w-3xl {
+  width: 100%;
 }
