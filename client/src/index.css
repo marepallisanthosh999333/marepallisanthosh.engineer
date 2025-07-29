@@ -114,3 +114,52 @@
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Fix header overlap - add top padding to main content */
+  #home {
+    padding-top: 80px;
+  }
+  
+  /* Stack the main content - change grid to single column */
+  .grid.lg\\:grid-cols-2 {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  /* Adjust heading font sizes for mobile */
+  .text-5xl.md\\:text-6xl {
+    font-size: 2.5rem !important;
+  }
+  
+  .text-4xl.md\\:text-5xl {
+    font-size: 2rem !important;
+  }
+  
+  /* Center and adjust profile picture */
+  .w-80.h-80.lg\\:w-96.lg\\:h-96 {
+    width: 16rem;
+    height: 16rem;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Center the profile picture container */
+  .flex.justify-center.lg\\:justify-end {
+    justify-content: center !important;
+    margin-top: 30px;
+  }
+  
+  /* Ensure buttons stack properly on very small screens */
+  .flex.flex-col.sm\\:flex-row {
+    flex-direction: column;
+  }
+  
+  /* Reduce container padding on mobile */
+  .container.mx-auto.px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
