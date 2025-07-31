@@ -56,6 +56,24 @@
     opacity: 0;
     transform: scale(0.8);
   }
+
+  /* Hide Replit development banner */
+  .replit-banner,
+  [data-replit-banner],
+  iframe[src*="replit.com"],
+  div[style*="replit"],
+  .replit-dev-banner {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Hide any top banner-like elements that might be injected */
+  body > div:first-child:not([id]):not([class]):not([data-component]) {
+    display: none !important;
+  }
 }
 
 @keyframes fadeInUp {
