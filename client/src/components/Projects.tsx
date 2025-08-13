@@ -8,8 +8,8 @@ const Projects = () => {
       description: 'Engineered a sentiment analysis pipeline to classify customer reviews, employing NLTK for text preprocessing and TF-IDF for feature extraction. Achieved 88% accuracy on a dataset of 10,000+ reviews.',
       image: 'https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=500',
       tags: ['Python', 'NLTK', 'Scikit-learn', 'Matplotlib', 'TF-IDF'],
-      liveUrl: 'https://github.com/marepallisanthosh999333',
-      githubUrl: 'https://github.com/marepallisanthosh999333',
+      liveUrl: 'https://github.com/marepallisanthosh999333/22MH1A4238/blob/main/SentimentAnalysisApssdcEdunet.ipynb',
+      githubUrl: 'https://github.com/marepallisanthosh999333/22MH1A4238/blob/main/SentimentAnalysisApssdcEdunet.ipynb',
       featured: true
     },
     {
@@ -17,8 +17,8 @@ const Projects = () => {
       description: 'Developed a time-series forecasting model using an LSTM neural network with TensorFlow to predict the next day\'s closing price of NIFTY 50 stocks. Utilized 5 years of historical data for training and backtesting.',
       image: 'https://images.pexels.com/photos/3183153/pexels-photo-3183153.jpeg?auto=compress&cs=tinysrgb&w=500',
       tags: ['Python', 'TensorFlow', 'LSTM', 'Pandas', 'Time Series'],
-      liveUrl: 'https://github.com/marepallisanthosh999333',
-      githubUrl: 'https://github.com/marepallisanthosh999333',
+      liveUrl: 'https://github.com/marepallisanthosh999333/Stock-Price-Movement-Prediction',
+      githubUrl: 'https://github.com/marepallisanthosh999333/Stock-Price-Movement-Prediction',
       featured: true
     },
     {
