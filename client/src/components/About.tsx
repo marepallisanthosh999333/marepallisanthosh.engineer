@@ -8,8 +8,8 @@ const About = () => {
   const [cardsRef, cardsVisible] = useScrollAnimation();
 
   return (
-    <section id="about" className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-12 lg:py-20 bg-white section-mobile">
+      <div className="container mx-auto">
         <div className="max-w-6xl mx-auto">
           <div 
             ref={titleRef}
@@ -17,10 +17,10 @@ const About = () => {
               titleVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
             }`}
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
               About Me
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               Data science and ML enthusiast with strong foundations in time series, NLP, and algorithmic trading. 
               Proficient in Python, TensorFlow; familiar with deploying models and dashboards.
             </p>
@@ -28,12 +28,12 @@ const About = () => {
 
           <div 
             ref={contentRef}
-            className={`grid md:grid-cols-2 gap-12 items-center mb-16 transform transition-all duration-1000 ease-out ${
+            className={`grid lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12 lg:mb-16 transform transition-all duration-1000 ease-out ${
               contentVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
             }`}
             style={{ transitionDelay: contentVisible ? '200ms' : '0ms' }}
           >
-            <div>
+            <div className="text-center lg:text-left">
               <h3 className="text-2xl font-semibold mb-6 text-gray-900">My Journey</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
                 Currently pursuing B.Tech in AI/ML at Aditya College of Engineering and Technology, I've gained 
@@ -46,19 +46,19 @@ const About = () => {
                 that solve real problems. Whether it's analyzing product reviews, predicting stock movements, or 
                 building financial tools, I approach each project with curiosity, technical rigor, and attention to detail.
               </p>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Problem Solver</span>
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Team Player</span>
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">Lifelong Learner</span>
               </div>
             </div>
             
-            <div className="relative">
-              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transform hover:scale-105 transition-transform duration-300">
+            <div className="relative flex justify-center">
+              <div className="bg-gray-50 rounded-3xl p-6 lg:p-8 border border-gray-100 transition-transform duration-300 max-w-sm mx-auto">
                 <img
                   src="/me.png"
                   alt="Profile"
-                  className="w-full h-64 object-cover rounded-3xl mb-6"
+                  className="w-full h-48 lg:h-64 object-cover rounded-3xl mb-6"
                 />
                 <div className="text-center">
                   <h4 className="text-xl font-semibold text-gray-900 mb-2">Marepalli Santhosh</h4>
@@ -70,13 +70,13 @@ const About = () => {
 
           <div 
             ref={cardsRef}
-            className={`grid md:grid-cols-3 gap-8 transform transition-all duration-1000 ease-out ${
+            className={`grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 card-grid-mobile transform transition-all duration-1000 ease-out ${
               cardsVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
             }`}
             style={{ transitionDelay: cardsVisible ? '400ms' : '0ms' }}
           >
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-6 lg:p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg h-full">
                 <Code2 size={48} className="mx-auto mb-4 text-blue-600 animate-float" />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Machine Learning</h3>
                 <p className="text-gray-600">
@@ -86,7 +86,7 @@ const About = () => {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-6 lg:p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg h-full">
                 <Palette size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '1s' }} />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Data Visualization</h3>
                 <p className="text-gray-600">
@@ -96,7 +96,7 @@ const About = () => {
             </div>
 
             <div className="text-center group">
-              <div className="bg-gray-50 rounded-3xl p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105">
+              <div className="bg-gray-50 rounded-3xl p-6 lg:p-8 border border-gray-100 transition-all duration-300 group-hover:shadow-lg h-full sm:col-span-2 lg:col-span-1">
                 <Rocket size={48} className="mx-auto mb-4 text-blue-600 animate-float" style={{ animationDelay: '2s' }} />
                 <h3 className="text-xl font-semibold mb-3 text-gray-900">Model Optimization</h3>
                 <p className="text-gray-600">

@@ -13,8 +13,9 @@ function App() {
   useEffect(() => {
     document.title = 'Marepalli Santhosh Portfolio';
   }, []);
+  
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden overflow-fix">
       <Header />
       <main>
         <Hero />

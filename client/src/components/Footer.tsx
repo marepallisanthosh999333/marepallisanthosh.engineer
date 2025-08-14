@@ -4,14 +4,14 @@ import LeetCodeIcon from './LeetCodeIcon';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-16">
-      <div className="container mx-auto px-6">
+    <footer className="bg-gray-900 text-white py-12 lg:py-16">
+      <div className="container mx-auto">
         <div className="text-center">
           {/* Main Title */}
-          <h2 className="text-4xl font-bold mb-6">Marepalli Santhosh</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold mb-6">Marepalli Santhosh</h2>
           
           {/* Description */}
-          <p className="text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-gray-300 max-w-2xl mx-auto mb-8 leading-relaxed px-4">
             AI/ML Enthusiast and Finance Technology Specialist passionate about developing intelligent solutions. 
             Exploring the intersection of artificial intelligence, machine learning, and financial innovation. 
             Dedicated to building data-driven applications that transform the future of finance and technology.
@@ -62,8 +62,8 @@ const Footer = () => {
         
         {/* Copyright */}
         <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="text-gray-400 text-sm mb-4 md:mb-0">
+          <div className="flex flex-col lg:flex-row items-center justify-between text-center lg:text-left">
+            <div className="text-gray-400 text-sm mb-4 lg:mb-0">
               Copyright ©2025{' '}
               <a 
                 href="https://www.marepallisanthosh.engineer"

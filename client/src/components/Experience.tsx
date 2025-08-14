@@ -32,29 +32,30 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-gray-50">
-      <div className="container mx-auto px-6">
+    <section id="experience" className="py-12 lg:py-20 bg-gray-50 section-mobile">
+      <div className="container mx-auto">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
               Professional Experience
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               A journey through internships and practical experiences, contributing to my growth as a data scientist and ML enthusiast.
             </p>
           </div>
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-blue-600"></div>
+            <div className="absolute left-6 lg:left-1/2 transform lg:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-blue-600"></div>
 
-            {experiences.map((experience, index) => (
-              <div key={experience.company} className={`relative mb-12 ${index % 2 === 0 ? 'md:pr-1/2' : 'md:pl-1/2 md:text-right'}`}>
+            <div className="space-y-12">
+              {experiences.map((experience, index) => (
+                <div key={experience.company} className={`relative ${index % 2 === 0 ? 'lg:pr-1/2' : 'lg:pl-1/2 lg:text-right'}`}>
                 {/* Timeline dot */}
-                <div className="absolute left-6 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-gray-50"></div>
+                <div className="absolute left-4 lg:left-1/2 transform lg:-translate-x-1/2 w-4 h-4 bg-blue-600 rounded-full border-4 border-gray-50"></div>
 
-                <div className={`ml-16 md:ml-0 ${index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'}`}>
-                  <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
+                <div className={`ml-12 lg:ml-0 ${index % 2 === 0 ? 'lg:mr-8' : 'lg:ml-8'}`}>
+                  <div className="bg-white rounded-3xl p-6 lg:p-8 border border-gray-100 shadow-sm transition-all duration-300 hover:shadow-lg">
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h3 className="text-xl font-semibold text-gray-900 mb-1">{experience.title}</h3>
@@ -101,7 +102,8 @@ const Experience = () => {
                   </div>
                 </div>
               </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <div className="text-center mt-16">

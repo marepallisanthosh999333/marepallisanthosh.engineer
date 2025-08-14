@@ -5,10 +5,15 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   
   * {
     box-sizing: border-box;
+  }
+  
+  body {
+    overflow-x: hidden;
   }
 }
 
@@ -74,6 +79,48 @@
   body > div:first-child:not([id]):not([class]):not([data-component]) {
     display: none !important;
   }
+
+  /* Container improvements for better alignment */
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Responsive container max-widths */
+  @media (min-width: 640px) {
+    .container {
+      max-width: 640px;
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      max-width: 768px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 1024px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .container {
+      max-width: 1280px;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .container {
+      max-width: 1536px;
+    }
+  }
 }
 
 @keyframes fadeInUp {
@@ -133,85 +180,146 @@
   animation: float 3s ease-in-out infinite;
 }
 
-/* Mobile Responsive Styles */
-@media (max-width: 768px) {
+/* Improved Mobile Responsive Styles */
+@media (max-width: 767px) {
   /* Fix mobile navigation menu background and positioning */
   header.fixed {
-    background-color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+  }
+  
+  /* Mobile menu overlay */
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(8px);
+    z-index: 1000;
+    padding-top: 5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  /* Mobile menu links */
+  .mobile-menu-overlay a {
+    display: block;
+    font-size: 1.125rem;
+    padding: 1rem 0;
     border-bottom: 1px solid rgba(229, 231, 235, 0.3);
-  }
-  
-  /* Ensure mobile menu has solid background and proper layering */
-  .md\\:hidden.mt-4.pb-4 {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    background-color: #ffffff !important;
-    z-index: 1000 !important;
-    padding-top: 6rem !important;
-    padding-left: 1.5rem !important;
-    padding-right: 1.5rem !important;
-    margin-top: 0 !important;
-  }
-  
-  /* Style the mobile menu links container */
-  .md\\:hidden.mt-4.pb-4 .flex.flex-col.space-y-4 {
-    padding-top: 2rem;
-  }
-  
-  /* Enhance mobile menu link styling */
-  .md\\:hidden.mt-4.pb-4 a {
-    font-size: 1.125rem !important;
-    padding: 0.75rem 0 !important;
-    border-bottom: 1px solid rgba(229, 231, 235, 0.3);
+    transition: all 0.3s ease;
   }
 
-  /* Fix header overlap - add top padding to main content */
+  /* Hero section adjustments */
   #home {
-    padding-top: 80px;
+    padding-top: 5rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
   }
   
-  /* Stack the main content - change grid to single column */
-  .grid.lg\\:grid-cols-2 {
-    grid-template-columns: 1fr;
+  /* Hero grid layout */
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
+    align-items: center;
+    text-align: center;
   }
   
-  /* Adjust heading font sizes for mobile */
-  .text-5xl.md\\:text-6xl {
-    font-size: 2.5rem !important;
+  /* Typography scaling */
+  .hero-title-main {
+    font-size: 2.5rem;
+    line-height: 1.1;
   }
   
-  .text-4xl.md\\:text-5xl {
-    font-size: 2rem !important;
+  .hero-title-secondary {
+    font-size: 2rem;
+    line-height: 1.2;
   }
   
-  /* Center and adjust profile picture */
-  .w-80.h-80.lg\\:w-96.lg\\:h-96 {
+  /* Profile image mobile sizing */
+  .profile-image-mobile {
     width: 16rem;
     height: 16rem;
-    margin-top: 30px;
+    margin: 0 auto;
+  }
+  
+  /* Button stacking */
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 20rem;
+  }
+  
+  /* Section spacing */
+  .section-mobile {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  /* Card grid improvements */
+  .card-grid-mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  /* Text alignment for mobile */
+  .text-center-mobile {
+    text-align: center;
+  }
+}
+
+/* Tablet responsive styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* Tablet grid adjustments */
+  .tablet-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tablet-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop improvements */
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  
+  /* Ensure proper centering on large screens */
+  .desktop-center {
     margin-left: auto;
     margin-right: auto;
   }
-  
-  /* Center the profile picture container */
-  .flex.justify-center.lg\\:justify-end {
-    justify-content: center !important;
-    margin-top: 30px;
-  }
-  
-  /* Ensure buttons stack properly on very small screens */
-  .flex.flex-col.sm\\:flex-row {
-    flex-direction: column;
-  }
-  
-  /* Reduce container padding on mobile */
-  .container.mx-auto.px-6 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
+}
+
+/* Prevent horizontal scroll on all devices */
+* {
+  max-width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix any potential overflow issues */
+.overflow-fix {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  word-break: break-word;
 }

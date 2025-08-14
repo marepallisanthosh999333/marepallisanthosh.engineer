@@ -36,27 +36,27 @@ const Projects = () => {
   const otherProjects = projects.filter(project => !project.featured);
 
   return (
-    <section id="projects" className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section id="projects" className="py-12 lg:py-20 bg-white section-mobile">
+      <div className="container mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
               Featured Projects
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
               A collection of my data science and machine learning projects showcasing practical applications in sentiment analysis, financial modeling, and predictive analytics.
             </p>
           </div>
 
           {/* Featured Projects */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12 lg:mb-16 card-grid-mobile">
             {featuredProjects.map((project, index) => (
-              <div key={project.title} className="group bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
+              <div key={project.title} className="group bg-gray-50 rounded-3xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg h-full flex flex-col">
                 <div className="relative overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-40 lg:h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <div className="flex space-x-4">
@@ -77,10 +77,10 @@ const Projects = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-6">
+                <div className="p-6 flex-1 flex flex-col">
                   <h3 className="text-xl font-semibold mb-3 text-gray-900">{project.title}</h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <p className="text-gray-600 mb-4 leading-relaxed flex-1">{project.description}</p>
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tags.map((tag) => (
                       <span key={tag} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
                         {tag}
@@ -96,9 +96,9 @@ const Projects = () => {
           {otherProjects.length > 0 && (
             <div>
               <h3 className="text-2xl font-semibold mb-8 text-center text-gray-900">Other Notable Projects</h3>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 card-grid-mobile">
               {otherProjects.map((project, index) => (
-                <div key={project.title} className="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg">
+                <div key={project.title} className="group bg-gray-50 rounded-xl overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-lg h-full flex flex-col">
                   <div className="relative overflow-hidden">
                     <img
                       src={project.image}
@@ -124,10 +124,10 @@ const Projects = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="p-4">
+                  <div className="p-4 flex-1 flex flex-col">
                     <h4 className="text-lg font-semibold mb-2 text-gray-900">{project.title}</h4>
-                    <p className="text-gray-600 text-sm mb-3 leading-relaxed">{project.description}</p>
-                    <div className="flex flex-wrap gap-1">
+                    <p className="text-gray-600 text-sm mb-3 leading-relaxed flex-1">{project.description}</p>
+                    <div className="flex flex-wrap gap-1 mt-auto">
                       {project.tags.slice(0, 3).map((tag) => (
                         <span key={tag} className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs font-medium">
                           {tag}
