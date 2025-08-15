@@ -51,19 +51,19 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-12 lg:py-20 bg-white section-mobile">
-      <div className="container mx-auto">
+    <section id="contact" className="py-20 bg-white">
+      <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
               Let's Work Together
             </h2>
-            <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Ready to bring your ideas to life? Let's discuss your project and create something amazing together.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Information */}
             <div>
               <h3 className="text-2xl font-semibold mb-8 text-gray-900">Get In Touch</h3>
@@ -158,10 +158,10 @@ const Contact = () => {
 
             {/* Contact Form */}
             <div>
-              <form onSubmit={handleSubmit} className="bg-gray-50 rounded-3xl p-6 lg:p-8 border border-gray-100">
+              <form onSubmit={handleSubmit} className="bg-gray-50 rounded-3xl p-8 border border-gray-100">
                 <h3 className="text-2xl font-semibold mb-6 text-gray-900">Send a Message</h3>
                 
-                <div className="grid sm:grid-cols-2 gap-6 mb-6">
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                       Name *

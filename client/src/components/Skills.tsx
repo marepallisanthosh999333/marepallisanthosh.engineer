@@ -35,21 +35,21 @@ const Skills = () => {
   ];
 
   return (
-    <section id="skills" className="py-12 lg:py-20 bg-gray-50 section-mobile">
-      <div className="container mx-auto">
+    <section id="skills" className="py-20 bg-gray-50">
+      <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 text-gray-900">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
               Skills & Technologies
             </h2>
-            <p className="text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               A comprehensive toolkit for data science, machine learning, and analytics from data preprocessing to model deployment.
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 card-grid-mobile">
+          <div className="grid md:grid-cols-3 gap-8">
             {skillCategories.map((category, categoryIndex) => (
-              <div key={category.title} className="bg-white rounded-3xl p-6 lg:p-8 border border-gray-100 shadow-sm h-full">
+              <div key={category.title} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
                 <h3 className="text-2xl font-semibold mb-6 text-center text-blue-600">
                   {category.title}
                 </h3>
@@ -75,7 +75,7 @@ const Skills = () => {
 
           <div className="mt-16 text-center">
             <h3 className="text-2xl font-semibold mb-8 text-gray-900">Currently Learning</h3>
-            <div className="flex flex-wrap justify-center gap-3 lg:gap-4 px-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {['Deep Learning', 'Computer Vision', 'Big Data', 'Cloud Computing', 'Docker'].map((tech) => (
                 <span 
                   key={tech}

@@ -4,27 +4,27 @@ import LeetCodeIcon from './LeetCodeIcon';
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative bg-white overflow-hidden">
-      <div className="container mx-auto">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto hero-grid">
+    <section id="home" className="min-h-screen flex items-center justify-center relative bg-white">
+      <div className="container mx-auto px-6">
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left Content */}
-          <div className="space-y-6 lg:space-y-8 animate-fadeInUp text-center lg:text-left">
+          <div className="space-y-8 animate-fadeInUp">
             <div className="space-y-4">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight animate-fadeInUp hero-title-main">
+              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight animate-fadeInUp">
                 Hi,
               </h1>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight animate-fadeInUp delay-200 hero-title-main">
+              <h2 className="text-5xl md:text-6xl font-bold leading-tight animate-fadeInUp delay-200">
                 I'am <span className="text-blue-600">Marepalli Santhosh</span>
               </h2>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight animate-fadeInUp delay-300 hero-title-secondary">
+              <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight animate-fadeInUp delay-300">
                 Data Scientist
               </h3>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400 hero-buttons justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400">
               <a
                 href="#contact"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"
               >
                 Contact
               </a>
@@ -32,18 +32,18 @@ const Hero = () => {
                 href="/MAREPALLI_SANTHOSH_RESUME99.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-3xl font-medium transition-all duration-300 text-center transform hover:scale-105"
               >
                 Download Resume
               </a>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start space-x-6 pt-4 animate-fadeInUp delay-500">
+            <div className="flex items-center space-x-6 pt-4 animate-fadeInUp delay-500">
               <a
                 href="https://www.linkedin.com/in/marepalli-santhosh-42b16a284/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black hover:text-blue-600 transition-all duration-300"
+                className="text-black hover:text-blue-600 transition-all duration-300 transform hover:scale-110"
               >
                 <Linkedin size={24} fill="currentColor" />
               </a>
@@ -51,7 +51,7 @@ const Hero = () => {
                 href="https://leetcode.com/u/marepallisanthosh999333/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black hover:text-blue-600 transition-all duration-300"
+                className="text-black hover:text-blue-600 transition-all duration-300 transform hover:scale-110"
               >
                 <LeetCodeIcon size={24} />
               </a>
@@ -59,7 +59,7 @@ const Hero = () => {
                 href="https://github.com/marepallisanthosh999333"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-black hover:text-blue-600 transition-all duration-300"
+                className="text-black hover:text-blue-600 transition-all duration-300 transform hover:scale-110"
               >
                 <Github size={24} fill="currentColor" />
               </a>
@@ -67,9 +67,9 @@ const Hero = () => {
           </div>
 
           {/* Right Content - Profile Image */}
-          <div className="flex justify-center animate-fadeInUp delay-300 order-first lg:order-last">
+          <div className="flex justify-center lg:justify-end animate-fadeInUp delay-300">
             <div className="relative">
-              <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full bg-blue-600 relative overflow-hidden transition-all duration-500 profile-image-mobile mx-auto">
+              <div className="w-80 h-80 lg:w-96 lg:h-96 rounded-full bg-blue-600 relative overflow-hidden transform transition-all duration-500 hover:scale-105">
                 <img
                   src="/me.png"
                   alt="Marepalli Santhosh"
@@ -77,9 +77,9 @@ const Hero = () => {
                 />
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-2 -right-2 lg:-top-4 lg:-right-4 w-6 h-6 lg:w-8 lg:h-8 bg-blue-200 rounded-full animate-pulse"></div>
-              <div className="absolute -bottom-2 -left-2 lg:-bottom-4 lg:-left-4 w-4 h-4 lg:w-6 lg:h-6 bg-blue-300 rounded-full animate-pulse delay-1000"></div>
-              <div className="absolute top-1/4 -left-4 lg:-left-8 w-3 h-3 lg:w-4 lg:h-4 bg-blue-400 rounded-full animate-pulse delay-500"></div>
+              <div className="absolute -top-4 -right-4 w-8 h-8 bg-blue-200 rounded-full animate-pulse"></div>
+              <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-blue-300 rounded-full animate-pulse delay-1000"></div>
+              <div className="absolute top-1/4 -left-8 w-4 h-4 bg-blue-400 rounded-full animate-pulse delay-500"></div>
             </div>
           </div>
         </div>
