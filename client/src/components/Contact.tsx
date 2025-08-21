@@ -172,6 +172,7 @@ const Contact = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
+                      autoComplete="name"
                       required
                       className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                       placeholder="Your name"
@@ -187,6 +188,7 @@ const Contact = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
+                      autoComplete="email"
                       required
                       className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                       placeholder="your.email@example.com"
@@ -204,6 +206,7 @@ const Contact = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
+                    autoComplete="off"
                     required
                     className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200"
                     placeholder="What's this about?"
@@ -219,6 +222,7 @@ const Contact = () => {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
+                    autoComplete="off"
                     required
                     rows={6}
                     className="w-full bg-white border border-gray-300 rounded-2xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:outline-none focus:border-blue-500 transition-colors duration-200 resize-none"
