@@ -11,14 +11,14 @@ const Hero = () => {
           <div className="space-y-8 animate-fadeInUp">
             <div className="space-y-4">
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight animate-fadeInUp">
-                Hi,
+                <span className="text-blue-600">Marepalli Santhosh</span>
               </h1>
-              <h2 className="text-5xl md:text-6xl font-bold leading-tight animate-fadeInUp delay-200">
-                I'am <span className="text-blue-600">Marepalli Santhosh</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight animate-fadeInUp delay-200">
+                Data Scientist & AI/ML Engineer
               </h2>
-              <h3 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight animate-fadeInUp delay-300">
-                Data Scientist
-              </h3>
+              <p className="text-xl text-gray-600 animate-fadeInUp delay-300">
+                Passionate about transforming data into actionable insights
+              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 animate-fadeInUp delay-400">
