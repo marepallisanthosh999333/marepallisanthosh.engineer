@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://marepallisanthosh.engineer/sitemap.xml
+
+# Important pages for crawling
+Crawl-delay: 1
+
+# Allow important assets
+Allow: /me.png
+Allow: /horse.png
+Allow: /MAREPALLI_SANTHOSH_RESUME99.pdf
+
+# Block any admin or development files
+Disallow: /admin/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /src/
+Disallow: /dist/
+Disallow: *.map

@@ -12,6 +12,7 @@
     <meta name="author" content="Marepalli Santhosh" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://marepallisanthosh.engineer/" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:site_name" content="Marepalli Santhosh" />
@@ -32,61 +33,151 @@
     
     <title>Marepalli Santhosh Portfolio</title>
     
-    <!-- Schema.org Structured Data -->
+    <!-- Primary WebSite Schema with Person Reference -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
+      "@id": "https://marepallisanthosh.engineer/#mainwebsite",
       "name": "Marepalli Santhosh",
       "alternateName": "Marepalli Santhosh Portfolio",
       "url": "https://marepallisanthosh.engineer/",
-      "description": "Data Scientist and AI/ML Engineer - Professional portfolio showcasing projects, skills, and experience.",
+      "description": "Official portfolio website of Marepalli Santhosh - Data Scientist and AI/ML Engineer showcasing projects, skills, and professional experience.",
+      "publisher": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
       "author": {
         "@type": "Person",
-        "name": "Marepalli Santhosh",
-        "jobTitle": "Data Scientist & AI/ML Engineer",
-        "description": "Currently pursuing B.Tech in AI/ML at Aditya College of Engineering and Technology. Experienced in machine learning, time series analysis, NLP, and algorithmic trading.",
-        "url": "https://marepallisanthosh.engineer/",
-        "sameAs": [
-          "https://www.linkedin.com/in/marepalli-santhosh-42b16a284/",
-          "https://github.com/marepallisanthosh999333",
-          "https://leetcode.com/u/marepallisanthosh999333/"
-        ]
+        "@id": "https://marepallisanthosh.engineer/#person"
       }
     }
     </script>
     
-    <!-- Additional Person Schema -->
+    <!-- Enhanced Person Schema for Knowledge Panel Recognition -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
+      "@id": "https://marepallisanthosh.engineer/#person",
       "name": "Marepalli Santhosh",
       "givenName": "Santhosh",
       "familyName": "Marepalli",
-      "jobTitle": "Data Scientist & AI/ML Engineer",
-      "description": "AI/ML student and data science enthusiast with expertise in machine learning, time series forecasting, NLP, and algorithmic trading. Currently pursuing B.Tech in AI/ML.",
+      "alternateName": ["Santhosh Marepalli", "Marepalli Santhosh Kumar"],
+      "jobTitle": ["Data Scientist", "AI/ML Engineer", "AI/ML Student"],
+      "description": "AI/ML student and data science enthusiast with expertise in machine learning, time series forecasting, natural language processing, and algorithmic trading. Currently pursuing B.Tech in AI/ML at Aditya College of Engineering and Technology.",
       "url": "https://marepallisanthosh.engineer/",
-      "image": "https://marepallisanthosh.engineer/me.png",
-      "sameAs": [
-        "https://www.linkedin.com/in/marepalli-santhosh-42b16a284/",
-        "https://github.com/marepallisanthosh999333",
-        "https://leetcode.com/u/marepallisanthosh999333/"
-      ],
+      "mainEntityOfPage": "https://marepallisanthosh.engineer/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://marepallisanthosh.engineer/me.png",
+        "caption": "Marepalli Santhosh - Data Scientist and AI/ML Engineer"
+      },
+      "birthPlace": {
+        "@type": "Place",
+        "name": "India"
+      },
+      "nationality": {
+        "@type": "Country",
+        "name": "India"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Aditya College of Engineering and Technology",
+        "url": "https://www.aditya.ac.in/"
+      },
       "knowsAbout": [
         "Machine Learning",
+        "Artificial Intelligence",
         "Data Science",
-        "Python",
+        "Python Programming",
         "TensorFlow",
         "Natural Language Processing",
         "Time Series Analysis",
         "Algorithmic Trading",
-        "Data Visualization"
+        "Data Visualization",
+        "Deep Learning",
+        "Statistical Analysis"
       ],
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "Aditya College of Engineering and Technology"
+      "hasOccupation": {
+        "@type": "Occupation",
+        "name": "Data Scientist",
+        "occupationalCategory": "15-1221.00"
+      },
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Smartbridge",
+        "description": "Data Analyst Internship"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/marepalli-santhosh-42b16a284/",
+        "https://github.com/marepallisanthosh999333",
+        "https://leetcode.com/u/marepallisanthosh999333/",
+        "https://in.pinterest.com/333marepallisanthosh/"
+      ],
+      "owns": {
+        "@type": "WebSite",
+        "name": "Marepalli Santhosh Portfolio",
+        "url": "https://marepallisanthosh.engineer/"
+      },
+      "seeks": {
+        "@type": "Demand",
+        "name": "Data Science Opportunities"
       }
+    }
+    </script>
+    
+    <!-- Enhanced WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://marepallisanthosh.engineer/#website",
+      "name": "Marepalli Santhosh",
+      "alternateName": "Marepalli Santhosh Portfolio",
+      "url": "https://marepallisanthosh.engineer/",
+      "description": "Official portfolio website of Marepalli Santhosh - Data Scientist and AI/ML Engineer showcasing projects, skills, and professional experience.",
+      "inLanguage": "en-US",
+      "isPartOf": {
+        "@type": "WebSite",
+        "url": "https://marepallisanthosh.engineer/"
+      },
+      "about": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
+      "author": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
+      "creator": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
+      "copyrightHolder": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://marepallisanthosh.engineer/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- Professional Profile Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "@id": "https://marepallisanthosh.engineer/#person"
+      },
+      "url": "https://marepallisanthosh.engineer/",
+      "name": "Marepalli Santhosh - Professional Portfolio",
+      "description": "Professional portfolio and resume of Marepalli Santhosh, Data Scientist and AI/ML Engineer"
     }
     </script>
   </head>
