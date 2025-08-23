@@ -58,7 +58,7 @@ const About = () => {
                 <img
                   src="/me.png"
                   alt="Profile"
-                  className="w-full h-64 object-cover rounded-3xl mb-6"
+                  className="w-full h-auto object-contain rounded-3xl mb-6 max-h-80"
                 />
                 <div className="text-center">
                   <h4 className="text-xl font-semibold text-gray-900 mb-2">Marepalli Santhosh</h4>
