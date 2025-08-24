@@ -1,6 +1,6 @@
 # Security Policy
 
-## 🔒 Supported Versions
+## Supported Versions
 
 This project maintains security updates for the following versions:
 
@@ -9,7 +9,7 @@ This project maintains security updates for the following versions:
 | Latest  | ✅ Yes             |
 | < Latest| ❌ No              |
 
-## 🚨 Reporting a Vulnerability
+## Reporting a Vulnerability
 
 I take the security of this portfolio project seriously. If you discover a security vulnerability, please follow these steps:
 
@@ -42,7 +42,7 @@ I am committed to responding to security reports promptly:
 - **Fix Development**: Varies based on complexity
 - **Public Disclosure**: After fix is deployed (coordinated disclosure)
 
-## 🛡️ Security Measures
+## Security Measures
 
 ### **Current Security Implementations**
 
@@ -123,7 +123,7 @@ The following are **NOT** considered security vulnerabilities:
 - **Documentation**: Typos or unclear instructions
 - **Personal Preferences**: Subjective design choices
 
-## 🏆 Recognition
+## Recognition
 
 ### **Security Hall of Fame**
 
