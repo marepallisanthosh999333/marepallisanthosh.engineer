@@ -214,7 +214,8 @@ flowchart TD
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
                     
-                    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+                    // Gentler zoom factors for smoother wheel experience
+                    const zoomFactor = e.deltaY > 0 ? 0.95 : 1.05;
                     const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                     
                     if (newScale !== transformRef.current.scale) {
@@ -229,7 +230,7 @@ flowchart TD
                   // Touch support for mobile devices
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 0.6; // Further reduced for ultra-smooth mobile experience
+                  const touchSensitivity = 0.3; // Ultra-low sensitivity for effortless mobile dragging
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -256,7 +257,7 @@ flowchart TD
                     
                     touchStartTime = Date.now();
                     isDraggingRef.current = true;
-                    velocityRef.current = { x: 0, y: 0 };
+                    velocityRef.current = { x: 0, y: 0 }; // Reset velocity for clean start
                     
                     const center = getTouchCenter(e.touches);
                     lastMousePosRef.current = { x: center.x, y: center.y };
@@ -267,7 +268,7 @@ flowchart TD
                     
                     svgElement.style.cursor = 'grabbing';
                     
-                    // Start smooth animation loop
+                    // Start smooth animation loop with gentle transition
                     if (animationFrameRef.current) {
                       cancelAnimationFrame(animationFrameRef.current);
                     }
@@ -289,9 +290,9 @@ flowchart TD
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          // Improved zoom factor calculation for smoother zooming
+                          // Improved zoom factor calculation for ultra-smooth zooming
                           const rawZoomFactor = newDistance / lastTouchDistance;
-                          const zoomSensitivity = 0.5; // Reduce zoom sensitivity
+                          const zoomSensitivity = 0.3; // Further reduced zoom sensitivity for gentle zooming
                           const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
                           const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                           
@@ -304,21 +305,21 @@ flowchart TD
                         }
                         lastTouchDistance = newDistance;
                       } else if (e.touches.length === 1) {
-                        // Single finger pan with smoothing
+                        // Single finger pan - ultra responsive and smooth
                         const rawDeltaX = center.x - lastMousePosRef.current.x;
                         const rawDeltaY = center.y - lastMousePosRef.current.y;
                         
-                        // Apply smoothing and reduced sensitivity
+                        // Direct movement with minimal resistance
                         const deltaX = rawDeltaX * touchSensitivity;
                         const deltaY = rawDeltaY * touchSensitivity;
                         
-                        // Add momentum for smoother movement
-                        const smoothingFactor = 0.8;
-                        velocityRef.current.x = velocityRef.current.x * smoothingFactor + deltaX * (1 - smoothingFactor);
-                        velocityRef.current.y = velocityRef.current.y * smoothingFactor + deltaY * (1 - smoothingFactor);
+                        // Store velocity for animation
+                        velocityRef.current.x = deltaX;
+                        velocityRef.current.y = deltaY;
                         
-                        transformRef.current.x += velocityRef.current.x;
-                        transformRef.current.y += velocityRef.current.y;
+                        // Apply movement directly for immediate response
+                        transformRef.current.x += deltaX;
+                        transformRef.current.y += deltaY;
                       }
                       
                       lastMousePosRef.current = { x: center.x, y: center.y };
@@ -387,9 +388,9 @@ flowchart TD
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Balanced sensitivity for smooth movement
-                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.5; // Reduced for better control
-                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.5; // Reduced for better control
+                      // Ultra-smooth sensitivity matching mobile experience
+                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 0.8; // Reduced to match mobile smoothness
+                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 0.8; // Reduced to match mobile smoothness
                       
                       // Store velocity for potential momentum
                       velocityRef.current.x = deltaX;
