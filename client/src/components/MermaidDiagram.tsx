@@ -229,7 +229,7 @@ flowchart TD
                   // Touch support for mobile devices
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 2.0; // Same as mouse sensitivity for consistency
+                  const touchSensitivity = 1.0; // Reduced sensitivity for smoother mobile experience
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -378,9 +378,9 @@ flowchart TD
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Much higher sensitivity for smoother movement
-                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 2.0; // Increased from 1.2 to 2.0
-                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 2.0; // Increased from 1.2 to 2.0
+                      // Balanced sensitivity for smooth movement
+                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.5; // Reduced for better control
+                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.5; // Reduced for better control
                       
                       // Store velocity for potential momentum
                       velocityRef.current.x = deltaX;
@@ -543,10 +543,7 @@ flowchart TD
         }}
       />
       
-      {/* Mobile Instructions Overlay */}
-      <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none sm:hidden">
-        👆 Drag to pan • 🤏 Pinch to zoom • 👆👆 Double tap to reset
-      </div>
+      {/* Note: Mobile instructions are handled by the parent ProjectStructure component */}
     </div>
   );
 };
