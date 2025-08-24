@@ -13,10 +13,7 @@
     }
   ],
   "functions": {
-    "api/contact.js": {
-      "maxDuration": 30
-    },
-    "api/server.js": {
+    "api/index.js": {
       "maxDuration": 30
     }
   },
