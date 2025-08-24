@@ -227,10 +227,10 @@ flowchart TD
                     }
                   };
 
-                  // Touch support for mobile devices
+                  // Touch support for mobile devices - ultra-sensitive like gyroscope
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 1.0; // 1:1 movement - exactly follow user touch
+                  const touchSensitivity = 3.0; // Extremely high sensitivity - gyroscope-like response
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -290,9 +290,9 @@ flowchart TD
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          // Natural pinch zoom following user gesture closely
+                          // Ultra-sensitive pinch zoom for gyroscope-like response
                           const rawZoomFactor = newDistance / lastTouchDistance;
-                          const zoomSensitivity = 0.8; // Close to natural pinch movement
+                          const zoomSensitivity = 1.5; // Amplified zoom sensitivity for mobile
                           const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
                           const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                           
@@ -305,19 +305,27 @@ flowchart TD
                         }
                         lastTouchDistance = newDistance;
                       } else if (e.touches.length === 1) {
-                        // Single finger pan - ultra responsive and smooth
+                        // Single finger pan - gyroscope-like ultra-sensitive response
                         const rawDeltaX = center.x - lastMousePosRef.current.x;
                         const rawDeltaY = center.y - lastMousePosRef.current.y;
                         
-                        // Direct movement with minimal resistance
-                        const deltaX = rawDeltaX * touchSensitivity;
-                        const deltaY = rawDeltaY * touchSensitivity;
+                        // Detect even tiny movements and amplify them dramatically
+                        const movementMagnitude = Math.sqrt(rawDeltaX * rawDeltaX + rawDeltaY * rawDeltaY);
+                        let amplificationFactor = touchSensitivity;
                         
-                        // Store velocity for animation
+                        // Extra amplification for very small movements (gyroscope effect)
+                        if (movementMagnitude < 5) {
+                          amplificationFactor *= 2.0; // Double amplification for tiny movements
+                        }
+                        
+                        const deltaX = rawDeltaX * amplificationFactor;
+                        const deltaY = rawDeltaY * amplificationFactor;
+                        
+                        // Store amplified velocity
                         velocityRef.current.x = deltaX;
                         velocityRef.current.y = deltaY;
                         
-                        // Apply movement directly for immediate response
+                        // Apply amplified movement for ultra-responsive touch
                         transformRef.current.x += deltaX;
                         transformRef.current.y += deltaY;
                       }
