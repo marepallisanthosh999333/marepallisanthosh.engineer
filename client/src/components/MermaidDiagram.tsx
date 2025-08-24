@@ -214,8 +214,9 @@ flowchart TD
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
                     
+                    // Natural wheel zoom sensitivity with extended zoom range
                     const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-                    const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
+                    const newScale = Math.max(0.1, Math.min(10, transformRef.current.scale * zoomFactor));
                     
                     if (newScale !== transformRef.current.scale) {
                       const scaleChange = newScale / transformRef.current.scale;
@@ -226,10 +227,10 @@ flowchart TD
                     }
                   };
 
-                  // Touch support for mobile devices
+                  // Touch support for mobile devices - even more sensitive
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 2.0; // Same as mouse sensitivity for consistency
+                  const touchSensitivity = 4.0; // Increased sensitivity for even easier dragging
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -256,7 +257,7 @@ flowchart TD
                     
                     touchStartTime = Date.now();
                     isDraggingRef.current = true;
-                    velocityRef.current = { x: 0, y: 0 };
+                    velocityRef.current = { x: 0, y: 0 }; // Reset velocity for clean start
                     
                     const center = getTouchCenter(e.touches);
                     lastMousePosRef.current = { x: center.x, y: center.y };
@@ -267,7 +268,7 @@ flowchart TD
                     
                     svgElement.style.cursor = 'grabbing';
                     
-                    // Start smooth animation loop
+                    // Start smooth animation loop with gentle transition
                     if (animationFrameRef.current) {
                       cancelAnimationFrame(animationFrameRef.current);
                     }
@@ -282,15 +283,18 @@ flowchart TD
                       const center = getTouchCenter(e.touches);
                       
                       if (e.touches.length === 2) {
-                        // Pinch to zoom
+                        // Pinch to zoom with improved sensitivity
                         const newDistance = getTouchDistance(e.touches);
                         if (lastTouchDistance > 0) {
                           const rect = svgElement.getBoundingClientRect();
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          const zoomFactor = newDistance / lastTouchDistance;
-                          const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
+                          // Ultra-sensitive pinch zoom for gyroscope-like response with extended range
+                          const rawZoomFactor = newDistance / lastTouchDistance;
+                          const zoomSensitivity = 1.5; // Amplified zoom sensitivity for mobile
+                          const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
+                          const newScale = Math.max(0.1, Math.min(10, transformRef.current.scale * zoomFactor));
                           
                           if (newScale !== transformRef.current.scale) {
                             const scaleChange = newScale / transformRef.current.scale;
@@ -301,13 +305,27 @@ flowchart TD
                         }
                         lastTouchDistance = newDistance;
                       } else if (e.touches.length === 1) {
-                        // Single finger pan
-                        const deltaX = (center.x - lastMousePosRef.current.x) * touchSensitivity;
-                        const deltaY = (center.y - lastMousePosRef.current.y) * touchSensitivity;
+                        // Single finger pan - gyroscope-like ultra-sensitive response
+                        const rawDeltaX = center.x - lastMousePosRef.current.x;
+                        const rawDeltaY = center.y - lastMousePosRef.current.y;
                         
+                        // Detect even tiny movements and amplify them dramatically
+                        const movementMagnitude = Math.sqrt(rawDeltaX * rawDeltaX + rawDeltaY * rawDeltaY);
+                        let amplificationFactor = touchSensitivity;
+                        
+                        // Extra amplification for very small movements (ultra-responsive)
+                        if (movementMagnitude < 5) {
+                          amplificationFactor *= 2.5; // Even more amplification for tiny movements
+                        }
+                        
+                        const deltaX = rawDeltaX * amplificationFactor;
+                        const deltaY = rawDeltaY * amplificationFactor;
+                        
+                        // Store amplified velocity
                         velocityRef.current.x = deltaX;
                         velocityRef.current.y = deltaY;
                         
+                        // Apply amplified movement for ultra-responsive touch
                         transformRef.current.x += deltaX;
                         transformRef.current.y += deltaY;
                       }
@@ -378,9 +396,9 @@ flowchart TD
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Much higher sensitivity for smoother movement
-                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 2.0; // Increased from 1.2 to 2.0
-                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 2.0; // Increased from 1.2 to 2.0
+                      // Smoother mouse movement with increased sensitivity
+                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.3; // Increased for easier dragging
+                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.3; // Increased for easier dragging
                       
                       // Store velocity for potential momentum
                       velocityRef.current.x = deltaX;
@@ -539,14 +557,15 @@ flowchart TD
           msUserSelect: 'none',
           WebkitTouchCallout: 'none',
           WebkitTapHighlightColor: 'transparent',
-          cursor: 'default'
+          cursor: 'default',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px',
+          transformStyle: 'preserve-3d'
         }}
       />
       
-      {/* Mobile Instructions Overlay */}
-      <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none sm:hidden">
-        👆 Drag to pan • 🤏 Pinch to zoom • 👆👆 Double tap to reset
-      </div>
+      {/* Note: Mobile instructions are handled by the parent ProjectStructure component */}
     </div>
   );
 };
