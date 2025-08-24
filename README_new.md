@@ -12,9 +12,6 @@ A modern, responsive portfolio website showcasing expertise in Data Science, Mac
 
 This portfolio website serves as a comprehensive showcase of skills, projects, and experience in Data Science, Machine Learning, and AI. It features a clean, modern design with smooth animations and responsive layouts that work seamlessly across all devices.
 
-![Portfolio Screenshot](./client/public/portfolio-screenshot.png)
-*Homepage showcasing modern design and interactive elements*
-
 ## Features
 
 ### Modern Design
