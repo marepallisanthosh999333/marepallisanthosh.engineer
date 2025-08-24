@@ -1,18 +1,6 @@
 # Marepalli Santhosh - Portfolio Website
 
-[![Live Demo](https://img.shields.io/badge/Liv       ├── 🧩 components/         # Reusable UI components
-       │   ├── 👤 About.tsx       # About section with personal info
-       │   ├── 🎬 AnimatedSection.tsx # Scroll-triggered animations
-       │   ├── 📧 Contact.tsx     # Contact form with validation
-       │   ├── 💼 Experience.tsx  # Professional timeline
-       │   ├── 🦶 Footer.tsx      # Site footer with links
-       │   ├── 🧭 Header.tsx      # Navigation header with GitHub integration
-       │   ├── 🌟 Hero.tsx        # Landing section
-       │   ├── 💻 LeetCodeIcon.tsx # Custom LeetCode icon
-       │   ├── 📊 MermaidDiagram.tsx # Interactive architecture diagram
-       │   ├── 🚀 Projects.tsx    # Project showcase grid
-       │   ├── 🏗️ ProjectStructure.tsx # Project structure modal
-       │   └── 🛠️ Skills.tsx      # Technical skills display?style=for-the-badge&logo=vercel)](https://marepallisanthosh.engineer)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://marepallisanthosh.engineer)
 [![GitHub Stars](https://img.shields.io/github/stars/marepallisanthosh999333/marepallisanthosh.engineer?style=for-the-badge&logo=github)](https://github.com/marepallisanthosh999333/marepallisanthosh.engineer)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
 
@@ -109,7 +97,9 @@ marepallisanthosh.engineer/
 │       │   ├── 🧭 Header.tsx      # Navigation header with GitHub integration
 │       │   ├── 🌟 Hero.tsx        # Landing section
 │       │   ├── 💻 LeetCodeIcon.tsx # Custom LeetCode icon
-│       │   ├── 🚀 Projects.tsx    # Project showcase grid
+│       │   ├── � MermaidDiagram.tsx # Interactive architecture diagram
+│       │   ├── �🚀 Projects.tsx    # Project showcase grid
+│       │   ├── 🏗️ ProjectStructure.tsx # Project structure modal
 │       │   └── 🛠️ Skills.tsx      # Technical skills display
 │       ├── 🎣 hooks/              # Custom React hooks
 │       │   └── 👁️ useScrollAnimation.ts # Intersection Observer hook
