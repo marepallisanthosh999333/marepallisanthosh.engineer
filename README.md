@@ -97,36 +97,36 @@ marepallisanthosh.engineer/
 │   │   ├── robots.txt          # SEO crawler instructions
 │   │   └── sitemap.xml         # Site structure for search engines
 │   └── 📁 src/                    # Source code
-│       ├── ⚛️ App.tsx             # Main application component
-│       ├── 🎨 index.css           # Global styles with Tailwind imports
-│       ├── 🚀 main.tsx            # Application entry point
+│       ├── [⚛️ App.tsx](client/src/App.tsx)             # Main application component
+│       ├── [🎨 index.css](client/src/index.css)           # Global styles with Tailwind imports
+│       ├── [🚀 main.tsx](client/src/main.tsx)            # Application entry point
 │       ├── 🧩 components/         # Reusable UI components
-│       │   ├── 👤 About.tsx       # About section with personal info
-│       │   ├── 🎬 AnimatedSection.tsx # Scroll-triggered animations
-│       │   ├── 📧 Contact.tsx     # Contact form with validation
-│       │   ├── 💼 Experience.tsx  # Professional timeline
-│       │   ├── 🦶 Footer.tsx      # Site footer with links
-│       │   ├── 🧭 Header.tsx      # Navigation header with GitHub integration
-│       │   ├── 🌟 Hero.tsx        # Landing section
-│       │   ├── 💻 LeetCodeIcon.tsx # Custom LeetCode icon
-│       │   ├── � MermaidDiagram.tsx # Interactive architecture diagram
-│       │   ├── �🚀 Projects.tsx    # Project showcase grid
-│       │   ├── 🏗️ ProjectStructure.tsx # Project structure modal
-│       │   └── 🛠️ Skills.tsx      # Technical skills display
+│       │   ├── [👤 About.tsx](client/src/components/About.tsx)       # About section with personal info
+│       │   ├── [🎬 AnimatedSection.tsx](client/src/components/AnimatedSection.tsx) # Scroll-triggered animations
+│       │   ├── [📧 Contact.tsx](client/src/components/Contact.tsx)     # Contact form with validation
+│       │   ├── [💼 Experience.tsx](client/src/components/Experience.tsx)  # Professional timeline
+│       │   ├── [🦶 Footer.tsx](client/src/components/Footer.tsx)      # Site footer with links
+│       │   ├── [🧭 Header.tsx](client/src/components/Header.tsx)      # Navigation header with GitHub integration
+│       │   ├── [🌟 Hero.tsx](client/src/components/Hero.tsx)        # Landing section
+│       │   ├── [💻 LeetCodeIcon.tsx](client/src/components/LeetCodeIcon.tsx) # Custom LeetCode icon
+│       │   ├── [📊 MermaidDiagram.tsx](client/src/components/MermaidDiagram.tsx) # Interactive architecture diagram
+│       │   ├── [🚀 Projects.tsx](client/src/components/Projects.tsx)    # Project showcase grid
+│       │   ├── [🏗️ ProjectStructure.tsx](client/src/components/ProjectStructure.tsx) # Project structure modal
+│       │   └── [🛠️ Skills.tsx](client/src/components/Skills.tsx)      # Technical skills display
 │       ├── 🎣 hooks/              # Custom React hooks
-│       │   └── 👁️ useScrollAnimation.ts # Intersection Observer hook
+│       │   └── [👁️ useScrollAnimation.ts](client/src/hooks/useScrollAnimation.ts) # Intersection Observer hook
 │       └── 🔧 utils/              # Utility functions
-│           └── 📨 emailService.ts # Email handling logic
+│           └── [📨 emailService.ts](client/src/utils/emailService.ts) # Email handling logic
 ├── 🌐 api/                        # Backend API functions
-│   ├── 📬 contact.js              # Contact form handler
-│   └── 🏠 index.js                # API entry point
+│   ├── [📬 contact.js](api/contact.js)              # Contact form handler
+│   └── [🏠 index.js](api/index.js)                # API entry point
 ├── 📋 .github/                    # GitHub community standards
 │   ├── 📝 ISSUE_TEMPLATE/         # Issue templates
 │   └── 🔄 pull_request_template.md # PR template
-├── ⚡ vite.config.ts              # Vite configuration
-├── 🎨 tailwind.config.ts          # Tailwind CSS configuration
-├── 📦 package.json                # Dependencies and scripts
-├── 🚀 vercel.json                 # Vercel deployment config
+├── [⚡ vite.config.ts](vite.config.ts)              # Vite configuration
+├── [🎨 tailwind.config.ts](tailwind.config.ts)          # Tailwind CSS configuration
+├── [📦 package.json](package.json)                # Dependencies and scripts
+├── [🚀 vercel.json](vercel.json)                 # Vercel deployment config
 ├── 📜 LICENSE                     # MIT License
 ├── 🤝 CONTRIBUTING.md             # Contribution guidelines
 ├── 🔐 SECURITY.md                 # Security policy
