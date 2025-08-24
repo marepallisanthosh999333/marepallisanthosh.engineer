@@ -9,6 +9,9 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AnimatedSection from './components/AnimatedSection';
 import ProjectStructure from './components/ProjectStructure';
+import ProductionFeedbackSection from './components/ProductionFeedbackSection';
+import FloatingFeedbackButton from './components/FloatingFeedbackButton';
+// import FeedbackSection from './components/feedback/FeedbackSection';
 
 function App() {
   const [showProjectStructure, setShowProjectStructure] = useState(false);
@@ -41,6 +44,9 @@ function App() {
         <AnimatedSection delay={200}>
           <Contact />
         </AnimatedSection>
+        <AnimatedSection delay={300}>
+          <ProductionFeedbackSection />
+        </AnimatedSection>
       </main>
       <AnimatedSection>
         <Footer />
@@ -51,6 +57,9 @@ function App() {
         isOpen={showProjectStructure}
         onClose={() => setShowProjectStructure(false)} 
       />
+
+      {/* Floating Feedback Button */}
+      <FloatingFeedbackButton />
     </div>
   );
 }
