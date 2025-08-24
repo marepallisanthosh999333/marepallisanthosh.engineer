@@ -21,8 +21,10 @@
  *
  * ✅ Features:
  * - Fully interactive Mermaid.js diagram
- * - Clickable nodes that redirect to your GitHub files
+ * - Clickable nodes that redirect to your GitHub files (works on mobile!)
  * - Pan & Zoom with mouse drag + scroll
+ * - Mobile touch support with intelligent gesture detection
+ * - Distinguishes between taps (for clicks) and drags (for panning)
  * - Auto responsive inside container
  */
 
@@ -230,7 +232,11 @@ flowchart TD
                   // Touch support for mobile devices - even more sensitive
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
+                  let touchStartPos = { x: 0, y: 0 };
+                  let hasMoved = false;
+                  let actuallyDragging = false;
                   const touchSensitivity = 4.0; // Increased sensitivity for even easier dragging
+                  const dragThreshold = 10; // Minimum distance to consider it a drag (in pixels)
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -252,35 +258,65 @@ flowchart TD
                   };
 
                   const handleTouchStart = (e: TouchEvent) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
                     touchStartTime = Date.now();
-                    isDraggingRef.current = true;
+                    hasMoved = false;
+                    actuallyDragging = false;
+                    isDraggingRef.current = false; // Don't set dragging until we detect actual movement
                     velocityRef.current = { x: 0, y: 0 }; // Reset velocity for clean start
                     
                     const center = getTouchCenter(e.touches);
+                    touchStartPos = { x: center.x, y: center.y };
                     lastMousePosRef.current = { x: center.x, y: center.y };
                     
                     if (e.touches.length === 2) {
+                      // Multi-touch immediately starts dragging mode for pinch zoom
+                      e.preventDefault();
+                      e.stopPropagation();
+                      isDraggingRef.current = true;
+                      actuallyDragging = true;
                       lastTouchDistance = getTouchDistance(e.touches);
+                      svgElement.style.cursor = 'grabbing';
+                      
+                      // Start smooth animation loop
+                      if (animationFrameRef.current) {
+                        cancelAnimationFrame(animationFrameRef.current);
+                      }
+                      animationFrameRef.current = requestAnimationFrame(smoothUpdate);
                     }
-                    
-                    svgElement.style.cursor = 'grabbing';
-                    
-                    // Start smooth animation loop with gentle transition
-                    if (animationFrameRef.current) {
-                      cancelAnimationFrame(animationFrameRef.current);
-                    }
-                    animationFrameRef.current = requestAnimationFrame(smoothUpdate);
+                    // For single touch, we wait to see if it's a tap or drag
                   };
 
                   const handleTouchMove = (e: TouchEvent) => {
-                    if (isDraggingRef.current) {
+                    const center = getTouchCenter(e.touches);
+                    
+                    // Check if we've moved enough to consider it a drag
+                    if (!actuallyDragging && !hasMoved) {
+                      const moveDistance = Math.sqrt(
+                        Math.pow(center.x - touchStartPos.x, 2) + 
+                        Math.pow(center.y - touchStartPos.y, 2)
+                      );
+                      
+                      if (moveDistance > dragThreshold) {
+                        // Now we know it's a drag, not a tap
+                        hasMoved = true;
+                        actuallyDragging = true;
+                        isDraggingRef.current = true;
+                        e.preventDefault();
+                        e.stopPropagation();
+                        svgElement.style.cursor = 'grabbing';
+                        
+                        // Start smooth animation loop
+                        if (animationFrameRef.current) {
+                          cancelAnimationFrame(animationFrameRef.current);
+                        }
+                        animationFrameRef.current = requestAnimationFrame(smoothUpdate);
+                      }
+                    }
+                    
+                    // Only process movement if we're actually dragging
+                    if (actuallyDragging && isDraggingRef.current) {
                       e.preventDefault();
                       e.stopPropagation();
-                      
-                      const center = getTouchCenter(e.touches);
                       
                       if (e.touches.length === 2) {
                         // Pinch to zoom with improved sensitivity
@@ -335,20 +371,25 @@ flowchart TD
                   };
 
                   const handleTouchEnd = (e: TouchEvent) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    // Check for double tap to reset
                     const touchEndTime = Date.now();
                     const touchDuration = touchEndTime - touchStartTime;
                     
-                    if (touchDuration < 300 && e.changedTouches.length === 1) {
+                    // If we were actually dragging, prevent default to avoid click events
+                    if (actuallyDragging) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }
+                    
+                    // Check for double tap to reset (only if it was a tap, not a drag)
+                    if (!actuallyDragging && touchDuration < 300 && e.changedTouches.length === 1) {
                       // Potential double tap - check if there was a recent tap
                       const now = Date.now();
                       const lastTapTime = (svgElement as any).lastTapTime || 0;
                       
                       if (now - lastTapTime < 500) {
                         // Double tap detected - reset view
+                        e.preventDefault();
+                        e.stopPropagation();
                         transformRef.current = { scale: 1, x: 0, y: 0 };
                         updateTransform();
                       }
@@ -356,7 +397,10 @@ flowchart TD
                     }
                     
                     if (e.touches.length === 0) {
+                      // Reset all touch state
                       isDraggingRef.current = false;
+                      actuallyDragging = false;
+                      hasMoved = false;
                       svgElement.style.cursor = 'grab';
                       lastTouchDistance = 0;
                       
@@ -369,6 +413,28 @@ flowchart TD
                       // Final update
                       updateTransform();
                     }
+                  };
+
+                  // Touch cancel handler - same as touch end but always prevents default
+                  const handleTouchCancel = (e: TouchEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Reset all touch state
+                    isDraggingRef.current = false;
+                    actuallyDragging = false;
+                    hasMoved = false;
+                    svgElement.style.cursor = 'grab';
+                    lastTouchDistance = 0;
+                    
+                    // Stop animation loop
+                    if (animationFrameRef.current) {
+                      cancelAnimationFrame(animationFrameRef.current);
+                      animationFrameRef.current = null;
+                    }
+                    
+                    // Final update
+                    updateTransform();
                   };
 
                   // Mouse drag pan
@@ -473,7 +539,7 @@ flowchart TD
                   svgElement.addEventListener('touchstart', handleTouchStart, { passive: false });
                   svgElement.addEventListener('touchmove', handleTouchMove, { passive: false });
                   svgElement.addEventListener('touchend', handleTouchEnd, { passive: false });
-                  svgElement.addEventListener('touchcancel', handleTouchEnd, { passive: false });
+                  svgElement.addEventListener('touchcancel', handleTouchCancel, { passive: false });
 
                   // Store cleanup function
                   (svgElement as any).cleanup = () => {
@@ -495,7 +561,7 @@ flowchart TD
                     svgElement.removeEventListener('touchstart', handleTouchStart);
                     svgElement.removeEventListener('touchmove', handleTouchMove);
                     svgElement.removeEventListener('touchend', handleTouchEnd);
-                    svgElement.removeEventListener('touchcancel', handleTouchEnd);
+                    svgElement.removeEventListener('touchcancel', handleTouchCancel);
                   };
                 }
               }
