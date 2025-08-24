@@ -1,0 +1,110 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for the portfolio website
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new feature! Please provide as much detail as possible to help us understand your idea.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: A clear and concise description of the feature you'd like to see.
+      placeholder: Describe the feature you'd like to add...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solving
+    attributes:
+      label: Problem or Need
+      description: What problem does this feature solve? What need does it address?
+      placeholder: This feature would help with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like to see implemented.
+      placeholder: I think it should work like...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or features you've considered.
+      placeholder: Other approaches could be...
+
+  - type: dropdown
+    id: feature-category
+    attributes:
+      label: Feature Category
+      description: What category does this feature fall into?
+      options:
+        - UI/UX Improvement
+        - Performance Enhancement
+        - Accessibility
+        - New Section/Page
+        - Contact Form
+        - Navigation
+        - Animation/Visual Effects
+        - SEO/Analytics
+        - Mobile Experience
+        - Content Management
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature to you?
+      options:
+        - Low (Nice to have)
+        - Medium (Would be helpful)
+        - High (Really needed)
+        - Critical (Essential)
+    validations:
+      required: true
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups or Examples
+      description: If you have any mockups, sketches, or examples of similar features, please share them here.
+      placeholder: You can drag and drop images here or provide links to examples...
+
+  - type: textarea
+    id: technical-details
+    attributes:
+      label: Technical Considerations
+      description: Any technical details, constraints, or implementation ideas you have.
+      placeholder: This might require... or could be implemented using...
+
+  - type: textarea
+    id: user-impact
+    attributes:
+      label: User Impact
+      description: How would this feature benefit users of the portfolio website?
+      placeholder: Users would benefit by...
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to make sure this feature hasn't been requested before
+          required: true
+        - label: I have provided a clear description of the feature and its benefits
+          required: true
+        - label: I understand this is a portfolio website and the feature should align with that purpose
+          required: true
