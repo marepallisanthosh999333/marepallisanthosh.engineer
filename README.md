@@ -1,6 +1,18 @@
 # Marepalli Santhosh - Portfolio Website
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=vercel)](https://marepallisanthosh.engineer)
+[![Live Demo](https://img.shields.io/badge/Liv       ├── 🧩 components/         # Reusable UI components
+       │   ├── 👤 About.tsx       # About section with personal info
+       │   ├── 🎬 AnimatedSection.tsx # Scroll-triggered animations
+       │   ├── 📧 Contact.tsx     # Contact form with validation
+       │   ├── 💼 Experience.tsx  # Professional timeline
+       │   ├── 🦶 Footer.tsx      # Site footer with links
+       │   ├── 🧭 Header.tsx      # Navigation header with GitHub integration
+       │   ├── 🌟 Hero.tsx        # Landing section
+       │   ├── 💻 LeetCodeIcon.tsx # Custom LeetCode icon
+       │   ├── 📊 MermaidDiagram.tsx # Interactive architecture diagram
+       │   ├── 🚀 Projects.tsx    # Project showcase grid
+       │   ├── 🏗️ ProjectStructure.tsx # Project structure modal
+       │   └── 🛠️ Skills.tsx      # Technical skills display?style=for-the-badge&logo=vercel)](https://marepallisanthosh.engineer)
 [![GitHub Stars](https://img.shields.io/github/stars/marepallisanthosh999333/marepallisanthosh.engineer?style=for-the-badge&logo=github)](https://github.com/marepallisanthosh999333/marepallisanthosh.engineer)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
 
@@ -13,7 +25,7 @@ A modern, responsive portfolio website showcasing expertise in Data Science, Mac
 This portfolio website serves as a comprehensive showcase of skills, projects, and experience in Data Science, Machine Learning, and AI. It features a clean, modern design with smooth animations and responsive layouts that work seamlessly across all devices.
 
 ![Portfolio Screenshot](./client/public/portfolio-screenshot.png)
-*Homepage showcasing modern design and interactive elements*
+*Homepage showcasing modern design, interactive elements, and the new project structure feature*
 
 ## Features
 
@@ -30,6 +42,8 @@ This portfolio website serves as a comprehensive showcase of skills, projects, a
 - **Lazy Loading**: Optimized image loading and code splitting
 
 ### Functionality
+- **Interactive Project Structure**: Mermaid.js-powered architecture diagram with pan, zoom, and clickable GitHub links
+- **Mobile Touch Support**: Full touch gesture support for mobile devices (pinch to zoom, drag to pan)
 - **Contact Form**: Integrated email service using Resend API
 - **Project Showcase**: Interactive project cards with live demos and GitHub links
 - **Skills Visualization**: Animated skill bars and technology badges
@@ -54,6 +68,7 @@ This portfolio website serves as a comprehensive showcase of skills, projects, a
 ### UI Components & Libraries
 - **Radix UI** - Comprehensive component library for accessibility
 - **Lucide React** - Beautiful & customizable icon library
+- **Mermaid.js** - Interactive diagrams and flowcharts for project structure visualization
 - **React Hook Form** - Performant forms with easy validation
 - **Recharts** - Composable charting library for data visualization
 - **React Icons** - Popular icon packs as React components
@@ -218,6 +233,14 @@ npm run vercel-build
 - Internship experiences and achievements
 - Academic projects and research
 - Technical leadership and collaboration
+
+### Interactive Project Structure
+- **Architecture Visualization**: Interactive Mermaid.js flowchart showing complete system architecture
+- **Clickable GitHub Integration**: Direct navigation to source code files from diagram nodes
+- **Pan & Zoom Controls**: Smooth navigation with mouse drag/wheel or touch gestures
+- **Mobile Optimized**: Full touch support with pinch-to-zoom and drag gestures
+- **Performance Optimized**: 60fps animations with hardware acceleration
+- **Reset Functionality**: Double-click/tap to reset view to original position
 
 ### Contact
 - Integrated contact form with server-side validation

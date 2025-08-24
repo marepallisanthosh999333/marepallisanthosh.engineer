@@ -226,6 +226,133 @@ flowchart TD
                     }
                   };
 
+                  // Touch support for mobile devices
+                  let lastTouchDistance = 0;
+                  let touchStartTime = 0;
+                  const touchSensitivity = 2.0; // Same as mouse sensitivity for consistency
+
+                  const getTouchDistance = (touches: TouchList) => {
+                    if (touches.length < 2) return 0;
+                    const touch1 = touches[0];
+                    const touch2 = touches[1];
+                    return Math.sqrt(
+                      Math.pow(touch2.clientX - touch1.clientX, 2) + 
+                      Math.pow(touch2.clientY - touch1.clientY, 2)
+                    );
+                  };
+
+                  const getTouchCenter = (touches: TouchList) => {
+                    if (touches.length === 1) {
+                      return { x: touches[0].clientX, y: touches[0].clientY };
+                    }
+                    const x = (touches[0].clientX + touches[1].clientX) / 2;
+                    const y = (touches[0].clientY + touches[1].clientY) / 2;
+                    return { x, y };
+                  };
+
+                  const handleTouchStart = (e: TouchEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    touchStartTime = Date.now();
+                    isDraggingRef.current = true;
+                    velocityRef.current = { x: 0, y: 0 };
+                    
+                    const center = getTouchCenter(e.touches);
+                    lastMousePosRef.current = { x: center.x, y: center.y };
+                    
+                    if (e.touches.length === 2) {
+                      lastTouchDistance = getTouchDistance(e.touches);
+                    }
+                    
+                    svgElement.style.cursor = 'grabbing';
+                    
+                    // Start smooth animation loop
+                    if (animationFrameRef.current) {
+                      cancelAnimationFrame(animationFrameRef.current);
+                    }
+                    animationFrameRef.current = requestAnimationFrame(smoothUpdate);
+                  };
+
+                  const handleTouchMove = (e: TouchEvent) => {
+                    if (isDraggingRef.current) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      
+                      const center = getTouchCenter(e.touches);
+                      
+                      if (e.touches.length === 2) {
+                        // Pinch to zoom
+                        const newDistance = getTouchDistance(e.touches);
+                        if (lastTouchDistance > 0) {
+                          const rect = svgElement.getBoundingClientRect();
+                          const centerX = center.x - rect.left;
+                          const centerY = center.y - rect.top;
+                          
+                          const zoomFactor = newDistance / lastTouchDistance;
+                          const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
+                          
+                          if (newScale !== transformRef.current.scale) {
+                            const scaleChange = newScale / transformRef.current.scale;
+                            transformRef.current.x = centerX - (centerX - transformRef.current.x) * scaleChange;
+                            transformRef.current.y = centerY - (centerY - transformRef.current.y) * scaleChange;
+                            transformRef.current.scale = newScale;
+                          }
+                        }
+                        lastTouchDistance = newDistance;
+                      } else if (e.touches.length === 1) {
+                        // Single finger pan
+                        const deltaX = (center.x - lastMousePosRef.current.x) * touchSensitivity;
+                        const deltaY = (center.y - lastMousePosRef.current.y) * touchSensitivity;
+                        
+                        velocityRef.current.x = deltaX;
+                        velocityRef.current.y = deltaY;
+                        
+                        transformRef.current.x += deltaX;
+                        transformRef.current.y += deltaY;
+                      }
+                      
+                      lastMousePosRef.current = { x: center.x, y: center.y };
+                    }
+                  };
+
+                  const handleTouchEnd = (e: TouchEvent) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Check for double tap to reset
+                    const touchEndTime = Date.now();
+                    const touchDuration = touchEndTime - touchStartTime;
+                    
+                    if (touchDuration < 300 && e.changedTouches.length === 1) {
+                      // Potential double tap - check if there was a recent tap
+                      const now = Date.now();
+                      const lastTapTime = (svgElement as any).lastTapTime || 0;
+                      
+                      if (now - lastTapTime < 500) {
+                        // Double tap detected - reset view
+                        transformRef.current = { scale: 1, x: 0, y: 0 };
+                        updateTransform();
+                      }
+                      (svgElement as any).lastTapTime = now;
+                    }
+                    
+                    if (e.touches.length === 0) {
+                      isDraggingRef.current = false;
+                      svgElement.style.cursor = 'grab';
+                      lastTouchDistance = 0;
+                      
+                      // Stop animation loop
+                      if (animationFrameRef.current) {
+                        cancelAnimationFrame(animationFrameRef.current);
+                        animationFrameRef.current = null;
+                      }
+                      
+                      // Final update
+                      updateTransform();
+                    }
+                  };
+
                   // Mouse drag pan
                   const handleMouseDown = (e: MouseEvent) => {
                     e.preventDefault();
@@ -323,6 +450,12 @@ flowchart TD
                   document.addEventListener('mousemove', handleMouseMove);
                   document.addEventListener('mouseup', handleMouseUp);
                   svgElement.addEventListener('dblclick', handleDoubleClick);
+                  
+                  // Touch event listeners for mobile support
+                  svgElement.addEventListener('touchstart', handleTouchStart, { passive: false });
+                  svgElement.addEventListener('touchmove', handleTouchMove, { passive: false });
+                  svgElement.addEventListener('touchend', handleTouchEnd, { passive: false });
+                  svgElement.addEventListener('touchcancel', handleTouchEnd, { passive: false });
 
                   // Store cleanup function
                   (svgElement as any).cleanup = () => {
@@ -332,12 +465,19 @@ flowchart TD
                       animationFrameRef.current = null;
                     }
                     
+                    // Remove mouse event listeners
                     svgElement.removeEventListener('wheel', handleWheel);
                     svgElement.removeEventListener('mousedown', handleMouseDown);
                     svgElement.removeEventListener('mouseleave', handleMouseLeave);
                     document.removeEventListener('mousemove', handleMouseMove);
                     document.removeEventListener('mouseup', handleMouseUp);
                     svgElement.removeEventListener('dblclick', handleDoubleClick);
+                    
+                    // Remove touch event listeners
+                    svgElement.removeEventListener('touchstart', handleTouchStart);
+                    svgElement.removeEventListener('touchmove', handleTouchMove);
+                    svgElement.removeEventListener('touchend', handleTouchEnd);
+                    svgElement.removeEventListener('touchcancel', handleTouchEnd);
                   };
                 }
               }
@@ -376,13 +516,16 @@ flowchart TD
         userSelect: 'none',
         WebkitUserSelect: 'none',
         MozUserSelect: 'none',
-        msUserSelect: 'none'
+        msUserSelect: 'none',
+        WebkitTouchCallout: 'none',
+        WebkitTapHighlightColor: 'transparent'
       }}
       onWheel={(e) => {
         e.stopPropagation();
         e.preventDefault();
       }}
       onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
       onContextMenu={(e) => e.preventDefault()}
     >
       <div 
@@ -394,9 +537,16 @@ flowchart TD
           WebkitUserSelect: 'none',
           MozUserSelect: 'none',
           msUserSelect: 'none',
+          WebkitTouchCallout: 'none',
+          WebkitTapHighlightColor: 'transparent',
           cursor: 'default'
         }}
       />
+      
+      {/* Mobile Instructions Overlay */}
+      <div className="absolute top-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none sm:hidden">
+        👆 Drag to pan • 🤏 Pinch to zoom • 👆👆 Double tap to reset
+      </div>
     </div>
   );
 };
