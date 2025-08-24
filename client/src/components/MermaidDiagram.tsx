@@ -214,8 +214,8 @@ flowchart TD
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
                     
-                    // Gentler zoom factors for smoother wheel experience
-                    const zoomFactor = e.deltaY > 0 ? 0.95 : 1.05;
+                    // Natural wheel zoom sensitivity
+                    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
                     const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                     
                     if (newScale !== transformRef.current.scale) {
@@ -230,7 +230,7 @@ flowchart TD
                   // Touch support for mobile devices
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 0.3; // Ultra-low sensitivity for effortless mobile dragging
+                  const touchSensitivity = 1.0; // 1:1 movement - exactly follow user touch
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -290,9 +290,9 @@ flowchart TD
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          // Improved zoom factor calculation for ultra-smooth zooming
+                          // Natural pinch zoom following user gesture closely
                           const rawZoomFactor = newDistance / lastTouchDistance;
-                          const zoomSensitivity = 0.3; // Further reduced zoom sensitivity for gentle zooming
+                          const zoomSensitivity = 0.8; // Close to natural pinch movement
                           const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
                           const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                           
@@ -388,9 +388,9 @@ flowchart TD
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Ultra-smooth sensitivity matching mobile experience
-                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 0.8; // Reduced to match mobile smoothness
-                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 0.8; // Reduced to match mobile smoothness
+                      // Natural 1:1 mouse movement sensitivity
+                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.0; // Perfect 1:1 movement
+                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.0; // Perfect 1:1 movement
                       
                       // Store velocity for potential momentum
                       velocityRef.current.x = deltaX;
