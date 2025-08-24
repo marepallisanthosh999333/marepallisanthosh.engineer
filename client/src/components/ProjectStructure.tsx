@@ -46,56 +46,70 @@ const ProjectStructure: React.FC<ProjectStructureProps> = ({ isOpen, onClose }) 
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4"
       onClick={onClose}
+      style={{ touchAction: 'none' }}
     >
       <div 
-        className="bg-white rounded-xl shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col"
+        className="bg-white rounded-xl shadow-2xl w-full max-w-6xl h-[95vh] sm:h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
+        style={{ touchAction: 'auto' }}
       >
         {/* Header */}
-        <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-gray-800">Project Architecture</h2>
+        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-gray-200">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-800">Project Architecture</h2>
             <a
               href="https://github.com/marepallisanthosh999333/marepallisanthosh.engineer"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-1.5 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-700 transition-colors"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-gray-900 text-white rounded-lg text-xs sm:text-sm hover:bg-gray-700 transition-colors"
             >
-              <Github size={16} />
-              View on GitHub
+              <Github size={14} className="sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">View on GitHub</span>
+              <span className="sm:hidden">GitHub</span>
             </a>
           </div>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <X size={24} className="text-gray-600" />
+            <X size={20} className="sm:w-6 sm:h-6 text-gray-600" />
           </button>
         </div>
 
         {/* Instructions Banner */}
-        <div className="px-6 py-3 bg-blue-50 border-b border-blue-200">
-          <p className="text-sm text-blue-800">
-            🖱️ <strong>Pan:</strong> Click and drag to move around • 
-            🔍 <strong>Zoom:</strong> Use mouse wheel to zoom in/out • 
-            🔗 <strong>Click nodes:</strong> Navigate to GitHub files • 
-            ↩️ <strong>Reset:</strong> Double-click to reset view
+        <div className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-50 border-b border-blue-200">
+          <p className="text-xs sm:text-sm text-blue-800">
+            <span className="hidden sm:inline">
+              🖱️ <strong>Pan:</strong> Click and drag to move around • 
+              🔍 <strong>Zoom:</strong> Use mouse wheel to zoom in/out • 
+              🔗 <strong>Click nodes:</strong> Navigate to GitHub files • 
+              ↩️ <strong>Reset:</strong> Double-click to reset view
+            </span>
+            <span className="sm:hidden">
+              👆 <strong>Pan:</strong> Drag to move • 
+              🤏 <strong>Zoom:</strong> Pinch to zoom • 
+              🔗 <strong>Tap nodes:</strong> Open GitHub files • 
+              👆👆 <strong>Reset:</strong> Double tap
+            </span>
           </p>
         </div>
 
         {/* Diagram Container */}
         <div 
-          className="flex-1 p-6 relative overflow-hidden"
+          className="flex-1 p-2 sm:p-6 relative overflow-hidden"
           style={{ 
             touchAction: 'none',
-            userSelect: 'none'
+            userSelect: 'none',
+            WebkitTouchCallout: 'none',
+            WebkitTapHighlightColor: 'transparent'
           }}
           onWheel={(e) => {
             e.stopPropagation();
             e.preventDefault();
           }}
+          onTouchStart={(e) => e.stopPropagation()}
         >
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
