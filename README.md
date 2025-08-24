@@ -73,46 +73,47 @@ This portfolio website serves as a comprehensive showcase of skills, projects, a
 
 ```
 marepallisanthosh.engineer/
-├── client/                      # Frontend React application
-│   ├── public/                  # Static assets
-│   │   ├── me.png              # Profile image
-│   │   ├── horse.png           # Brand logo
-│   │   ├── MAREPALLI_SANTHOSH_RESUME99.pdf
-│   │   ├── robots.txt          # SEO crawler instructions
-│   │   └── sitemap.xml         # Site structure for search engines
-│   └── src/                    # Source code
-│       ├── App.tsx             # Main application component
-│       ├── index.css           # Global styles with Tailwind imports
-│       ├── main.tsx            # Application entry point
-│       ├── components/         # Reusable UI components
-│       │   ├── About.tsx       # About section with personal info
-│       │   ├── AnimatedSection.tsx # Scroll-triggered animations
-│       │   ├── Contact.tsx     # Contact form with validation
-│       │   ├── Experience.tsx  # Professional timeline
-│       │   ├── Footer.tsx      # Site footer with links
-│       │   ├── Header.tsx      # Navigation header with GitHub integration
-│       │   ├── Hero.tsx        # Landing section
-│       │   ├── LeetCodeIcon.tsx # Custom LeetCode icon
-│       │   ├── Projects.tsx    # Project showcase grid
-│       │   └── Skills.tsx      # Technical skills display
-│       ├── hooks/              # Custom React hooks
-│       │   └── useScrollAnimation.ts # Intersection Observer hook
-│       └── utils/              # Utility functions
-│           └── emailService.ts # Email handling logic
-├── api/                        # Backend API functions
-│   ├── contact.js              # Contact form handler
-│   └── index.js                # API entry point
-├── .github/                    # GitHub community standards
-│   ├── ISSUE_TEMPLATE/         # Issue templates
-│   └── pull_request_template.md # PR template
-├── vite.config.ts              # Vite configuration
-├── tailwind.config.ts          # Tailwind CSS configuration
-├── package.json                # Dependencies and scripts
-├── vercel.json                 # Vercel deployment config
-├── LICENSE                     # MIT License
-├── CONTRIBUTING.md             # Contribution guidelines
-├── SECURITY.md                 # Security policy
-└── README.md                   # Project documentation
+├── 📱 client/                      # Frontend React application
+│   ├── 📂 public/                  # Static assets
+│   │   ├── 🖼️ me.png              # Profile image
+│   │   ├── 🐎 horse.png           # Brand logo
+│   │   ├── 📄 portfolio-screenshot.png # Homepage screenshot
+│   │   ├── 📋 MAREPALLI_SANTHOSH_RESUME99.pdf
+│   │   ├── 🤖 robots.txt          # SEO crawler instructions
+│   │   └── 🗺️ sitemap.xml         # Site structure for search engines
+│   └── 📁 src/                    # Source code
+│       ├── ⚛️ App.tsx             # Main application component
+│       ├── 🎨 index.css           # Global styles with Tailwind imports
+│       ├── 🚀 main.tsx            # Application entry point
+│       ├── 🧩 components/         # Reusable UI components
+│       │   ├── 👤 About.tsx       # About section with personal info
+│       │   ├── 🎬 AnimatedSection.tsx # Scroll-triggered animations
+│       │   ├── 📧 Contact.tsx     # Contact form with validation
+│       │   ├── 💼 Experience.tsx  # Professional timeline
+│       │   ├── 🦶 Footer.tsx      # Site footer with links
+│       │   ├── 🧭 Header.tsx      # Navigation header with GitHub integration
+│       │   ├── 🌟 Hero.tsx        # Landing section
+│       │   ├── 💻 LeetCodeIcon.tsx # Custom LeetCode icon
+│       │   ├── 🚀 Projects.tsx    # Project showcase grid
+│       │   └── 🛠️ Skills.tsx      # Technical skills display
+│       ├── 🎣 hooks/              # Custom React hooks
+│       │   └── 👁️ useScrollAnimation.ts # Intersection Observer hook
+│       └── 🔧 utils/              # Utility functions
+│           └── 📨 emailService.ts # Email handling logic
+├── 🌐 api/                        # Backend API functions
+│   ├── 📬 contact.js              # Contact form handler
+│   └── 🏠 index.js                # API entry point
+├── 📋 .github/                    # GitHub community standards
+│   ├── 📝 ISSUE_TEMPLATE/         # Issue templates
+│   └── 🔄 pull_request_template.md # PR template
+├── ⚡ vite.config.ts              # Vite configuration
+├── 🎨 tailwind.config.ts          # Tailwind CSS configuration
+├── 📦 package.json                # Dependencies and scripts
+├── 🚀 vercel.json                 # Vercel deployment config
+├── 📜 LICENSE                     # MIT License
+├── 🤝 CONTRIBUTING.md             # Contribution guidelines
+├── 🔐 SECURITY.md                 # Security policy
+└── 📖 README.md                   # Project documentation
 ```
 
 ## Getting Started
