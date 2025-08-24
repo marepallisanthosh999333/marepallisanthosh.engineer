@@ -214,9 +214,9 @@ flowchart TD
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
                     
-                    // Natural wheel zoom sensitivity
+                    // Natural wheel zoom sensitivity with extended zoom range
                     const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-                    const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
+                    const newScale = Math.max(0.1, Math.min(10, transformRef.current.scale * zoomFactor));
                     
                     if (newScale !== transformRef.current.scale) {
                       const scaleChange = newScale / transformRef.current.scale;
@@ -227,10 +227,10 @@ flowchart TD
                     }
                   };
 
-                  // Touch support for mobile devices - ultra-sensitive like gyroscope
+                  // Touch support for mobile devices - even more sensitive
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 3.0; // Extremely high sensitivity - gyroscope-like response
+                  const touchSensitivity = 4.0; // Increased sensitivity for even easier dragging
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -290,11 +290,11 @@ flowchart TD
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          // Ultra-sensitive pinch zoom for gyroscope-like response
+                          // Ultra-sensitive pinch zoom for gyroscope-like response with extended range
                           const rawZoomFactor = newDistance / lastTouchDistance;
                           const zoomSensitivity = 1.5; // Amplified zoom sensitivity for mobile
                           const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
-                          const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
+                          const newScale = Math.max(0.1, Math.min(10, transformRef.current.scale * zoomFactor));
                           
                           if (newScale !== transformRef.current.scale) {
                             const scaleChange = newScale / transformRef.current.scale;
@@ -313,9 +313,9 @@ flowchart TD
                         const movementMagnitude = Math.sqrt(rawDeltaX * rawDeltaX + rawDeltaY * rawDeltaY);
                         let amplificationFactor = touchSensitivity;
                         
-                        // Extra amplification for very small movements (gyroscope effect)
+                        // Extra amplification for very small movements (ultra-responsive)
                         if (movementMagnitude < 5) {
-                          amplificationFactor *= 2.0; // Double amplification for tiny movements
+                          amplificationFactor *= 2.5; // Even more amplification for tiny movements
                         }
                         
                         const deltaX = rawDeltaX * amplificationFactor;
@@ -396,9 +396,9 @@ flowchart TD
                       e.preventDefault();
                       e.stopPropagation();
                       
-                      // Natural 1:1 mouse movement sensitivity
-                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.0; // Perfect 1:1 movement
-                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.0; // Perfect 1:1 movement
+                      // Smoother mouse movement with increased sensitivity
+                      const deltaX = (e.clientX - lastMousePosRef.current.x) * 1.3; // Increased for easier dragging
+                      const deltaY = (e.clientY - lastMousePosRef.current.y) * 1.3; // Increased for easier dragging
                       
                       // Store velocity for potential momentum
                       velocityRef.current.x = deltaX;
