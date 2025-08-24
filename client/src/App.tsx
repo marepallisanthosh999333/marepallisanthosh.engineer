@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -8,14 +8,22 @@ import Experience from './components/Experience';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AnimatedSection from './components/AnimatedSection';
+import ProjectStructure from './components/ProjectStructure';
 
 function App() {
+  const [showProjectStructure, setShowProjectStructure] = useState(false);
+
   useEffect(() => {
     document.title = 'Marepalli Santhosh Portfolio';
   }, []);
+
+  const handleProjectStructureToggle = () => {
+    setShowProjectStructure(!showProjectStructure);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden">
-      <Header />
+      <Header onProjectStructureClick={handleProjectStructureToggle} />
       <main>
         <Hero />
         <AnimatedSection>
@@ -37,6 +45,12 @@ function App() {
       <AnimatedSection>
         <Footer />
       </AnimatedSection>
+      
+      {/* Project Structure Modal */}
+      <ProjectStructure 
+        isOpen={showProjectStructure}
+        onClose={() => setShowProjectStructure(false)} 
+      />
     </div>
   );
 }

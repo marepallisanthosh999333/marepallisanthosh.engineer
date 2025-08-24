@@ -1,0 +1,470 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="800" fill="#f8fafc"/>
+  
+  <!-- Grid Pattern -->
+  <defs>
+    <pattern id="grid" width="15" height="15" patternUnits="userSpaceOnUse">
+      <path d="M 15 0 L 0 0 0 15" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+    </pattern>
+    <linearGradient id="clientGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#dbeafe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#bfdbfe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="configGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#fee2e2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fecaca;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  
+  <!-- Title -->
+  <text x="600" y="30" text-anchor="middle" font-family="system-ui" font-size="26" font-weight="bold" fill="#1e293b">
+    Marepalli Santhosh - Portfolio Architecture
+  </text>
+  <text x="600" y="50" text-anchor="middle" font-family="system-ui" font-size="14" fill="#64748b">
+    Modern React Portfolio with Interactive Components & Serverless Backend
+  </text>
+  
+  <!-- Configuration Files Section -->
+  <g id="config-section">
+    <rect x="50" y="80" width="280" height="160" rx="12" fill="url(#configGradient)" stroke="#ef4444" stroke-width="2"/>
+    <text x="190" y="105" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#dc2626">
+      ⚙️ Configuration & Documentation
+    </text>
+    
+    <!-- Config files row 1 -->
+    <rect x="70" y="120" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="110" y="137" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      📋 components.json
+    </text>
+    
+    <rect x="160" y="120" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="200" y="137" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      📦 package.json
+    </text>
+    
+    <rect x="250" y="120" width="70" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="285" y="137" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      📝 README.md
+    </text>
+    
+    <!-- Config files row 2 -->
+    <rect x="70" y="155" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="110" y="172" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      ⚡ vite.config.ts
+    </text>
+    
+    <rect x="160" y="155" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="200" y="172" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      🎨 tailwind.config.ts
+    </text>
+    
+    <rect x="250" y="155" width="70" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="285" y="172" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      📘 tsconfig.json
+    </text>
+    
+    <!-- Config files row 3 -->
+    <rect x="70" y="190" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="110" y="207" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      🚀 vercel.json
+    </text>
+    
+    <rect x="160" y="190" width="80" height="25" rx="4" fill="rgba(252, 165, 165, 0.3)" stroke="#fca5a5" stroke-width="1"/>
+    <text x="200" y="207" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#dc2626">
+      🎭 postcss.config.js
+    </text>
+  </g>
+
+  <!-- Client Application Section -->
+  <g id="client-section">
+    <rect x="50" y="260" width="580" height="480" rx="12" fill="url(#clientGradient)" stroke="#3b82f6" stroke-width="3"/>
+    <text x="340" y="285" text-anchor="middle" font-family="system-ui" font-size="18" font-weight="bold" fill="#1e40af">
+      📱 Frontend Client Application
+    </text>
+    <text x="340" y="305" text-anchor="middle" font-family="system-ui" font-size="12" fill="#64748b">
+      React 18.3.1 + TypeScript 5.6.3 + Vite 6.0.0
+    </text>
+    
+    <!-- Public Assets -->
+    <rect x="70" y="320" width="140" height="120" rx="8" fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="140" y="340" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#7c3aed">
+      📂 public/
+    </text>
+    
+    <rect x="80" y="350" width="120" height="20" rx="3" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1"/>
+    <text x="140" y="363" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">
+      🖼️ horse.png • me.png
+    </text>
+    
+    <rect x="80" y="375" width="120" height="20" rx="3" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1"/>
+    <text x="140" y="388" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">
+      📄 MAREPALLI_SANTHOSH_RESUME99.pdf
+    </text>
+    
+    <rect x="80" y="400" width="120" height="20" rx="3" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1"/>
+    <text x="140" y="413" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">
+      🤖 robots.txt • sitemap.xml
+    </text>
+    
+    <!-- Source Code -->
+    <rect x="230" y="320" width="380" height="400" rx="8" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="2"/>
+    <text x="420" y="340" text-anchor="middle" font-family="system-ui" font-size="14" font-weight="bold" fill="#059669">
+      📁 src/
+    </text>
+    
+    <!-- Main App Files -->
+    <rect x="250" y="350" width="90" height="60" rx="6" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="1"/>
+    <text x="295" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#1d4ed8">
+      ⚛️ Core App
+    </text>
+    <text x="295" y="385" text-anchor="middle" font-family="system-ui" font-size="9" fill="#1e40af">App.tsx</text>
+    <text x="295" y="398" text-anchor="middle" font-family="system-ui" font-size="9" fill="#1e40af">main.tsx</text>
+    
+    <!-- Styles -->
+    <rect x="350" y="350" width="90" height="60" rx="6" fill="rgba(236, 72, 153, 0.2)" stroke="#ec4899" stroke-width="1"/>
+    <text x="395" y="370" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#be185d">
+      🎨 Styles
+    </text>
+    <text x="395" y="385" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">index.css</text>
+    <text x="395" y="398" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">vite-env.d.ts</text>
+    
+    <!-- Components Section -->
+    <rect x="250" y="420" width="340" height="180" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22c55e" stroke-width="2"/>
+    <text x="420" y="440" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#15803d">
+      🧩 components/
+    </text>
+    
+    <!-- Component Grid -->
+    <rect x="265" y="450" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="302" y="470" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      🏠 Hero.tsx
+    </text>
+    
+    <rect x="350" y="450" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="387" y="470" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      📋 Header.tsx
+    </text>
+    
+    <rect x="435" y="450" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="472" y="470" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      👤 About.tsx
+    </text>
+    
+    <rect x="520" y="450" width="60" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="550" y="470" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      💼 Skills.tsx
+    </text>
+    
+    <!-- Second row of components -->
+    <rect x="265" y="490" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="302" y="510" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      🚀 Projects.tsx
+    </text>
+    
+    <rect x="350" y="490" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="387" y="510" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      💻 Experience.tsx
+    </text>
+    
+    <rect x="435" y="490" width="75" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="472" y="510" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      📞 Contact.tsx
+    </text>
+    
+    <rect x="520" y="490" width="60" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="550" y="510" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      🦶 Footer.tsx
+    </text>
+    
+    <!-- Third row of components -->
+    <rect x="265" y="530" width="90" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="310" y="550" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      ✨ AnimatedSection.tsx
+    </text>
+    
+    <rect x="365" y="530" width="85" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="407" y="550" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      � LeetCodeIcon.tsx
+    </text>
+    
+    <rect x="460" y="530" width="120" height="30" rx="4" fill="rgba(34, 197, 94, 0.25)" stroke="#16a34a" stroke-width="1"/>
+    <text x="520" y="550" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#15803d">
+      🏗️ ProjectStructure.tsx
+    </text>
+    
+    <!-- Hooks & Utils -->
+    <rect x="250" y="620" width="150" height="80" rx="6" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="1"/>
+    <text x="325" y="640" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#d97706">
+      🎣 hooks/
+    </text>
+    <rect x="265" y="650" width="120" height="25" rx="4" fill="rgba(251, 191, 36, 0.25)" stroke="#fbbf24" stroke-width="1"/>
+    <text x="325" y="667" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#d97706">
+      📜 useScrollAnimation.ts
+    </text>
+    
+    <rect x="420" y="620" width="150" height="80" rx="6" fill="rgba(168, 85, 247, 0.15)" stroke="#a855f7" stroke-width="1"/>
+    <text x="495" y="640" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#7c3aed">
+      🔧 utils/
+    </text>
+    <rect x="435" y="650" width="120" height="25" rx="4" fill="rgba(196, 181, 253, 0.4)" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="495" y="667" text-anchor="middle" font-family="system-ui" font-size="9" font-weight="semibold" fill="#7c3aed">
+      📧 emailService.ts
+    </text>
+  </g>
+  <!-- API/Backend Section -->
+  <g id="api-section">
+    <rect x="680" y="80" width="200" height="140" rx="12" fill="rgba(245, 158, 11, 0.15)" stroke="#f59e0b" stroke-width="2"/>
+    <text x="780" y="105" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#d97706">
+      🌐 Serverless API
+    </text>
+    <text x="780" y="125" text-anchor="middle" font-family="system-ui" font-size="12" fill="#64748b">
+      Node.js Vercel Functions
+    </text>
+    
+    <rect x="700" y="140" width="160" height="25" rx="4" fill="rgba(251, 191, 36, 0.25)" stroke="#fbbf24" stroke-width="1"/>
+    <text x="780" y="157" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="semibold" fill="#d97706">
+      📁 api/
+    </text>
+    
+    <rect x="710" y="175" width="70" height="35" rx="4" fill="rgba(251, 191, 36, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+    <text x="745" y="190" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#d97706">
+      📬 contact.js
+    </text>
+    <text x="745" y="203" text-anchor="middle" font-family="system-ui" font-size="8" fill="#92400e">
+      Email Handler
+    </text>
+    
+    <rect x="790" y="175" width="70" height="35" rx="4" fill="rgba(251, 191, 36, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+    <text x="825" y="190" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#d97706">
+      🏠 index.js
+    </text>
+    <text x="825" y="203" text-anchor="middle" font-family="system-ui" font-size="8" fill="#92400e">
+      Default Route
+    </text>
+  </g>
+
+  <!-- Hosting & Deployment -->
+  <g id="hosting-section">
+    <rect x="680" y="240" width="200" height="100" rx="12" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-width="2"/>
+    <text x="780" y="265" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#059669">
+      ☁️ Vercel Platform
+    </text>
+    <text x="780" y="285" text-anchor="middle" font-family="system-ui" font-size="12" fill="#64748b">
+      Global CDN • Edge Functions
+    </text>
+    <text x="780" y="300" text-anchor="middle" font-family="system-ui" font-size="10" fill="#64748b">
+      Automatic Deployments
+    </text>
+    <text x="780" y="315" text-anchor="middle" font-family="system-ui" font-size="10" fill="#64748b">
+      Custom Domain • Analytics
+    </text>
+  </g>
+
+  <!-- External Services -->
+  <g id="external-section">
+    <rect x="680" y="360" width="200" height="160" rx="12" fill="rgba(156, 163, 175, 0.15)" stroke="#9ca3af" stroke-width="2"/>
+    <text x="780" y="385" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4b5563">
+      � External Services
+    </text>
+    
+    <rect x="700" y="400" width="70" height="35" rx="4" fill="rgba(209, 213, 219, 0.3)" stroke="#d1d5db" stroke-width="1"/>
+    <text x="735" y="415" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#4b5563">
+      📧 Resend API
+    </text>
+    <text x="735" y="428" text-anchor="middle" font-family="system-ui" font-size="8" fill="#6b7280">
+      Email Service
+    </text>
+    
+    <rect x="780" y="400" width="70" height="35" rx="4" fill="rgba(209, 213, 219, 0.3)" stroke="#d1d5db" stroke-width="1"/>
+    <text x="815" y="415" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#4b5563">
+      🐙 GitHub API
+    </text>
+    <text x="815" y="428" text-anchor="middle" font-family="system-ui" font-size="8" fill="#6b7280">
+      Repository Data
+    </text>
+    
+    <rect x="700" y="445" width="70" height="35" rx="4" fill="rgba(209, 213, 219, 0.3)" stroke="#d1d5db" stroke-width="1"/>
+    <text x="735" y="460" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#4b5563">
+      � Analytics
+    </text>
+    <text x="735" y="473" text-anchor="middle" font-family="system-ui" font-size="8" fill="#6b7280">
+      Vercel Analytics
+    </text>
+    
+    <rect x="780" y="445" width="70" height="35" rx="4" fill="rgba(209, 213, 219, 0.3)" stroke="#d1d5db" stroke-width="1"/>
+    <text x="815" y="460" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="semibold" fill="#4b5563">
+      🌐 CDN
+    </text>
+    <text x="815" y="473" text-anchor="middle" font-family="system-ui" font-size="8" fill="#6b7280">
+      Global Delivery
+    </text>
+    
+    <rect x="740" y="490" width="80" height="20" rx="3" fill="rgba(209, 213, 219, 0.3)" stroke="#d1d5db" stroke-width="1"/>
+    <text x="780" y="503" text-anchor="middle" font-family="system-ui" font-size="9" fill="#4b5563">
+      SSL • Security Headers
+    </text>
+  </g>
+  <!-- Development Tools & Dependencies -->
+  <g id="dev-tools-section">
+    <rect x="950" y="80" width="200" height="440" rx="12" fill="rgba(99, 102, 241, 0.1)" stroke="#6366f1" stroke-width="2"/>
+    <text x="1050" y="105" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#4338ca">
+      🛠️ Development Stack
+    </text>
+    
+    <!-- Frontend Dependencies -->
+    <rect x="970" y="120" width="160" height="100" rx="6" fill="rgba(139, 92, 246, 0.15)" stroke="#8b5cf6" stroke-width="1"/>
+    <text x="1050" y="140" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#7c3aed">
+      📦 Frontend Deps
+    </text>
+    
+    <text x="1050" y="155" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6d28d9">React 18.3.1</text>
+    <text x="1050" y="168" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6d28d9">TypeScript 5.6.3</text>
+    <text x="1050" y="181" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6d28d9">Vite 6.0.0</text>
+    <text x="1050" y="194" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6d28d9">Tailwind CSS 3.4.17</text>
+    <text x="1050" y="207" text-anchor="middle" font-family="system-ui" font-size="9" fill="#6d28d9">Framer Motion</text>
+    
+    <!-- UI Components -->
+    <rect x="970" y="230" width="160" height="80" rx="6" fill="rgba(34, 197, 94, 0.15)" stroke="#22c55e" stroke-width="1"/>
+    <text x="1050" y="250" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#15803d">
+      🎨 UI Components
+    </text>
+    
+    <text x="1050" y="265" text-anchor="middle" font-family="system-ui" font-size="9" fill="#16a34a">Radix UI</text>
+    <text x="1050" y="278" text-anchor="middle" font-family="system-ui" font-size="9" fill="#16a34a">Lucide React</text>
+    <text x="1050" y="291" text-anchor="middle" font-family="system-ui" font-size="9" fill="#16a34a">React Hook Form</text>
+    <text x="1050" y="304" text-anchor="middle" font-family="system-ui" font-size="9" fill="#16a34a">react-zoom-pan-pinch</text>
+    
+    <!-- Build Tools -->
+    <rect x="970" y="320" width="160" height="80" rx="6" fill="rgba(251, 146, 60, 0.15)" stroke="#fb923c" stroke-width="1"/>
+    <text x="1050" y="340" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#ea580c">
+      ⚡ Build Tools
+    </text>
+    
+    <text x="1050" y="355" text-anchor="middle" font-family="system-ui" font-size="9" fill="#dc2626">ESBuild</text>
+    <text x="1050" y="368" text-anchor="middle" font-family="system-ui" font-size="9" fill="#dc2626">PostCSS</text>
+    <text x="1050" y="381" text-anchor="middle" font-family="system-ui" font-size="9" fill="#dc2626">Autoprefixer</text>
+    <text x="1050" y="394" text-anchor="middle" font-family="system-ui" font-size="9" fill="#dc2626">TypeScript Compiler</text>
+    
+    <!-- Development -->
+    <rect x="970" y="410" width="160" height="100" rx="6" fill="rgba(236, 72, 153, 0.15)" stroke="#ec4899" stroke-width="1"/>
+    <text x="1050" y="430" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="bold" fill="#be185d">
+      🔧 Dev Environment
+    </text>
+    
+    <text x="1050" y="445" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">Hot Module Replacement</text>
+    <text x="1050" y="458" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">Fast Refresh</text>
+    <text x="1050" y="471" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">Source Maps</text>
+    <text x="1050" y="484" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">Live Preview</text>
+    <text x="1050" y="497" text-anchor="middle" font-family="system-ui" font-size="9" fill="#be185d">Tree Shaking</text>
+  </g>
+
+  <!-- Data Flow & Connections -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrowhead-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+  </defs>
+  
+  <!-- Config to Client -->
+  <path d="M 330 140 Q 390 140 430 240" stroke="#dc2626" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="375" y="135" font-family="system-ui" font-size="9" fill="#dc2626">Build Config</text>
+  
+  <!-- Client to API -->
+  <line x1="630" y1="400" x2="680" y2="150" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrowhead-blue)"/>
+  <text x="640" y="275" font-family="system-ui" font-size="9" fill="#3b82f6" transform="rotate(-65 640 275)">API Calls</text>
+  
+  <!-- API to Hosting -->
+  <line x1="780" y1="220" x2="780" y2="240" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="790" y="235" font-family="system-ui" font-size="9" fill="#10b981">Deploy</text>
+  
+  <!-- API to External Services -->
+  <line x1="780" y1="220" x2="780" y2="360" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="790" y="290" font-family="system-ui" font-size="9" fill="#9ca3af">External APIs</text>
+  
+  <!-- Client to Hosting -->
+  <path d="M 630 320 Q 650 300 680 290" stroke="#10b981" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="640" y="295" font-family="system-ui" font-size="9" fill="#10b981">Static Assets</text>
+  
+  <!-- Dev Tools to Client -->
+  <path d="M 950 300 Q 800 350 630 450" stroke="#6366f1" stroke-width="2" fill="none" stroke-dasharray="3,3" marker-end="url(#arrowhead)"/>
+  <text x="800" y="375" font-family="system-ui" font-size="9" fill="#6366f1">Dependencies</text>
+  
+  <!-- Performance & Analytics -->
+  <g id="performance-section">
+    <rect x="680" y="540" width="470" height="120" rx="8" fill="rgba(168, 85, 247, 0.1)" stroke="#a855f7" stroke-width="2"/>
+    <text x="915" y="565" text-anchor="middle" font-family="system-ui" font-size="16" font-weight="bold" fill="#7c3aed">
+      📊 Performance & Monitoring
+    </text>
+    
+    <!-- Performance Metrics -->
+    <rect x="700" y="580" width="100" height="60" rx="6" fill="rgba(196, 181, 253, 0.2)" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="750" y="600" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#7c3aed">
+      ⚡ Core Vitals
+    </text>
+    <text x="750" y="615" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">LCP • FID • CLS</text>
+    <text x="750" y="628" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">Web Vitals</text>
+    
+    <rect x="820" y="580" width="100" height="60" rx="6" fill="rgba(196, 181, 253, 0.2)" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="870" y="600" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#7c3aed">
+      📈 Analytics
+    </text>
+    <text x="870" y="615" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">User Tracking</text>
+    <text x="870" y="628" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">Page Views</text>
+    
+    <rect x="940" y="580" width="100" height="60" rx="6" fill="rgba(196, 181, 253, 0.2)" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="990" y="600" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#7c3aed">
+      🛡️ Security
+    </text>
+    <text x="990" y="615" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">HTTPS • CSP</text>
+    <text x="990" y="628" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">Rate Limiting</text>
+    
+    <rect x="1060" y="580" width="80" height="60" rx="6" fill="rgba(196, 181, 253, 0.2)" stroke="#c4b5fd" stroke-width="1"/>
+    <text x="1100" y="600" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="bold" fill="#7c3aed">
+      🌍 SEO
+    </text>
+    <text x="1100" y="615" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">Meta Tags</text>
+    <text x="1100" y="628" text-anchor="middle" font-family="system-ui" font-size="9" fill="#7c3aed">Sitemap</text>
+  </g>
+
+  <!-- Data Flow Indicators -->
+  <g id="flow-indicators">
+    <circle cx="120" cy="720" r="6" fill="#3b82f6"/>
+    <text x="135" y="725" font-family="system-ui" font-size="11" fill="#1e40af">User Interaction Flow</text>
+    
+    <circle cx="300" cy="720" r="6" fill="#10b981"/>
+    <text x="315" y="725" font-family="system-ui" font-size="11" fill="#059669">Server Response</text>
+    
+    <circle cx="450" cy="720" r="6" fill="#f59e0b"/>
+    <text x="465" y="725" font-family="system-ui" font-size="11" fill="#d97706">API Processing</text>
+    
+    <circle cx="580" cy="720" r="6" fill="#dc2626"/>
+    <text x="595" y="725" font-family="system-ui" font-size="11" fill="#dc2626">Build Configuration</text>
+    
+    <circle cx="750" cy="720" r="6" fill="#6366f1"/>
+    <text x="765" y="725" font-family="system-ui" font-size="11" fill="#4338ca">Development Tools</text>
+    
+    <circle cx="900" cy="720" r="6" fill="#8b5cf6"/>
+    <text x="915" y="725" font-family="system-ui" font-size="11" fill="#7c3aed">Performance Monitoring</text>
+  </g>
+
+  <!-- Comprehensive Tech Stack -->
+  <rect x="50" y="750" width="1100" height="40" rx="8" fill="rgba(241, 245, 249, 0.9)" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="70" y="770" font-family="system-ui" font-size="12" font-weight="bold" fill="#1e293b">
+    🛠️ Complete Technology Stack:
+  </text>
+  <text x="70" y="785" font-family="system-ui" font-size="10" fill="#475569">
+    Frontend: React 18.3.1 • TypeScript 5.6.3 • Vite 6.0.0 • Tailwind CSS 3.4.17 • Framer Motion • Radix UI • Lucide React • React Hook Form • Wouter Router • react-zoom-pan-pinch
+  </text>
+  <text x="600" y="770" font-family="system-ui" font-size="10" fill="#475569">
+    Backend & Infrastructure: Node.js • Vercel Serverless Functions • Resend Email API • GitHub API • Global CDN • Edge Computing
+  </text>
+  <text x="600" y="785" font-family="system-ui" font-size="10" fill="#475569">
+    Development: ESBuild • PostCSS • Autoprefixer • Hot Module Replacement • TypeScript Compiler • Source Maps • Tree Shaking
+  </text>
+
+</svg>

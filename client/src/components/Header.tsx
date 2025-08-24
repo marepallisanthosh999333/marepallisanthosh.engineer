@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, User, Star, Github } from 'lucide-react';
+import { Menu, X, User, Star, Github, Network } from 'lucide-react';
 
 interface GitHubButtonProps {
   username: string;
   repo: string;
+  className?: string;
+}
+
+interface ProjectStructureButtonProps {
+  onClick: () => void;
   className?: string;
 }
 
@@ -55,7 +60,24 @@ const StarButton = ({ username, repo, className = "" }: GitHubButtonProps) => {
   );
 };
 
-const Header = () => {
+const ProjectStructureButton = ({ onClick, className = "" }: ProjectStructureButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center space-x-1 text-purple-600 hover:text-purple-700 border border-purple-600 hover:border-purple-700 px-2 py-1 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${className}`}
+      title="Explore interactive project structure"
+    >
+      <Network size={14} />
+      <span>Structure</span>
+    </button>
+  );
+};
+
+interface HeaderProps {
+  onProjectStructureClick: () => void;
+}
+
+const Header = ({ onProjectStructureClick }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -97,6 +119,9 @@ const Header = () => {
               <StarButton 
                 username="marepallisanthosh999333" 
                 repo="marepallisanthosh.engineer"
+              />
+              <ProjectStructureButton 
+                onClick={onProjectStructureClick}
               />
             </div>
           </div>
@@ -145,7 +170,7 @@ const Header = () => {
                 </a>
               ))}
               {/* Mobile GitHub and Star Buttons */}
-              <div className="pt-2 border-t border-gray-200 flex space-x-2">
+              <div className="pt-2 border-t border-gray-200 flex flex-wrap gap-2">
                 <GitHubButton 
                   username="marepallisanthosh999333" 
                   repo="marepallisanthosh.engineer"
@@ -153,6 +178,12 @@ const Header = () => {
                 <StarButton 
                   username="marepallisanthosh999333" 
                   repo="marepallisanthosh.engineer"
+                />
+                <ProjectStructureButton 
+                  onClick={() => {
+                    onProjectStructureClick();
+                    setIsMenuOpen(false);
+                  }}
                 />
               </div>
             </div>
