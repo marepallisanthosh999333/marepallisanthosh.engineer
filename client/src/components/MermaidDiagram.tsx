@@ -229,7 +229,7 @@ flowchart TD
                   // Touch support for mobile devices
                   let lastTouchDistance = 0;
                   let touchStartTime = 0;
-                  const touchSensitivity = 1.0; // Reduced sensitivity for smoother mobile experience
+                  const touchSensitivity = 0.6; // Further reduced for ultra-smooth mobile experience
 
                   const getTouchDistance = (touches: TouchList) => {
                     if (touches.length < 2) return 0;
@@ -282,14 +282,17 @@ flowchart TD
                       const center = getTouchCenter(e.touches);
                       
                       if (e.touches.length === 2) {
-                        // Pinch to zoom
+                        // Pinch to zoom with improved sensitivity
                         const newDistance = getTouchDistance(e.touches);
                         if (lastTouchDistance > 0) {
                           const rect = svgElement.getBoundingClientRect();
                           const centerX = center.x - rect.left;
                           const centerY = center.y - rect.top;
                           
-                          const zoomFactor = newDistance / lastTouchDistance;
+                          // Improved zoom factor calculation for smoother zooming
+                          const rawZoomFactor = newDistance / lastTouchDistance;
+                          const zoomSensitivity = 0.5; // Reduce zoom sensitivity
+                          const zoomFactor = 1 + (rawZoomFactor - 1) * zoomSensitivity;
                           const newScale = Math.max(0.3, Math.min(3, transformRef.current.scale * zoomFactor));
                           
                           if (newScale !== transformRef.current.scale) {
@@ -301,15 +304,21 @@ flowchart TD
                         }
                         lastTouchDistance = newDistance;
                       } else if (e.touches.length === 1) {
-                        // Single finger pan
-                        const deltaX = (center.x - lastMousePosRef.current.x) * touchSensitivity;
-                        const deltaY = (center.y - lastMousePosRef.current.y) * touchSensitivity;
+                        // Single finger pan with smoothing
+                        const rawDeltaX = center.x - lastMousePosRef.current.x;
+                        const rawDeltaY = center.y - lastMousePosRef.current.y;
                         
-                        velocityRef.current.x = deltaX;
-                        velocityRef.current.y = deltaY;
+                        // Apply smoothing and reduced sensitivity
+                        const deltaX = rawDeltaX * touchSensitivity;
+                        const deltaY = rawDeltaY * touchSensitivity;
                         
-                        transformRef.current.x += deltaX;
-                        transformRef.current.y += deltaY;
+                        // Add momentum for smoother movement
+                        const smoothingFactor = 0.8;
+                        velocityRef.current.x = velocityRef.current.x * smoothingFactor + deltaX * (1 - smoothingFactor);
+                        velocityRef.current.y = velocityRef.current.y * smoothingFactor + deltaY * (1 - smoothingFactor);
+                        
+                        transformRef.current.x += velocityRef.current.x;
+                        transformRef.current.y += velocityRef.current.y;
                       }
                       
                       lastMousePosRef.current = { x: center.x, y: center.y };
@@ -539,7 +548,11 @@ flowchart TD
           msUserSelect: 'none',
           WebkitTouchCallout: 'none',
           WebkitTapHighlightColor: 'transparent',
-          cursor: 'default'
+          cursor: 'default',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px',
+          transformStyle: 'preserve-3d'
         }}
       />
       
