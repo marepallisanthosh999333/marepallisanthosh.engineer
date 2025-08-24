@@ -1,28 +1,28 @@
-## 📋 Pull Request Description
+## Pull Request Description
 
 ### What does this PR do?
 <!-- Provide a brief description of the changes in this PR -->
 
 
-### 🔗 Related Issues
+### Related Issues
 <!-- Link to any related issues -->
 Fixes #(issue_number)
 Closes #(issue_number)
 Relates to #(issue_number)
 
-## 🧪 Type of Change
+## Type of Change
 
 Please check the type of change your PR introduces:
 
-- [ ] 🐛 Bug fix (non-breaking change which fixes an issue)
-- [ ] ✨ New feature (non-breaking change which adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] 📝 Documentation update
-- [ ] 🎨 Style/UI changes (formatting, colors, layout, etc.)
-- [ ] ♻️ Code refactoring (no functional changes)
-- [ ] ⚡ Performance improvements
-- [ ] 🔧 Build/configuration changes
-- [ ] 🧪 Tests (adding or updating tests)
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Style/UI changes (formatting, colors, layout, etc.)
+- [ ] Code refactoring (no functional changes)
+- [ ] Performance improvements
+- [ ] Build/configuration changes
+- [ ] Tests (adding or updating tests)
 
 ## 📸 Screenshots
 
@@ -32,7 +32,7 @@ Please check the type of change your PR introduces:
 ### After
 <!-- Screenshots of your changes -->
 
-## 🧪 Testing
+## Testing
 
 ### Test Environment
 - [ ] Tested locally in development mode (`npm run dev`)
@@ -92,7 +92,7 @@ Please check the type of change your PR introduces:
 - [ ] No breaking changes
 - [ ] Safe to deploy immediately
 
-## 📝 Additional Notes
+## Additional Notes
 
 <!-- Any additional information that reviewers should know -->
 
@@ -111,4 +111,4 @@ Please check the type of change your PR introduces:
 - Ensure no console errors
 - Test in multiple browsers if possible
 
-**Thank you for reviewing!** 🙏
+**Thank you for reviewing!**

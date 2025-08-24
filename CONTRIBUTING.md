@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing to my portfolio project! I welcome contributions that help improve the project, fix bugs, or enhance the user experience.
 
-## 🤝 Ways to Contribute
+## Ways to Contribute
 
 ### 1. **Reporting Issues**
 - **Bug Reports**: Found a bug? Please open an issue with details about the problem
@@ -15,7 +15,7 @@ Thank you for your interest in contributing to my portfolio project! I welcome c
 - **UI/UX Enhancements**: Improve design or user experience
 - **New Features**: Add useful functionality (discuss first!)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - **Node.js** (v18 or higher)
@@ -50,7 +50,7 @@ Thank you for your interest in contributing to my portfolio project! I welcome c
    http://localhost:5173
    ```
 
-## 📝 Development Guidelines
+## Development Guidelines
 
 ### **Code Standards**
 - **TypeScript**: Use TypeScript for type safety
@@ -129,7 +129,7 @@ git push origin feature/your-feature-name
 - Update your branch if needed
 - Be patient and collaborative
 
-## 🎨 Design Guidelines
+## Design Guidelines
 
 ### **Visual Consistency**
 - **Colors**: Stick to the existing blue theme (`blue-600`, `blue-700`)
@@ -148,7 +148,7 @@ git push origin feature/your-feature-name
 - **Keyboard Navigation**: Ensure all interactions work with keyboard
 - **Color Contrast**: Maintain sufficient contrast ratios
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 marepallisanthosh.engineer/
@@ -162,7 +162,7 @@ marepallisanthosh.engineer/
 └── docs/                   # Documentation
 ```
 
-## 🐛 Reporting Issues
+## Reporting Issues
 
 When reporting issues, please include:
 
@@ -180,7 +180,7 @@ When reporting issues, please include:
 - **Alternatives**: Any alternative solutions considered
 - **Additional Context**: Screenshots, mockups, etc.
 
-## 🔒 Security
+## Security
 
 If you discover a security vulnerability, please:
 1. **Do NOT** open a public issue
@@ -188,7 +188,7 @@ If you discover a security vulnerability, please:
 3. **Include details**: Description, steps to reproduce, impact
 4. **Be patient**: Allow time for investigation and fix
 
-## 📄 Code of Conduct
+## Code of Conduct
 
 ### **Our Pledge**
 We pledge to make participation in our project a harassment-free experience for everyone, regardless of background or identity.
@@ -205,7 +205,7 @@ We pledge to make participation in our project a harassment-free experience for 
 - Publishing private information
 - Any conduct inappropriate in a professional setting
 
-## 🎯 Project Goals
+## Project Goals
 
 This portfolio aims to:
 - **Showcase Skills**: Demonstrate data science and web development abilities
@@ -213,24 +213,24 @@ This portfolio aims to:
 - **Stay Current**: Use modern web technologies and best practices
 - **Perform Well**: Load fast and work on all devices
 
-## 🙏 Recognition
+## Recognition
 
 Contributors will be:
 - **Listed** in the README contributors section
 - **Credited** in commit messages and pull requests
 - **Thanked** personally for their time and effort
 
-## 📞 Questions?
+## Questions?
 
 Feel free to reach out:
 - **GitHub Issues**: For bug reports and feature requests
 - **Email**: marepallisanthosh999333@gmail.com
 - **LinkedIn**: [Connect with me](https://linkedin.com/in/marepalli-santhosh-42b16a284/)
 
-## 📜 License
+## License
 
 By contributing to this project, you agree that your contributions will be licensed under the [MIT License](LICENSE).
 
 ---
 
-**Thank you for contributing!** 🚀 Your help makes this project better for everyone.
+**Thank you for contributing!** Your help makes this project better for everyone.
