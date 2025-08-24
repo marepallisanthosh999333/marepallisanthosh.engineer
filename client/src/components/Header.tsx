@@ -1,5 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, User } from 'lucide-react';
+import { Menu, X, User, Star, Github } from 'lucide-react';
+
+interface GitHubButtonProps {
+  username: string;
+  repo: string;
+  className?: string;
+}
+
+const GitHubButton = ({ username, repo, className = "" }: GitHubButtonProps) => {
+  return (
+    <a
+      href={`https://github.com/${username}/${repo}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 border border-blue-600 hover:border-blue-700 px-2 py-1 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${className}`}
+    >
+      <Github size={16} />
+      <span>GitHub</span>
+    </a>
+  );
+};
+
+const StarButton = ({ username, repo, className = "" }: GitHubButtonProps) => {
+  const [stars, setStars] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStars = async () => {
+      try {
+        const response = await fetch(`https://api.github.com/repos/${username}/${repo}`);
+        const data = await response.json();
+        setStars(data.stargazers_count || 0);
+      } catch (error) {
+        console.error('Error fetching GitHub stars:', error);
+        setStars(0);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStars();
+  }, [username, repo]);
+
+  return (
+    <a
+      href={`https://github.com/${username}/${repo}/stargazers`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center space-x-1 text-blue-600 hover:text-blue-700 border border-blue-600 hover:border-blue-700 px-2 py-1 rounded-md text-sm font-medium transition-all duration-300 transform hover:scale-105 ${className}`}
+    >
+      <Star size={14} fill="currentColor" />
+      <span>{loading ? '...' : stars}</span>
+    </a>
+  );
+};
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,8 +84,21 @@ const Header = () => {
     >
       <nav className="container mx-auto px-6 py-6">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-gray-900">
-            Marepalli Santhosh
+          <div className="flex items-center space-x-3">
+            <div className="text-xl font-bold text-gray-900">
+              Marepalli Santhosh
+            </div>
+            {/* Separate GitHub and Star Buttons */}
+            <div className="hidden sm:flex items-center space-x-2">
+              <GitHubButton 
+                username="marepallisanthosh999333" 
+                repo="marepallisanthosh.engineer"
+              />
+              <StarButton 
+                username="marepallisanthosh999333" 
+                repo="marepallisanthosh.engineer"
+              />
+            </div>
           </div>
 
           {/* Desktop Navigation */}
@@ -77,6 +144,17 @@ const Header = () => {
                   {item.label}
                 </a>
               ))}
+              {/* Mobile GitHub and Star Buttons */}
+              <div className="pt-2 border-t border-gray-200 flex space-x-2">
+                <GitHubButton 
+                  username="marepallisanthosh999333" 
+                  repo="marepallisanthosh.engineer"
+                />
+                <StarButton 
+                  username="marepallisanthosh999333" 
+                  repo="marepallisanthosh.engineer"
+                />
+              </div>
             </div>
           </div>
         )}
