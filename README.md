@@ -347,7 +347,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <strong>Built with React, TypeScript, and Tailwind CSS</strong>
+  <strong>Built with 💖 using React, TypeScript, and Tailwind CSS</strong>
   <br />
   <em>© 2025 Marepalli Santhosh. All rights reserved.</em>
 </div>
+
