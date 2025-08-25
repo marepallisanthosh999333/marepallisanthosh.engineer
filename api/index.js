@@ -178,19 +178,36 @@ const adminDeleteSuggestion = async (req, res) => {
 const getComments = async (req, res) => {
   if (!checkDb(res)) return;
   try {
+    console.log("Attempting Firestore query for approved: true...");
+
     const snapshot = await adminDb.collection('comments')
       .where('approved', '==', true)
       .orderBy('timestamp', 'desc')
       .limit(50)
       .get();
+
+    console.log(`Query executed. Snapshot empty: ${snapshot.empty}`);
+    console.log(`Snapshot size: ${snapshot.size}`);
+
+    if (snapshot.empty) {
+      console.log("No documents found for approved: true.");
+    } else {
+      console.log("Documents found! Logging first 5:");
+      snapshot.docs.slice(0, 5).forEach((doc, index) => {
+        console.log(`Document ${index}:`, doc.id, doc.data());
+      });
+    }
+
     const comments = snapshot.docs.map(doc => {
       const data = doc.data();
       return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
     });
+
     res.status(200).json({ success: true, data: comments });
+
   } catch (error) {
-    console.error('Error fetching comments:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch comments' });
+    console.error("Error during Firestore query:", error);
+    res.status(500).json({ success: false, error: 'Failed to fetch comments', details: error.message });
   }
 };
 
