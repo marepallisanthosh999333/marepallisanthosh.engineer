@@ -278,6 +278,48 @@ const addSuggestion = async (req, res) => {
   }
 };
 
+// ===== PUBLIC: VOTE FUNCTION =====
+const voteSuggestion = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params;
+    const { userFingerprint } = req.body;
+
+    if (!id || !userFingerprint) {
+      return res.status(400).json({ success: false, error: 'Suggestion ID and user fingerprint are required.' });
+    }
+
+    const suggestionRef = adminDb.collection('suggestions').doc(id);
+
+    await adminDb.runTransaction(async (transaction) => {
+      const suggestionDoc = await transaction.get(suggestionRef);
+      if (!suggestionDoc.exists) {
+        throw new Error("Suggestion not found.");
+      }
+
+      const voters = suggestionDoc.data().voters || [];
+      if (voters.includes(userFingerprint)) {
+        // User has already voted, but we don't want to send an error.
+        // We just silently do nothing to prevent revealing who has voted.
+        return;
+      }
+
+      transaction.update(suggestionRef, {
+        votes: FieldValue.increment(1),
+        voters: FieldValue.arrayUnion(userFingerprint)
+      });
+    });
+
+    res.status(200).json({ success: true, message: 'Suggestion voted successfully.' });
+  } catch (error) {
+    if (error.message === "Suggestion not found.") {
+      return res.status(404).json({ success: false, error: error.message });
+    }
+    console.error(`Error voting for suggestion ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to vote for suggestion.' });
+  }
+};
+
 // ===== PUBLIC: LIKE FUNCTION =====
 const likeComment = async (req, res) => {
   if (!checkDb(res)) return;
@@ -410,6 +452,13 @@ export default async function handler(req, res) {
     if (url === '/api/suggestions' || url === '/api/feedback/suggestions') {
       if (method === 'GET') return await getSuggestions(req, res);
       if (method === 'POST') return await addSuggestion(req, res);
+    }
+
+    // Vote suggestion route
+    const voteSuggestionMatch = url.match(/^\/api\/feedback\/suggestions\/([a-zA-Z0-9_-]+)\/vote$/);
+    if (voteSuggestionMatch && method === 'POST') {
+      req.params = { id: voteSuggestionMatch[1] };
+      return await voteSuggestion(req, res);
     }
 
     // Like comment route

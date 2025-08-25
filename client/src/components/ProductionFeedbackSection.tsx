@@ -112,6 +112,10 @@ const ProductionFeedbackSection: React.FC = () => {
     const saved = localStorage.getItem('likedComments');
     return saved ? JSON.parse(saved) : [];
   });
+  const [votedSuggestions, setVotedSuggestions] = useState<string[]>(() => {
+    const saved = localStorage.getItem('votedSuggestions');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     setUserFingerprint(generateFingerprint());
@@ -326,6 +330,36 @@ const ProductionFeedbackSection: React.FC = () => {
       }
     } catch (error) {
       console.error("Error liking comment:", error);
+    }
+  };
+
+  const handleVoteSuggestion = async (suggestionId: string) => {
+    if (votedSuggestions.includes(suggestionId)) {
+      return; // Already voted
+    }
+
+    try {
+      const response = await fetch(`/api/feedback/suggestions/${suggestionId}/vote`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userFingerprint }),
+      });
+
+      if (response.ok) {
+        setSuggestions(prevSuggestions =>
+          prevSuggestions.map(s =>
+            s.id === suggestionId ? { ...s, votes: (s.votes || 0) + 1 } : s
+          )
+        );
+
+        const updatedVotedSuggestions = [...votedSuggestions, suggestionId];
+        setVotedSuggestions(updatedVotedSuggestions);
+        localStorage.setItem('votedSuggestions', JSON.stringify(updatedVotedSuggestions));
+      } else {
+        console.error("Failed to vote for suggestion");
+      }
+    } catch (error) {
+      console.error("Error voting for suggestion:", error);
     }
   };
 
@@ -755,9 +789,13 @@ const ProductionFeedbackSection: React.FC = () => {
                                 by {suggestion.author}
                               </span>
                               <div className="flex items-center space-x-2">
-                                <button className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400">
-                                  <ThumbsUp className="h-4 w-4" />
-                                  <span>{suggestion.votes}</span>
+                                <button
+                                  onClick={() => handleVoteSuggestion(suggestion.id)}
+                                  disabled={votedSuggestions.includes(suggestion.id)}
+                                  className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 disabled:cursor-not-allowed disabled:hover:text-gray-500"
+                                >
+                                  <ThumbsUp className={`h-4 w-4 ${votedSuggestions.includes(suggestion.id) ? 'text-green-500 fill-current' : ''}`} />
+                                  <span>{suggestion.votes || 0}</span>
                                 </button>
                               </div>
                             </div>
