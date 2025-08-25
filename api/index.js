@@ -512,26 +512,7 @@ export default async function handler(req, res) {
       if (method === 'GET') return await getStats(req, res);
     }
 
-    // Contact form route
-    if (url === '/api/contact') {
-      if (method !== 'POST') {
-        return res.status(405).json({ message: 'Method not allowed' });
-      }
-
-      const { name, email, message } = req.body;
-      if (!name || !email || !message) {
-        return res.status(400).json({ message: "Name, email, and message are required" });
-      }
-
-      const emailData = await resend.emails.send({
-        from: "Portfolio Contact <onboarding@resend.dev>",
-        to: ["marepallisanthosh999333@gmail.com"],
-        subject: `Portfolio Contact from ${name}`,
-        html: `<p>Name: ${name}</p><p>Email: ${email}</p><p>Message: ${message}</p>`,
-      });
-
-      return res.json({ message: "Email sent successfully!" });
-    }
+    // Contact form is now handled by api/contact.js
 
     // 404 for unknown public routes
     return res.status(404).json({ success: false, error: 'Route not found' });
