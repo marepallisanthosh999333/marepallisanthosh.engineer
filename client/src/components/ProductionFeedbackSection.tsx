@@ -108,6 +108,10 @@ const ProductionFeedbackSection: React.FC = () => {
     isAnonymous: false,
   });
   const [suggestionErrors, setSuggestionErrors] = useState<Record<string, string>>({});
+  const [likedComments, setLikedComments] = useState<string[]>(() => {
+    const saved = localStorage.getItem('likedComments');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   useEffect(() => {
     setUserFingerprint(generateFingerprint());
@@ -294,6 +298,35 @@ const ProductionFeedbackSection: React.FC = () => {
     if (days < 7) return `${days}d ago`;
     
     return new Date(timestamp).toLocaleDateString();
+  };
+
+  const handleLikeComment = async (commentId: string) => {
+    if (likedComments.includes(commentId)) {
+      return; // Already liked
+    }
+
+    try {
+      const response = await fetch(`/api/feedback/comments/${commentId}/like`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        // Update UI immediately for better UX
+        setComments(prevComments =>
+          prevComments.map(c =>
+            c.id === commentId ? { ...c, likes: (c.likes || 0) + 1 } : c
+          )
+        );
+
+        const updatedLikedComments = [...likedComments, commentId];
+        setLikedComments(updatedLikedComments);
+        localStorage.setItem('likedComments', JSON.stringify(updatedLikedComments));
+      } else {
+        console.error("Failed to like comment");
+      }
+    } catch (error) {
+      console.error("Error liking comment:", error);
+    }
   };
 
   return (
@@ -552,9 +585,13 @@ const ProductionFeedbackSection: React.FC = () => {
                             </div>
                             <p className="text-gray-700 dark:text-gray-300 mb-2">{comment.content}</p>
                             <div className="flex items-center space-x-2">
-                              <button className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">
-                                <Heart className="h-4 w-4" />
-                                <span>{comment.likes}</span>
+                              <button
+                                onClick={() => handleLikeComment(comment.id)}
+                                disabled={likedComments.includes(comment.id)}
+                                className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 disabled:cursor-not-allowed disabled:hover:text-gray-500"
+                              >
+                                <Heart className={`h-4 w-4 ${likedComments.includes(comment.id) ? 'text-red-500 fill-current' : ''}`} />
+                                <span>{comment.likes || 0}</span>
                               </button>
                             </div>
                           </div>

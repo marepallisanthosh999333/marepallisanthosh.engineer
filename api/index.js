@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { Resend } from "resend";
 import admin from 'firebase-admin';
-import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp, FieldValue } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin SDK
 let adminDb;
@@ -259,24 +259,68 @@ const addSuggestion = async (req, res) => {
   }
 };
 
+// ===== PUBLIC: LIKE FUNCTION =====
+const likeComment = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ success: false, error: 'Comment ID is required.' });
+    }
+    const commentRef = adminDb.collection('comments').doc(id);
+    await commentRef.update({
+      likes: FieldValue.increment(1)
+    });
+    res.status(200).json({ success: true, message: 'Comment liked successfully.' });
+  } catch (error) {
+    console.error(`Error liking comment ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to like comment.' });
+  }
+};
+
 // ===== PUBLIC: STATS FUNCTION =====
 const getStats = async (req, res) => {
   if (!checkDb(res)) return;
   try {
-    const commentsSnapshot = await adminDb.collection('comments').count().get();
-    const suggestionsSnapshot = await adminDb.collection('suggestions').count().get();
+    const commentsRef = adminDb.collection('comments');
+
+    // Get total counts
+    const commentsCountSnapshot = await commentsRef.count().get();
+    const suggestionsCountSnapshot = await adminDb.collection('suggestions').count().get();
+
+    // Get all approved comments to calculate average rating and total likes
+    const approvedCommentsSnapshot = await commentsRef.where('approved', '==', true).get();
+
+    let totalLikes = 0;
+    let totalRating = 0;
+    let commentsWithRatingCount = 0;
+
+    approvedCommentsSnapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.likes) {
+        totalLikes += data.likes;
+      }
+      if (data.rating && typeof data.rating === 'number') {
+        totalRating += data.rating;
+        commentsWithRatingCount++;
+      }
+    });
+
+    const averageRating = commentsWithRatingCount > 0 ? totalRating / commentsWithRatingCount : 0;
+
     const stats = {
-      totalComments: commentsSnapshot.data().count,
-      totalSuggestions: suggestionsSnapshot.data().count,
-      totalLikes: 0, // Placeholder
-      recentActivity: 0, // Placeholder
-      averageRating: 0, // Placeholder
+      totalComments: commentsCountSnapshot.data().count,
+      totalSuggestions: suggestionsCountSnapshot.data().count,
+      totalLikes: totalLikes,
+      averageRating: parseFloat(averageRating.toFixed(1)),
+      recentActivity: 0, // Placeholder for now
       lastUpdated: new Date().toISOString(),
     };
+
     res.status(200).json(stats);
   } catch (error) {
     console.error('Error fetching stats:', error);
-    res.status(500).json({ error: 'Failed to fetch feedback statistics' });
+    res.status(500).json({ success: false, error: 'Failed to fetch feedback statistics' });
   }
 };
 
@@ -347,6 +391,13 @@ export default async function handler(req, res) {
     if (url === '/api/suggestions' || url === '/api/feedback/suggestions') {
       if (method === 'GET') return await getSuggestions(req, res);
       if (method === 'POST') return await addSuggestion(req, res);
+    }
+
+    // Like comment route
+    const likeCommentMatch = url.match(/^\/api\/feedback\/comments\/([a-zA-Z0-9_-]+)\/like$/);
+    if (likeCommentMatch && method === 'POST') {
+      req.params = { id: likeCommentMatch[1] };
+      return await likeComment(req, res);
     }
 
     // Stats route
