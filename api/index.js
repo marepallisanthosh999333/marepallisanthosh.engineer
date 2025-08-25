@@ -228,7 +228,7 @@ const getSuggestions = async (req, res) => {
   if (!checkDb(res)) return;
   try {
     const { limit: limitParam = '50', orderBy: orderByParam = 'votes', status: statusFilter = 'all' } = req.query;
-    let query = adminDb.collection('suggestions');
+    let query = adminDb.collection('suggestions').where('isApproved', '==', true);
     if (statusFilter !== 'all') query = query.where('status', '==', statusFilter);
     if (orderByParam === 'votes') query = query.orderBy('votes', 'desc');
     else if (orderByParam === 'timestamp') query = query.orderBy('timestamp', 'desc');
@@ -262,6 +262,7 @@ const addSuggestion = async (req, res) => {
       isAnonymous: Boolean(isAnonymous),
       userFingerprint,
       timestamp: Timestamp.now(),
+      isApproved: false,
       status: 'pending',
       votes: 0,
       voters: [],

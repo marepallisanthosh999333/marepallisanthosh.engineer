@@ -109,6 +109,26 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleApproveSuggestion = async (id: string) => {
+    if (!apiClient) return;
+    try {
+      await apiClient.put(`/api/admin/suggestions/${id}`, { isApproved: true });
+      fetchData(apiClient); // Refresh data
+    } catch (error) {
+      console.error("Failed to approve suggestion:", error);
+    }
+  };
+
+  const handleDeleteSuggestion = async (id: string) => {
+    if (!apiClient || !window.confirm("Are you sure you want to delete this suggestion?")) return;
+    try {
+      await apiClient.del(`/api/admin/suggestions/${id}`);
+      fetchData(apiClient); // Refresh data
+    } catch (error) {
+      console.error("Failed to delete suggestion:", error);
+    }
+  };
+
   if (loading) {
     return <div className="p-8 text-center">Loading Admin Dashboard...</div>;
   }
@@ -192,17 +212,35 @@ const AdminDashboard = () => {
                   <li key={suggestion.id} className="p-4 sm:p-6">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-blue-600">{suggestion.title}</p>
-                      <span className="text-xs text-gray-500">{suggestion.status}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${suggestion.isApproved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          {suggestion.isApproved ? 'Approved' : 'Pending'}
+                        </span>
+                        <span className="text-xs text-gray-500">{suggestion.status}</span>
+                      </div>
                     </div>
                     <p className="mt-1 text-sm text-gray-800">by {suggestion.author}</p>
                     <p className="mt-2 text-sm text-gray-600">{suggestion.description}</p>
-                     <div className="mt-4 flex space-x-2">
-                       <select onChange={(e) => handleUpdateSuggestionStatus(suggestion.id, e.target.value)} value={suggestion.status} className="text-xs border-gray-300 rounded-md">
-                         <option value="pending">Pending</option>
-                         <option value="in-progress">In Progress</option>
-                         <option value="completed">Completed</option>
-                         <option value="rejected">Rejected</option>
-                       </select>
+                     <div className="mt-4 flex items-center space-x-4">
+                       <div>
+                        <label className="text-xs font-medium">Status:</label>
+                        <select onChange={(e) => handleUpdateSuggestionStatus(suggestion.id, e.target.value)} value={suggestion.status} className="ml-2 text-xs border-gray-300 rounded-md">
+                          <option value="pending">Pending</option>
+                          <option value="in-progress">In Progress</option>
+                          <option value="completed">Completed</option>
+                          <option value="rejected">Rejected</option>
+                        </select>
+                       </div>
+                       <div className="flex space-x-2">
+                        {!suggestion.isApproved && (
+                          <button onClick={() => handleApproveSuggestion(suggestion.id)} className="text-xs font-medium text-white bg-green-600 hover:bg-green-700 px-2 py-1 rounded-md">
+                            Approve
+                          </button>
+                        )}
+                        <button onClick={() => handleDeleteSuggestion(suggestion.id)} className="text-xs font-medium text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md">
+                          Delete
+                        </button>
+                       </div>
                      </div>
                   </li>
                 ))}
