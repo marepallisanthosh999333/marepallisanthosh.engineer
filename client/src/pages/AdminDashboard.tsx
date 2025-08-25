@@ -140,10 +140,10 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
-          <div>
-            <span className="text-sm mr-4">Welcome, {user?.email}</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm hidden sm:inline">Welcome, {user?.email}</span>
             <button onClick={handleLogout} className="text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md">
               Logout
             </button>
@@ -152,7 +152,7 @@ const AdminDashboard = () => {
       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+          <nav className="-mb-px flex flex-wrap space-x-8" aria-label="Tabs">
             <button
               onClick={() => setActiveTab('comments')}
               className={`${
@@ -221,9 +221,9 @@ const AdminDashboard = () => {
                     </div>
                     <p className="mt-1 text-sm text-gray-800">by {suggestion.author}</p>
                     <p className="mt-2 text-sm text-gray-600">{suggestion.description}</p>
-                     <div className="mt-4 flex items-center space-x-4">
-                       <div>
-                        <label className="text-xs font-medium">Status:</label>
+                     <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                       <div className="flex-1">
+                        <label className="text-xs font-medium mr-2">Status:</label>
                         <select onChange={(e) => handleUpdateSuggestionStatus(suggestion.id, e.target.value)} value={suggestion.status} className="ml-2 text-xs border-gray-300 rounded-md">
                           <option value="pending">Pending</option>
                           <option value="in-progress">In Progress</option>
