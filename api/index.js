@@ -441,12 +441,18 @@ const getStats = async (req, res) => {
 
     const averageRating = commentsWithRatingCount > 0 ? totalRating / commentsWithRatingCount : 0;
 
+    // Calculate recent activity (last 7 days)
+    const sevenDaysAgo = Timestamp.fromMillis(Date.now() - 7 * 24 * 60 * 60 * 1000);
+    const recentCommentsSnapshot = await commentsRef.where('timestamp', '>=', sevenDaysAgo).count().get();
+    const recentSuggestionsSnapshot = await adminDb.collection('suggestions').where('timestamp', '>=', sevenDaysAgo).count().get();
+    const recentActivity = recentCommentsSnapshot.data().count + recentSuggestionsSnapshot.data().count;
+
     const stats = {
       totalComments: commentsCountSnapshot.data().count,
       totalSuggestions: suggestionsCountSnapshot.data().count,
       totalLikes: totalLikes,
       averageRating: parseFloat(averageRating.toFixed(1)),
-      recentActivity: 0, // Placeholder for now
+      recentActivity: recentActivity,
       lastUpdated: new Date().toISOString(),
     };
 
