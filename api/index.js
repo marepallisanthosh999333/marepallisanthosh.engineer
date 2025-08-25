@@ -163,7 +163,12 @@ const getComments = async (req, res) => {
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error('Error fetching comments:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch comments' });
+    // Temporarily send back detailed error for debugging database index issues.
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch comments. This might be due to a missing database index.',
+      details: error.message
+    });
   }
 };
 
@@ -212,7 +217,12 @@ const getSuggestions = async (req, res) => {
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
     console.error('Error fetching suggestions:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch suggestions' });
+    // Temporarily send back detailed error for debugging database index issues.
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch suggestions. This might be due to a missing database index.',
+      details: error.message
+    });
   }
 };
 
