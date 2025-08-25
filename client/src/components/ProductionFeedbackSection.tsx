@@ -843,14 +843,11 @@ const ProductionFeedbackSection: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-blue-200 dark:border-blue-700">
-                    <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                      💡 Feedback System Status
-                    </h4>
-                    <p className="text-blue-700 dark:text-blue-300 text-sm">
-                      Your feedback system is fully operational! All data is stored securely in Firebase 
-                      and you receive email notifications for new submissions.
-                    </p>
+                  <div className="bg-gray-100 dark:bg-gray-700/50 rounded-xl p-6 text-center border border-gray-200 dark:border-gray-700">
+                    <blockquote className="text-lg italic text-gray-700 dark:text-gray-300">
+                      "Feedback is the breakfast of champions."
+                    </blockquote>
+                    <cite className="block text-sm text-gray-500 dark:text-gray-400 mt-2">- Ken Blanchard</cite>
                   </div>
                 </motion.div>
               )}
