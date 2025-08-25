@@ -1,61 +1,26 @@
 import "dotenv/config";
 import { Resend } from "resend";
-import { initializeApp, getApps } from 'firebase/app';
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  getDocs, 
-  query, 
-  orderBy, 
-  limit, 
-  where,
-  doc,
-  updateDoc,
-  getDoc,
-  deleteDoc
-} from 'firebase/firestore';
 import admin from 'firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 // Initialize Firebase Admin SDK
+let adminDb;
 try {
   if (!admin.apps.length) {
     const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
     if (!serviceAccountString) {
-      // We don't throw an error here, as the app can run without admin features.
-      // The admin routes will handle the case where the SDK is not initialized.
-      console.warn('FIREBASE_SERVICE_ACCOUNT_KEY environment variable not set. Admin features will be disabled.');
-    } else {
-      const serviceAccount = JSON.parse(serviceAccountString);
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-      });
-      console.log('Firebase Admin SDK initialized successfully.');
+      throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable not set.');
     }
+    const serviceAccount = JSON.parse(serviceAccountString);
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount)
+    });
+    console.log('Firebase Admin SDK initialized successfully.');
   }
+  adminDb = admin.firestore();
 } catch (error) {
-  console.error('Firebase Admin SDK initialization error:', error.message);
-}
-
-// Initialize Firebase (Client SDK)
-let db;
-try {
-  if (!getApps().length) {
-    const firebaseConfig = {
-      apiKey: process.env.VITE_FIREBASE_API_KEY || process.env.FIREBASE_API_KEY,
-      authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || process.env.FIREBASE_AUTH_DOMAIN,
-      projectId: process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID,
-      storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID || process.env.FIREBASE_MESSAGING_SENDER_ID,
-      appId: process.env.VITE_FIREBASE_APP_ID || process.env.FIREBASE_APP_ID
-    };
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-  } else {
-    db = getFirestore();
-  }
-} catch (error) {
-  console.error('Firebase initialization error:', error);
+  console.error('Firebase Admin SDK setup error:', error.message);
+  // If admin SDK fails, the API cannot function. We'll let it fail and log the error.
 }
 
 // Initialize Resend
@@ -93,16 +58,22 @@ const verifyAdmin = async (req, res, next) => {
   }
 };
 
+// ===== HELPER to check if AdminDB is available =====
+const checkDb = (res) => {
+  if (!adminDb) {
+    console.error("Database not initialized. Check server configuration.");
+    res.status(500).json({ success: false, error: 'Database not initialized' });
+    return false;
+  }
+  return true;
+}
+
 // ===== ADMIN: COMMENT FUNCTIONS =====
-
 const adminGetComments = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
-    const commentsQuery = query(collection(db, 'comments'), orderBy('timestamp', 'desc'));
-    const snapshot = await getDocs(commentsQuery);
+    const snapshot = await adminDb.collection('comments').orderBy('timestamp', 'desc').get();
     const comments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error('Error fetching all comments for admin:', error);
@@ -111,20 +82,14 @@ const adminGetComments = async (req, res) => {
 };
 
 const adminUpdateComment = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
     const { id } = req.params;
     const updateData = req.body;
-
-    // Basic validation to prevent unintended updates
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
     }
-
-    const commentRef = doc(db, 'comments', id);
-    await updateDoc(commentRef, updateData);
-
+    await adminDb.collection('comments').doc(id).update(updateData);
     res.status(200).json({ success: true, message: 'Comment updated successfully' });
   } catch (error) {
     console.error(`Error updating comment ${req.params.id} for admin:`, error);
@@ -133,12 +98,10 @@ const adminUpdateComment = async (req, res) => {
 };
 
 const adminDeleteComment = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
     const { id } = req.params;
-    await deleteDoc(doc(db, 'comments', id));
-
+    await adminDb.collection('comments').doc(id).delete();
     res.status(200).json({ success: true, message: 'Comment deleted successfully' });
   } catch (error) {
     console.error(`Error deleting comment ${req.params.id} for admin:`, error);
@@ -147,15 +110,11 @@ const adminDeleteComment = async (req, res) => {
 };
 
 // ===== ADMIN: SUGGESTION FUNCTIONS =====
-
 const adminGetSuggestions = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
-    const suggestionsQuery = query(collection(db, 'suggestions'), orderBy('timestamp', 'desc'));
-    const snapshot = await getDocs(suggestionsQuery);
+    const snapshot = await adminDb.collection('suggestions').orderBy('timestamp', 'desc').get();
     const suggestions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
     console.error('Error fetching all suggestions for admin:', error);
@@ -164,19 +123,14 @@ const adminGetSuggestions = async (req, res) => {
 };
 
 const adminUpdateSuggestion = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
     const { id } = req.params;
     const updateData = req.body;
-
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
     }
-
-    const suggestionRef = doc(db, 'suggestions', id);
-    await updateDoc(suggestionRef, updateData);
-
+    await adminDb.collection('suggestions').doc(id).update(updateData);
     res.status(200).json({ success: true, message: 'Suggestion updated successfully' });
   } catch (error) {
     console.error(`Error updating suggestion ${req.params.id} for admin:`, error);
@@ -185,12 +139,10 @@ const adminUpdateSuggestion = async (req, res) => {
 };
 
 const adminDeleteSuggestion = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) return res.status(500).json({ success: false, error: 'Database not initialized' });
-
     const { id } = req.params;
-    await deleteDoc(doc(db, 'suggestions', id));
-
+    await adminDb.collection('suggestions').doc(id).delete();
     res.status(200).json({ success: true, message: 'Suggestion deleted successfully' });
   } catch (error) {
     console.error(`Error deleting suggestion ${req.params.id} for admin:`, error);
@@ -198,29 +150,16 @@ const adminDeleteSuggestion = async (req, res) => {
   }
 };
 
-
-// ===== COMMENT FUNCTIONS =====
-
+// ===== PUBLIC: COMMENT FUNCTIONS =====
 const getComments = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) {
-      return res.status(200).json({ comments: [] });
-    }
-
-    const commentsQuery = query(
-      collection(db, 'comments'),
-      where('approved', '==', true),
-      orderBy('timestamp', 'desc'),
-      limit(50)
-    );
-    
-    const commentsSnapshot = await getDocs(commentsQuery);
-    const comments = commentsSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      timestamp: doc.data().timestamp?.toDate?.()?.toISOString() || new Date().toISOString(),
-    }));
-
+    const snapshot = await adminDb.collection('comments')
+      .where('approved', '==', true)
+      .orderBy('timestamp', 'desc')
+      .limit(50)
+      .get();
+    const comments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error('Error fetching comments:', error);
@@ -229,20 +168,13 @@ const getComments = async (req, res) => {
 };
 
 const addComment = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
     const { author, email, content, rating, type, userFingerprint, isAnonymous } = req.body;
-
-    if (!content || content.trim().length < 10) {
-      return res.status(400).json({ success: false, error: 'Comment must be at least 10 characters long' });
-    }
-
-    if (!rating || rating < 1 || rating > 5) {
-      return res.status(400).json({ success: false, error: 'Rating must be between 1 and 5' });
-    }
-
-    if (!isAnonymous && (!author || !email)) {
-      return res.status(400).json({ success: false, error: 'Name and email are required for non-anonymous comments' });
-    }
+    // Validation
+    if (!content || content.trim().length < 10) return res.status(400).json({ success: false, error: 'Comment must be at least 10 characters long' });
+    if (!rating || rating < 1 || rating > 5) return res.status(400).json({ success: false, error: 'Rating must be between 1 and 5' });
+    if (!isAnonymous && (!author || !email)) return res.status(400).json({ success: false, error: 'Name and email are required' });
 
     const commentData = {
       author: author || 'Anonymous',
@@ -252,87 +184,32 @@ const addComment = async (req, res) => {
       type: type || 'feedback',
       userFingerprint: userFingerprint || 'unknown',
       isAnonymous: Boolean(isAnonymous),
-      timestamp: new Date(),
+      timestamp: Timestamp.now(),
       likes: 0,
-      approved: true,
+      approved: true, // Defaulting to true for now, can be changed to false for moderation
     };
-
-    if (!db) {
-      console.error('Firebase connection error: database not initialized.');
-      return res.status(500).json({
-        success: false,
-        error: 'The server is not connected to the database. Please check server configuration.'
-      });
-    }
-
-    try {
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Firebase timeout')), 5000) // Increased timeout
-      );
-
-      const savePromise = addDoc(collection(db, 'comments'), commentData);
-      const docRef = await Promise.race([savePromise, timeoutPromise]);
-
-      return res.status(201).json({
-        success: true,
-        data: { id: docRef.id, ...commentData },
-        message: 'Comment saved successfully!'
-      });
-
-    } catch (firebaseError) {
-      console.error('🔥 Firebase error while saving comment:', firebaseError);
-      return res.status(500).json({
-        success: false,
-        error: 'A database error occurred while saving the comment.',
-        details: firebaseError.message
-      });
-    }
-
+    const docRef = await adminDb.collection('comments').add(commentData);
+    res.status(201).json({ success: true, data: { id: docRef.id, ...commentData } });
   } catch (error) {
-    console.error('❌ Error in addComment function:', error);
-    res.status(500).json({ success: false, error: 'An unexpected error occurred while processing the comment.' });
+    console.error('Error in addComment function:', error);
+    res.status(500).json({ success: false, error: 'An unexpected error occurred' });
   }
 };
 
-// ===== SUGGESTION FUNCTIONS =====
-
+// ===== PUBLIC: SUGGESTION FUNCTIONS =====
 const getSuggestions = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) {
-      return res.status(200).json({ success: true, data: [] });
-    }
-
-    const { 
-      limit: limitParam = '50', 
-      orderBy: orderByParam = 'votes',
-      status: statusFilter = 'all'
-    } = req.query;
+    const { limit: limitParam = '50', orderBy: orderByParam = 'votes', status: statusFilter = 'all' } = req.query;
+    let query = adminDb.collection('suggestions');
+    if (statusFilter !== 'all') query = query.where('status', '==', statusFilter);
+    if (orderByParam === 'votes') query = query.orderBy('votes', 'desc');
+    else if (orderByParam === 'timestamp') query = query.orderBy('timestamp', 'desc');
+    if (limitParam && limitParam !== 'all') query = query.limit(parseInt(limitParam));
     
-    const suggestionsRef = collection(db, 'suggestions');
-    let q = query(suggestionsRef);
-    
-    if (statusFilter !== 'all') {
-      q = query(q, where('status', '==', statusFilter));
-    }
-    
-    if (orderByParam === 'votes') {
-      q = query(q, orderBy('votes', 'desc'));
-    } else if (orderByParam === 'timestamp') {
-      q = query(q, orderBy('timestamp', 'desc'));
-    }
-    
-    if (limitParam && limitParam !== 'all') {
-      q = query(q, limit(parseInt(limitParam)));
-    }
-    
-    const snapshot = await getDocs(q);
-    const suggestions = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      timestamp: doc.data().timestamp?.toDate() || new Date()
-    }));
-    
-    res.json({ success: true, data: suggestions });
+    const snapshot = await query.get();
+    const suggestions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
     console.error('Error fetching suggestions:', error);
     res.status(500).json({ success: false, error: 'Failed to fetch suggestions' });
@@ -340,22 +217,12 @@ const getSuggestions = async (req, res) => {
 };
 
 const addSuggestion = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
     const { title, description, author, email, isAnonymous, userFingerprint } = req.body;
-
-    if (!title || !description || !userFingerprint) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Title, description, and user fingerprint are required' 
-      });
-    }
-
-    if (!isAnonymous && (!author || !email)) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Author and email required for non-anonymous suggestions' 
-      });
-    }
+    // Validation
+    if (!title || !description || !userFingerprint) return res.status(400).json({ success: false, error: 'Title, description, and fingerprint are required' });
+    if (!isAnonymous && (!author || !email)) return res.status(400).json({ success: false, error: 'Author and email required' });
 
     const suggestionData = {
       title: title.trim(),
@@ -364,7 +231,7 @@ const addSuggestion = async (req, res) => {
       email: isAnonymous ? null : email.trim(),
       isAnonymous: Boolean(isAnonymous),
       userFingerprint,
-      timestamp: new Date(),
+      timestamp: Timestamp.now(),
       status: 'pending',
       votes: 0,
       voters: [],
@@ -372,68 +239,28 @@ const addSuggestion = async (req, res) => {
       tags: [],
       adminNotes: null
     };
-
-    if (!db) {
-      console.error('Firebase connection error: database not initialized.');
-      return res.status(500).json({
-        success: false,
-        error: 'The server is not connected to the database. Please check server configuration.'
-      });
-    }
-
-    try {
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Firebase timeout')), 5000)
-      );
-
-      const savePromise = addDoc(collection(db, 'suggestions'), suggestionData);
-      const docRef = await Promise.race([savePromise, timeoutPromise]);
-
-      return res.status(201).json({
-        success: true,
-        data: { id: docRef.id, ...suggestionData }
-      });
-
-    } catch (firebaseError) {
-      console.error('🔥 Firebase error while saving suggestion:', firebaseError);
-      return res.status(500).json({
-        success: false,
-        error: 'A database error occurred while saving the suggestion.',
-        details: firebaseError.message
-      });
-    }
-    
+    const docRef = await adminDb.collection('suggestions').add(suggestionData);
+    res.status(201).json({ success: true, data: { id: docRef.id, ...suggestionData } });
   } catch (error) {
-    console.error('❌ Error in addSuggestion function:', error);
-    res.status(500).json({ success: false, error: 'An unexpected error occurred while processing the suggestion.' });
+    console.error('Error in addSuggestion function:', error);
+    res.status(500).json({ success: false, error: 'An unexpected error occurred' });
   }
 };
 
-// ===== STATS FUNCTION =====
-
+// ===== PUBLIC: STATS FUNCTION =====
 const getStats = async (req, res) => {
+  if (!checkDb(res)) return;
   try {
-    if (!db) {
-      return res.status(200).json({
-        totalComments: 0,
-        totalSuggestions: 0,
-        totalLikes: 0,
-        recentActivity: 0,
-        averageRating: 0,
-        lastUpdated: new Date().toISOString(),
-      });
-    }
-
-    // In a production app, you'd aggregate real stats from Firebase
+    const commentsSnapshot = await adminDb.collection('comments').count().get();
+    const suggestionsSnapshot = await adminDb.collection('suggestions').count().get();
     const stats = {
-      totalComments: 0,
-      totalSuggestions: 0,
-      totalLikes: 0,
-      recentActivity: 0,
-      averageRating: 0,
+      totalComments: commentsSnapshot.data().count,
+      totalSuggestions: suggestionsSnapshot.data().count,
+      totalLikes: 0, // Placeholder
+      recentActivity: 0, // Placeholder
+      averageRating: 0, // Placeholder
       lastUpdated: new Date().toISOString(),
     };
-    
     res.status(200).json(stats);
   } catch (error) {
     console.error('Error fetching stats:', error);
