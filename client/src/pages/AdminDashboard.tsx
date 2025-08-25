@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { getAuth, onAuthStateChanged, User, signOut } from 'firebase/auth';
+import { onAuthStateChanged, User, signOut } from 'firebase/auth';
+import { auth } from '../lib/firebase';
 import { useLocation } from 'wouter';
 
 // A simple API client to handle authenticated requests
@@ -37,7 +38,6 @@ const AdminDashboard = () => {
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('comments');
 
-  const auth = getAuth();
   const [, setLocation] = useLocation();
 
   const fetchData = useCallback(async (client: ReturnType<typeof createApiClient>) => {

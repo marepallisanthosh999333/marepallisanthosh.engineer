@@ -26,11 +26,6 @@ const HomePage = () => {
 
   return (
     <>
-      <div style={{ position: 'fixed', top: 0, left: 0, zIndex: 9999, padding: '10px', backgroundColor: '#ffc', border: '2px solid #f00' }}>
-        <p style={{ fontWeight: 'bold', margin: 0 }}>DEBUGGING INFORMATION:</p>
-        <p style={{ margin: 0 }}>VITE_FIREBASE_PROJECT_ID: "{import.meta.env.VITE_FIREBASE_PROJECT_ID}"</p>
-        <p style={{ margin: 0, fontSize: '12px' }}>(If the value is empty or "undefined", the environment variables are not configured correctly in Vercel.)</p>
-      </div>
       <Header onProjectStructureClick={handleProjectStructureToggle} />
       <main>
         <Hero />
