@@ -81,6 +81,29 @@ const checkDb = (res) => {
 }
 
 // ===== ADMIN: COMMENT FUNCTIONS =====
+
+const pinComment = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params;
+    const commentRef = adminDb.collection('comments').doc(id);
+
+    await adminDb.runTransaction(async (transaction) => {
+      const commentDoc = await transaction.get(commentRef);
+      if (!commentDoc.exists) {
+        throw new Error("Comment not found.");
+      }
+      const currentIsPinned = commentDoc.data().isPinned || false;
+      transaction.update(commentRef, { isPinned: !currentIsPinned });
+    });
+
+    res.status(200).json({ success: true, message: 'Comment pin status toggled.' });
+  } catch (error) {
+    console.error(`Error pinning comment ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to pin comment.' });
+  }
+};
+
 const adminGetComments = async (req, res) => {
   if (!checkDb(res)) return;
   try {
@@ -203,7 +226,8 @@ const getComments = async (req, res) => {
   try {
     const snapshot = await adminDb.collection('comments')
       .where('approved', '==', true)
-      .orderBy('timestamp', 'desc')
+      .orderBy('isPinned', 'desc')
+      .orderBy('likes', 'desc')
       .limit(50)
       .get();
     const comments = snapshot.docs.map(doc => {
@@ -246,6 +270,7 @@ const addComment = async (req, res) => {
       timestamp: Timestamp.now(),
       likes: 0,
       approved: false,
+      isPinned: false,
     };
     const docRef = await adminDb.collection('comments').add(commentData);
     res.status(201).json({ success: true, data: { id: docRef.id, ...commentData } });
@@ -262,8 +287,13 @@ const getSuggestions = async (req, res) => {
     const { limit: limitParam = '50', orderBy: orderByParam = 'votes', status: statusFilter = 'all' } = req.query;
     let query = adminDb.collection('suggestions').where('isApproved', '==', true);
     if (statusFilter !== 'all') query = query.where('status', '==', statusFilter);
-    if (orderByParam === 'votes') query = query.orderBy('votes', 'desc');
-    else if (orderByParam === 'timestamp') query = query.orderBy('timestamp', 'desc');
+
+    // Default sort by votes, but allow override by timestamp
+    if (orderByParam === 'timestamp') {
+      query = query.orderBy('timestamp', 'desc');
+    } else {
+      query = query.orderBy('votes', 'desc');
+    }
     if (limitParam && limitParam !== 'all') query = query.limit(parseInt(limitParam));
     
     const snapshot = await query.get();
@@ -452,6 +482,12 @@ export default async function handler(req, res) {
     return verifyAdmin(req, res, async () => {
       try {
         // Admin Comments
+        const pinCommentMatch = url.match(/^\/api\/admin\/comments\/([a-zA-Z0-9_-]+)\/pin$/);
+        if (pinCommentMatch && method === 'POST') {
+          req.params = { id: pinCommentMatch[1] };
+          return await pinComment(req, res);
+        }
+
         const adminCommentIdMatch = url.match(/^\/api\/admin\/comments\/([a-zA-Z0-9_-]+)$/);
         if (adminCommentIdMatch) {
           req.params = { id: adminCommentIdMatch[1] };

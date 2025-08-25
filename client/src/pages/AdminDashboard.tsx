@@ -21,6 +21,11 @@ const createApiClient = (token: string) => {
       if (!response.ok) throw new Error(`Failed to update ${path}: ${response.statusText}`);
       return response.json();
     },
+    post: async (path: string, body: any) => {
+      const response = await fetch(path, { method: 'POST', headers, body: JSON.stringify(body) });
+      if (!response.ok) throw new Error(`Failed to post to ${path}: ${response.statusText}`);
+      return response.json();
+    },
     del: async (path: string) => {
       const response = await fetch(path, { method: 'DELETE', headers });
       if (!response.ok) throw new Error(`Failed to delete ${path}: ${response.statusText}`);
@@ -96,6 +101,17 @@ const AdminDashboard = () => {
       fetchData(apiClient); // Refresh data
     } catch (error) {
       console.error("Failed to delete comment:", error);
+    }
+  };
+
+  const handlePinComment = async (id: string) => {
+    if (!apiClient) return;
+    try {
+      // We use post for a toggle action, body can be empty
+      await apiClient.post(`/api/admin/comments/${id}/pin`, {});
+      fetchData(apiClient); // Refresh data to get new order
+    } catch (error) {
+      console.error("Failed to pin comment:", error);
     }
   };
 
@@ -181,7 +197,7 @@ const AdminDashboard = () => {
             <div className="bg-white shadow overflow-hidden sm:rounded-lg">
               <ul className="divide-y divide-gray-200">
                 {comments.map(comment => (
-                  <li key={comment.id} className="p-4 sm:p-6">
+                  <li key={comment.id} className="p-4 sm:p-6 relative">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-medium text-blue-600 truncate">{comment.author} ({comment.email})</p>
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${comment.approved ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
@@ -198,7 +214,11 @@ const AdminDashboard = () => {
                       <button onClick={() => handleDeleteComment(comment.id)} className="text-xs font-medium text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md">
                         Delete
                       </button>
+                      <button onClick={() => handlePinComment(comment.id)} className="text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-md flex items-center">
+                        {comment.isPinned ? 'Unpin' : 'Pin'}
+                      </button>
                     </div>
+                    {comment.isPinned && <div className="absolute top-2 right-2 text-blue-500" title="Pinned"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 17v5"/><path d="M12 9v8"/><path d="M16 9h-2a2 2 0 0 0-4 0H8"/><path d="M16 4L9 4"/><path d="M16 4L9 4"/><path d="M12 2L12 4"/></svg></div>}
                   </li>
                 ))}
               </ul>
