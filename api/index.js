@@ -2,22 +2,34 @@ import "dotenv/config";
 import { Resend } from "resend";
 import admin from 'firebase-admin';
 import { Timestamp, FieldValue } from 'firebase-admin/firestore';
+import { Firestore } from '@google-cloud/firestore';
 
 // Initialize Firebase Admin SDK
 let adminDb;
 try {
+  const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+  if (!serviceAccountString) {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable not set.');
+  }
+  const serviceAccount = JSON.parse(serviceAccountString);
+
   if (!admin.apps.length) {
-    const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-    if (!serviceAccountString) {
-      throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable not set.');
-    }
-    const serviceAccount = JSON.parse(serviceAccountString);
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount)
     });
     console.log('Firebase Admin SDK initialized successfully.');
   }
-  adminDb = admin.firestore();
+
+  // Explicitly create a Firestore client with REST transport to avoid gRPC issues on Vercel
+  adminDb = new Firestore({
+      projectId: serviceAccount.project_id,
+      credentials: {
+          client_email: serviceAccount.client_email,
+          private_key: serviceAccount.private_key,
+      },
+      preferRest: true,
+  });
+
 } catch (error) {
   console.error('Firebase Admin SDK setup error:', error.message);
   // If admin SDK fails, the API cannot function. We'll let it fail and log the error.
