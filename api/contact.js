@@ -145,8 +145,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Failed to send email:", error);
     res.status(500).json({
-      message: "Failed to send email",
-      error: error.message
+      message: "An internal server error occurred while sending the email."
     });
   }
 }

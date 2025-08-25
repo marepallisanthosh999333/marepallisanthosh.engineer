@@ -87,7 +87,18 @@ const adminGetComments = async (req, res) => {
     const snapshot = await adminDb.collection('comments').orderBy('timestamp', 'desc').get();
     const comments = snapshot.docs.map(doc => {
       const data = doc.data();
-      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+      // Sanitize to only what the admin needs, removing fingerprint
+      return {
+        id: doc.id,
+        author: data.author,
+        email: data.email,
+        content: data.content,
+        rating: data.rating,
+        likes: data.likes || 0,
+        isAnonymous: data.isAnonymous,
+        approved: data.approved,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
     });
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
@@ -137,7 +148,19 @@ const adminGetSuggestions = async (req, res) => {
     const snapshot = await adminDb.collection('suggestions').orderBy('timestamp', 'desc').get();
     const suggestions = snapshot.docs.map(doc => {
       const data = doc.data();
-      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+      // Sanitize to only what the admin needs, removing fingerprint and voters array
+      return {
+        id: doc.id,
+        title: data.title,
+        description: data.description,
+        author: data.author,
+        email: data.email,
+        votes: data.votes || 0,
+        status: data.status,
+        isAnonymous: data.isAnonymous,
+        isApproved: data.isApproved,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
     });
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
@@ -185,7 +208,16 @@ const getComments = async (req, res) => {
       .get();
     const comments = snapshot.docs.map(doc => {
       const data = doc.data();
-      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+      // Sanitize the output to only include necessary and safe fields
+      return {
+        id: doc.id,
+        author: data.author,
+        content: data.content,
+        rating: data.rating,
+        likes: data.likes || 0,
+        isAnonymous: data.isAnonymous,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
     });
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
@@ -237,7 +269,17 @@ const getSuggestions = async (req, res) => {
     const snapshot = await query.get();
     const suggestions = snapshot.docs.map(doc => {
       const data = doc.data();
-      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+      // Sanitize the output to only include necessary and safe fields
+      return {
+        id: doc.id,
+        title: data.title,
+        description: data.description,
+        author: data.author,
+        votes: data.votes || 0,
+        status: data.status,
+        isAnonymous: data.isAnonymous,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
     });
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
