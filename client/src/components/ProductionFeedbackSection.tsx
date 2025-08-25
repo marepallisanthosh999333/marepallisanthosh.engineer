@@ -129,12 +129,12 @@ const ProductionFeedbackSection: React.FC = () => {
 
       if (commentsRes.ok && 'json' in commentsRes) {
         const data = await commentsRes.json();
-        setComments(data.comments || []);
+        setComments(data.data || []);
       }
 
       if (suggestionsRes.ok && 'json' in suggestionsRes) {
         const data = await suggestionsRes.json();
-        setSuggestions(data.suggestions || []);
+        setSuggestions(data.data || []);
       }
 
       if (statsRes.ok && 'json' in statsRes) {
