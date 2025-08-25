@@ -104,6 +104,12 @@ const adminUpdateComment = async (req, res) => {
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
     }
+
+    // Safeguard to ensure 'approved' is always a boolean, preventing data type mismatches.
+    if (typeof updateData.approved !== 'undefined') {
+      updateData.approved = (updateData.approved === true || updateData.approved === 'true');
+    }
+
     await adminDb.collection('comments').doc(id).update(updateData);
     res.status(200).json({ success: true, message: 'Comment updated successfully' });
   } catch (error) {
