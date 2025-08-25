@@ -522,16 +522,16 @@ const ProductionFeedbackSection: React.FC = () => {
                   {/* Comments List */}
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                      Recent Comments ({comments.length})
+                      Recent Comments
                     </h4>
                     <div className="space-y-4">
                       {comments.length === 0 ? (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <MessageCircle className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                          <p>No comments yet. Be the first to share your feedback!</p>
+                          <p>No approved comments yet. Submit your feedback!</p>
                         </div>
                       ) : (
-                        comments.map((comment) => (
+                        comments.slice(0, 3).map((comment) => (
                           <div key={comment.id} className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
                             <div className="flex justify-between items-start mb-2">
                               <div className="flex items-center space-x-2">
@@ -686,16 +686,16 @@ const ProductionFeedbackSection: React.FC = () => {
                   {/* Suggestions List */}
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                      Community Suggestions ({suggestions.length})
+                      Community Suggestions
                     </h4>
                     <div className="space-y-4">
                       {suggestions.length === 0 ? (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <Lightbulb className="mx-auto h-12 w-12 mb-4 opacity-50" />
-                          <p>No suggestions yet. Share your ideas to improve this portfolio!</p>
+                          <p>No suggestions yet. Share your ideas!</p>
                         </div>
                       ) : (
-                        suggestions.map((suggestion) => (
+                        suggestions.slice(0, 3).map((suggestion) => (
                           <div key={suggestion.id} className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
                             <div className="flex justify-between items-start mb-2">
                               <h5 className="font-medium text-gray-900 dark:text-white">{suggestion.title}</h5>
