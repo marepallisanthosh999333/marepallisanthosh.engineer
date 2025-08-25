@@ -73,7 +73,10 @@ const adminGetComments = async (req, res) => {
   if (!checkDb(res)) return;
   try {
     const snapshot = await adminDb.collection('comments').orderBy('timestamp', 'desc').get();
-    const comments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const comments = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+    });
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error('Error fetching all comments for admin:', error);
@@ -114,7 +117,10 @@ const adminGetSuggestions = async (req, res) => {
   if (!checkDb(res)) return;
   try {
     const snapshot = await adminDb.collection('suggestions').orderBy('timestamp', 'desc').get();
-    const suggestions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const suggestions = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+    });
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
     console.error('Error fetching all suggestions for admin:', error);
@@ -159,7 +165,10 @@ const getComments = async (req, res) => {
       .orderBy('timestamp', 'desc')
       .limit(50)
       .get();
-    const comments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const comments = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+    });
     res.status(200).json({ success: true, data: comments });
   } catch (error) {
     console.error('Error fetching comments:', error);
@@ -208,7 +217,10 @@ const getSuggestions = async (req, res) => {
     if (limitParam && limitParam !== 'all') query = query.limit(parseInt(limitParam));
     
     const snapshot = await query.get();
-    const suggestions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const suggestions = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return { ...data, id: doc.id, timestamp: data.timestamp.toDate().toISOString() };
+    });
     res.status(200).json({ success: true, data: suggestions });
   } catch (error) {
     console.error('Error fetching suggestions:', error);
