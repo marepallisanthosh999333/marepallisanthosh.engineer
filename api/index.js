@@ -160,8 +160,9 @@ const adminDeleteSuggestion = async (req, res) => {
 const getComments = async (req, res) => {
   if (!checkDb(res)) return;
   try {
+    // Final debugging step: query by a different field to test the .where() clause.
     const snapshot = await adminDb.collection('comments')
-      .where('approved', '==', true)
+      .where('isAnonymous', '==', false)
       .limit(50)
       .get();
     const comments = snapshot.docs.map(doc => {
