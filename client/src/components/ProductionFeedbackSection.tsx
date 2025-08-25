@@ -418,40 +418,44 @@ const ProductionFeedbackSection: React.FC = () => {
           className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden"
         >
           {/* Tab Navigation */}
-          <div className="flex border-b border-gray-200 dark:border-gray-700">
-            <button
-              onClick={() => setActiveTab('comments')}
-              className={`flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
-                activeTab === 'comments'
-                  ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-            >
-              <MessageCircle className="mr-2 h-4 w-4" />
-              Comments & Ratings
-            </button>
-            <button
-              onClick={() => setActiveTab('suggestions')}
-              className={`flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
-                activeTab === 'suggestions'
-                  ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600 dark:border-green-400 bg-green-50 dark:bg-green-900/20'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-            >
-              <Lightbulb className="mr-2 h-4 w-4" />
-              Feature Suggestions
-            </button>
-            <button
-              onClick={() => setActiveTab('stats')}
-              className={`flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
-                activeTab === 'stats'
-                  ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/20'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-            >
-              <BarChart3 className="mr-2 h-4 w-4" />
-              Analytics
-            </button>
+          <div className="border-b border-gray-200 dark:border-gray-700">
+            <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', '-ms-overflow-style': 'none' }}>
+              <nav className="-mb-px flex flex-nowrap space-x-8" aria-label="Tabs">
+                <button
+                  onClick={() => setActiveTab('comments')}
+                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                    activeTab === 'comments'
+                      ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <MessageCircle className="mr-2 h-4 w-4" />
+                  <span>Comments & Ratings</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('suggestions')}
+                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                    activeTab === 'suggestions'
+                      ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600 dark:border-green-400 bg-green-50 dark:bg-green-900/20'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <Lightbulb className="mr-2 h-4 w-4" />
+                  <span>Feature Suggestions</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('stats')}
+                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                    activeTab === 'stats'
+                      ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/20'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  <span>Analytics</span>
+                </button>
+              </nav>
+            </div>
           </div>
 
           {/* Tab Content */}
