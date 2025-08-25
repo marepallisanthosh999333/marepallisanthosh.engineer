@@ -1,8 +1,10 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MessageSquare } from 'lucide-react';
 
 const FloatingFeedbackButton: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
   const scrollToFeedback = () => {
     const feedbackSection = document.getElementById('feedback');
     if (feedbackSection) {
@@ -13,21 +15,41 @@ const FloatingFeedbackButton: React.FC = () => {
     }
   };
 
+  const handleScroll = () => {
+    // Show the button after scrolling down 300px
+    if (window.scrollY > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <motion.button
-      onClick={scrollToFeedback}
-      className="fixed left-0 top-1/2 -translate-y-1/2 bg-red-500 hover:bg-red-600 text-white px-2 py-6 rounded-r-lg shadow-lg z-50 transition-all duration-300 group"
-      whileHover={{ x: 5 }}
-      whileTap={{ scale: 0.95 }}
-      initial={{ x: -10 }}
-      animate={{ x: 0 }}
-      title="Go to Feedback Section"
-      style={{ writingMode: 'vertical-rl' }}
-    >
-      <span className="text-xs font-medium">
-        Feedback
-      </span>
-    </motion.button>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.button
+          onClick={scrollToFeedback}
+          className="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg z-50 flex items-center justify-center"
+          initial={{ opacity: 0, y: 50, scale: 0.5 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 50, scale: 0.5 }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          title="Go to Feedback Section"
+        >
+          <MessageSquare size={24} />
+        </motion.button>
+      )}
+    </AnimatePresence>
   );
 };
 
