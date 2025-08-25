@@ -162,7 +162,6 @@ const getComments = async (req, res) => {
   try {
     const snapshot = await adminDb.collection('comments')
       .where('approved', '==', true)
-      .orderBy('timestamp', 'desc')
       .limit(50)
       .get();
     const comments = snapshot.docs.map(doc => {
