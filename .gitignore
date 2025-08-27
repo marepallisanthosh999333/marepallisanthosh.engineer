@@ -13,3 +13,12 @@ vite.config.ts.*
 # API keys and sensitive data
 *.key
 *.pem
+
+# Service account and credential files
+serviceAccount*.json
+*.p12
+*.jks
+*.crt
+.firebase/
+.env.*.local
+*.-private.*
