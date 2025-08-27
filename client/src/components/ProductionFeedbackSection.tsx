@@ -43,7 +43,8 @@ interface Comment {
   email?: string;
   content: string;
   rating?: number;
-  timestamp: Date;
+  // API may return ISO timestamps (string) or Date objects
+  timestamp: string | Date;
   likes: number;
   approved: boolean;
   type: 'feedback' | 'suggestion' | 'general';
@@ -59,10 +60,19 @@ interface FeatureSuggestion {
   email?: string;
   votes: number;
   status: 'pending' | 'in-progress' | 'completed' | 'rejected';
-  timestamp: Date;
+  // API may return ISO timestamps (string) or Date objects
+  timestamp: string | Date;
   approved: boolean;
   userFingerprint?: string;
   isAnonymous: boolean;
+}
+
+interface Reply {
+  id: string;
+  author: string;
+  content: string;
+  isAnonymous: boolean;
+  timestamp: string;
 }
 
 interface FeedbackStats {
@@ -74,6 +84,18 @@ interface FeedbackStats {
 }
 
 const ProductionFeedbackSection: React.FC = () => {
+  // Admin detection via Vite env (optional)
+  const ADMIN_NAME = import.meta.env.VITE_ADMIN_NAME || '';
+  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || '';
+  // Base URL for API requests: use explicit backend in dev or VITE_API_BASE_URL if provided
+  const API_BASE = (import.meta.env.VITE_API_BASE_URL as string) || (import.meta.env.DEV ? 'http://localhost:3001' : '');
+  const isAdminAuthor = (author?: string, email?: string) => {
+    if (!author && !email) return false;
+    if (ADMIN_NAME && author && author === ADMIN_NAME) return true;
+    if (ADMIN_EMAIL && email && email === ADMIN_EMAIL) return true;
+    // fallback common admin strings
+    return author === 'Admin' || author === 'You' || author === 'Owner';
+  };
   const [activeTab, setActiveTab] = useState<'comments' | 'suggestions' | 'stats'>('comments');
   const [userFingerprint, setUserFingerprint] = useState<string>('');
   const [comments, setComments] = useState<Comment[]>([]);
@@ -86,6 +108,13 @@ const ProductionFeedbackSection: React.FC = () => {
     averageRating: 0
   });
   const [loading, setLoading] = useState(false);
+  // Replies state
+  const [commentReplies, setCommentReplies] = useState<Record<string, Reply[]>>({});
+  const [suggestionReplies, setSuggestionReplies] = useState<Record<string, Reply[]>>({});
+  const [openReplyForComment, setOpenReplyForComment] = useState<string | null>(null);
+  const [openReplyForSuggestion, setOpenReplyForSuggestion] = useState<string | null>(null);
+  const [replyInputs, setReplyInputs] = useState<Record<string, { content: string; name?: string; email?: string; isAnonymous: boolean }>>({});
+  const [submittingReplyFor, setSubmittingReplyFor] = useState<string | null>(null);
 
   // Comment Form State
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
@@ -126,29 +155,178 @@ const ProductionFeedbackSection: React.FC = () => {
     setLoading(true);
     try {
       const [commentsRes, suggestionsRes, statsRes] = await Promise.all([
-        fetch('/api/feedback/comments').catch(() => ({ ok: false } as Response)),
-        fetch('/api/feedback/suggestions').catch(() => ({ ok: false } as Response)),
-        fetch('/api/feedback/stats').catch(() => ({ ok: false } as Response))
+        fetch(`${API_BASE}/api/feedback/comments`).catch(() => ({ ok: false } as Response)),
+        fetch(`${API_BASE}/api/feedback/suggestions`).catch(() => ({ ok: false } as Response)),
+        fetch(`${API_BASE}/api/feedback/stats`).catch(() => ({ ok: false } as Response))
       ]);
 
-      if (commentsRes.ok && 'json' in commentsRes) {
-        const data = await commentsRes.json();
-        setComments(data.data || []);
+      if (commentsRes && commentsRes.ok) {
+        try {
+          const data = await commentsRes.json();
+          const items = (data.data || []).map((c: any) => ({
+            ...c,
+            // normalize timestamp to Date for internal use
+            timestamp: c.timestamp ? new Date(c.timestamp) : new Date(),
+            likes: typeof c.likes === 'number' ? c.likes : 0,
+          }));
+          setComments(items);
+        } catch (err) {
+          console.error('Failed to parse comments response', err);
+        }
       }
 
-      if (suggestionsRes.ok && 'json' in suggestionsRes) {
-        const data = await suggestionsRes.json();
-        setSuggestions(data.data || []);
+      if (suggestionsRes && suggestionsRes.ok) {
+        try {
+          const data = await suggestionsRes.json();
+          const items = (data.data || []).map((s: any) => ({
+            ...s,
+            timestamp: s.timestamp ? new Date(s.timestamp) : new Date(),
+            votes: typeof s.votes === 'number' ? s.votes : 0,
+          }));
+          setSuggestions(items);
+        } catch (err) {
+          console.error('Failed to parse suggestions response', err);
+        }
       }
 
-      if (statsRes.ok && 'json' in statsRes) {
-        const data = await statsRes.json();
-        setStats(data);
+      if (statsRes && statsRes.ok) {
+        try {
+          const data = await statsRes.json();
+          // Normalize numeric stats safely
+          setStats({
+            totalComments: Number(data.totalComments || 0),
+            totalSuggestions: Number(data.totalSuggestions || 0),
+            totalLikes: Number(data.totalLikes || 0),
+            recentActivity: Number(data.recentActivity || 0),
+            averageRating: data.averageRating ? Number(data.averageRating) : 0,
+          });
+        } catch (err) {
+          console.error('Failed to parse stats response', err);
+        }
       }
     } catch (error) {
       console.error('Error loading feedback data:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Fetch replies on demand
+  const fetchCommentReplies = async (commentId: string) => {
+    try {
+  const res = await fetch(`${API_BASE}/api/feedback/comments/${commentId}/replies`);
+      if (res.ok) {
+        const json = await res.json();
+        setCommentReplies(prev => ({ ...prev, [commentId]: json.data || [] }));
+      }
+    } catch (error) {
+      console.error('Error fetching comment replies:', error);
+    }
+  };
+
+  const fetchSuggestionReplies = async (suggestionId: string) => {
+    try {
+  const res = await fetch(`${API_BASE}/api/feedback/suggestions/${suggestionId}/replies`);
+      if (res.ok) {
+        const json = await res.json();
+        setSuggestionReplies(prev => ({ ...prev, [suggestionId]: json.data || [] }));
+      }
+    } catch (error) {
+      console.error('Error fetching suggestion replies:', error);
+    }
+  };
+
+  const toggleCommentReplies = async (commentId: string) => {
+    if (openReplyForComment === commentId) {
+      setOpenReplyForComment(null);
+      return;
+    }
+    setOpenReplyForComment(commentId);
+    if (!commentReplies[commentId]) {
+      await fetchCommentReplies(commentId);
+    }
+    // initialize input
+    setReplyInputs(prev => ({ ...prev, [commentId]: { content: '', isAnonymous: false } }));
+  };
+
+  const toggleSuggestionReplies = async (suggestionId: string) => {
+    if (openReplyForSuggestion === suggestionId) {
+      setOpenReplyForSuggestion(null);
+      return;
+    }
+    setOpenReplyForSuggestion(suggestionId);
+    if (!suggestionReplies[suggestionId]) {
+      await fetchSuggestionReplies(suggestionId);
+    }
+    setReplyInputs(prev => ({ ...prev, [suggestionId]: { content: '', isAnonymous: false } }));
+  };
+
+  const submitCommentReply = async (commentId: string, e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const input = replyInputs[commentId];
+    if (!input || !input.content || input.content.trim().length < 3) {
+      alert('Reply must be at least 3 characters long');
+      return;
+    }
+    setSubmittingReplyFor(commentId);
+    try {
+  const res = await fetch(`${API_BASE}/api/feedback/comments/${commentId}/replies`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          author: input.isAnonymous ? 'Anonymous' : (input.name || 'Anonymous'),
+          email: input.isAnonymous ? '' : (input.email || ''),
+          content: input.content,
+          isAnonymous: input.isAnonymous,
+          userFingerprint,
+        }),
+      });
+      if (res.ok) {
+        // optimistic: refetch replies
+        await fetchCommentReplies(commentId);
+        setReplyInputs(prev => ({ ...prev, [commentId]: { content: '', isAnonymous: false } }));
+      } else {
+        throw new Error('Failed to submit reply');
+      }
+    } catch (error) {
+      console.error('Error submitting comment reply:', error);
+      alert('Failed to submit reply. Try again later.');
+    } finally {
+      setSubmittingReplyFor(null);
+    }
+  };
+
+  const submitSuggestionReply = async (suggestionId: string, e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const input = replyInputs[suggestionId];
+    if (!input || !input.content || input.content.trim().length < 3) {
+      alert('Reply must be at least 3 characters long');
+      return;
+    }
+    setSubmittingReplyFor(suggestionId);
+    try {
+  const res = await fetch(`${API_BASE}/api/feedback/suggestions/${suggestionId}/replies`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          author: input.isAnonymous ? 'Anonymous' : (input.name || 'Anonymous'),
+          email: input.isAnonymous ? '' : (input.email || ''),
+          content: input.content,
+          isAnonymous: input.isAnonymous,
+          userFingerprint,
+        }),
+      });
+      if (res.ok) {
+        await fetchSuggestionReplies(suggestionId);
+        setReplyInputs(prev => ({ ...prev, [suggestionId]: { content: '', isAnonymous: false } }));
+      } else {
+        throw new Error('Failed to submit reply');
+      }
+    } catch (error) {
+      console.error('Error submitting suggestion reply:', error);
+      alert('Failed to submit reply. Try again later.');
+    } finally {
+      setSubmittingReplyFor(null);
     }
   };
 
@@ -213,7 +391,7 @@ const ProductionFeedbackSection: React.FC = () => {
     setIsSubmittingComment(true);
     
     try {
-      const response = await fetch('/api/feedback/comments', {
+  const response = await fetch(`${API_BASE}/api/feedback/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -255,7 +433,7 @@ const ProductionFeedbackSection: React.FC = () => {
     setIsSubmittingSuggestion(true);
     
     try {
-      const response = await fetch('/api/feedback/suggestions', {
+  const response = await fetch(`${API_BASE}/api/feedback/suggestions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -289,9 +467,10 @@ const ProductionFeedbackSection: React.FC = () => {
     }
   };
 
-  const formatTimestamp = (timestamp: Date): string => {
+  const formatTimestamp = (timestamp: string | Date): string => {
     const now = new Date();
-    const diff = now.getTime() - new Date(timestamp).getTime();
+    const ts = timestamp instanceof Date ? timestamp : new Date(timestamp);
+    const diff = now.getTime() - ts.getTime();
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
@@ -310,7 +489,7 @@ const ProductionFeedbackSection: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/feedback/comments/${commentId}/like`, {
+  const response = await fetch(`${API_BASE}/api/feedback/comments/${commentId}/like`, {
         method: 'POST',
       });
 
@@ -339,7 +518,7 @@ const ProductionFeedbackSection: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/feedback/suggestions/${suggestionId}/vote`, {
+  const response = await fetch(`${API_BASE}/api/feedback/suggestions/${suggestionId}/vote`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userFingerprint }),
@@ -419,11 +598,11 @@ const ProductionFeedbackSection: React.FC = () => {
         >
           {/* Tab Navigation */}
           <div className="border-b border-gray-200 dark:border-gray-700">
-            <div className="overflow-x-auto" style={{ scrollbarWidth: 'none', '-ms-overflow-style': 'none' }}>
-              <nav className="-mb-px flex flex-nowrap space-x-8" aria-label="Tabs">
+            <div className="overflow-x-auto hide-scrollbar">
+              <nav className="-mb-px flex flex-nowrap space-x-8 md:space-x-0" aria-label="Tabs">
                 <button
                   onClick={() => setActiveTab('comments')}
-                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                  className={`flex-shrink-0 md:flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
                     activeTab === 'comments'
                       ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
                       : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -432,9 +611,10 @@ const ProductionFeedbackSection: React.FC = () => {
                   <MessageCircle className="mr-2 h-4 w-4" />
                   <span>Comments & Ratings</span>
                 </button>
+
                 <button
                   onClick={() => setActiveTab('suggestions')}
-                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                  className={`flex-shrink-0 md:flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
                     activeTab === 'suggestions'
                       ? 'text-green-600 dark:text-green-400 border-b-2 border-green-600 dark:border-green-400 bg-green-50 dark:bg-green-900/20'
                       : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -443,9 +623,10 @@ const ProductionFeedbackSection: React.FC = () => {
                   <Lightbulb className="mr-2 h-4 w-4" />
                   <span>Feature Suggestions</span>
                 </button>
+
                 <button
                   onClick={() => setActiveTab('stats')}
-                  className={`flex-shrink-0 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
+                  className={`flex-shrink-0 md:flex-1 flex items-center justify-center py-4 px-6 text-sm font-medium transition-colors ${
                     activeTab === 'stats'
                       ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/20'
                       : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
@@ -595,7 +776,7 @@ const ProductionFeedbackSection: React.FC = () => {
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                       Public Comments
                     </h4>
-                    <div className="space-y-4 h-96 overflow-y-auto pr-2">
+                    <div className="space-y-4 h-96 overflow-y-auto pr-2 hide-scrollbar">
                       {comments.length === 0 ? (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <MessageCircle className="mx-auto h-12 w-12 mb-4 opacity-50" />
@@ -605,21 +786,20 @@ const ProductionFeedbackSection: React.FC = () => {
                         comments.map((comment) => (
                           <div key={comment.id} className="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
                             <div className="flex justify-between items-start mb-2">
-                              <div className="flex items-center space-x-2">
-                                <span className="font-medium text-gray-900 dark:text-white">
-                                  {comment.author}
-                                </span>
-                                {comment.rating && (
-                                  <div className="flex">
-                                    {Array.from({ length: comment.rating }, (_, i) => (
-                                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                                    ))}
-                                  </div>
-                                )}
+                              <div className="flex items-center space-x-3">
+                                <img src="/profile.png" alt="avatar" className="h-8 w-8 rounded-full object-cover" />
+                                <div className="flex items-center space-x-2">
+                                  <span className="font-medium text-gray-900 dark:text-white">{comment.author}</span>
+                                  {comment.rating && (
+                                    <div className="flex">
+                                      {Array.from({ length: comment.rating }, (_, i) => (
+                                        <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
-                              <span className="text-sm text-gray-500 dark:text-gray-400">
-                                {formatTimestamp(comment.timestamp)}
-                              </span>
+                              <span className="text-sm text-gray-500 dark:text-gray-400">{formatTimestamp(comment.timestamp)}</span>
                             </div>
                             <p className="text-gray-700 dark:text-gray-300 mb-2">{comment.content}</p>
                             <div className="flex items-center space-x-2">
@@ -631,7 +811,91 @@ const ProductionFeedbackSection: React.FC = () => {
                                 <Heart className={`h-4 w-4 ${likedComments.includes(comment.id) ? 'text-red-500 fill-current' : ''}`} />
                                 <span>{comment.likes || 0}</span>
                               </button>
+                              <button
+                                onClick={() => toggleCommentReplies(comment.id)}
+                                className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                              >
+                                <MessageSquare className="h-4 w-4" />
+                                <span>Replies</span>
+                              </button>
                             </div>
+                            {/* Replies section */}
+                            {openReplyForComment === comment.id && (
+                              <div className="mt-4 bg-gray-50 dark:bg-gray-800 p-3 rounded">
+                                <div className="space-y-2 max-h-48 overflow-y-auto pr-2 hide-scrollbar">
+                                  {(commentReplies[comment.id] && commentReplies[comment.id].length > 0) ? (
+                                    commentReplies[comment.id].map(r => (
+                                      <div key={r.id} className="py-2 border-b border-gray-200 dark:border-gray-700">
+                                        <div className={`flex items-start space-x-3 mb-1 ${isAdminAuthor(r.author, (r as any).email) ? 'pl-2' : ''}`}>
+                                          <img src={isAdminAuthor(r.author, (r as any).email) ? '/me.png' : '/profile.png'} alt="avatar" className={`rounded-full object-cover ${isAdminAuthor(r.author, (r as any).email) ? 'h-6 w-6 ring-2 ring-orange-400' : 'h-5 w-5'}`} />
+                                          <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <div className="text-sm font-medium text-gray-900 dark:text-white">{r.author}</div>
+                                              {isAdminAuthor(r.author, (r as any).email) && (
+                                                <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                                              )}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">{formatTimestamp(new Date(r.timestamp))}</div>
+                                          </div>
+                                        </div>
+                                        <div className={`text-gray-700 dark:text-gray-300 ${isAdminAuthor(r.author, (r as any).email) ? 'bg-white dark:bg-gray-700 p-3 rounded-l-md rounded-r-lg border-l-4 border-orange-400' : ''}`}>{r.content}</div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="text-sm text-gray-500">No replies yet.</div>
+                                  )}
+                                </div>
+
+                                <form onSubmit={(e) => submitCommentReply(comment.id, e)} className="mt-3 space-y-2">
+                                  <div className="flex items-center space-x-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={replyInputs[comment.id]?.isAnonymous || false}
+                                      onChange={(e) => setReplyInputs(prev => ({ ...prev, [comment.id]: { ...(prev[comment.id] || { content: '' }), isAnonymous: e.target.checked } }))}
+                                      className="rounded border-gray-300 text-blue-600"
+                                    />
+                                    <label className="text-sm text-gray-700 dark:text-gray-300">Reply anonymously</label>
+                                  </div>
+
+                                  {!replyInputs[comment.id]?.isAnonymous && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                      <input
+                                        type="text"
+                                        placeholder="Your name"
+                                        value={replyInputs[comment.id]?.name || ''}
+                                        onChange={(e) => setReplyInputs(prev => ({ ...prev, [comment.id]: { ...(prev[comment.id] || { content: '' }), name: e.target.value } }))}
+                                        className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                      />
+                                      <input
+                                        type="email"
+                                        placeholder="Your email"
+                                        value={replyInputs[comment.id]?.email || ''}
+                                        onChange={(e) => setReplyInputs(prev => ({ ...prev, [comment.id]: { ...(prev[comment.id] || { content: '' }), email: e.target.value } }))}
+                                        className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                      />
+                                    </div>
+                                  )}
+
+                                  <textarea
+                                    rows={2}
+                                    placeholder="Write a reply..."
+                                    value={replyInputs[comment.id]?.content || ''}
+                                    onChange={(e) => setReplyInputs(prev => ({ ...prev, [comment.id]: { ...(prev[comment.id] || { content: '' }), content: e.target.value } }))}
+                                    className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                  />
+
+                                  <div className="flex justify-end">
+                                    <button
+                                      type="submit"
+                                      disabled={submittingReplyFor === comment.id}
+                                      className="bg-blue-600 text-white px-3 py-1 rounded text-sm disabled:opacity-60"
+                                    >
+                                      {submittingReplyFor === comment.id ? 'Posting...' : 'Reply'}
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            )}
                           </div>
                         ))
                       )}
@@ -763,7 +1027,7 @@ const ProductionFeedbackSection: React.FC = () => {
                     <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                       Community Suggestions
                     </h4>
-                    <div className="space-y-4 h-96 overflow-y-auto pr-2">
+                    <div className="space-y-4 h-96 overflow-y-auto pr-2 hide-scrollbar">
                       {suggestions.length === 0 ? (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <Lightbulb className="mx-auto h-12 w-12 mb-4 opacity-50" />
@@ -789,9 +1053,10 @@ const ProductionFeedbackSection: React.FC = () => {
                             </div>
                             <p className="text-gray-700 dark:text-gray-300 mb-2">{suggestion.description}</p>
                             <div className="flex justify-between items-center">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">
-                                by {suggestion.author}
-                              </span>
+                              <div className="flex items-center space-x-3">
+                                <img src="/profile.png" alt="avatar" className="h-8 w-8 rounded-full object-cover" />
+                                <span className="text-sm text-gray-600 dark:text-gray-400">by {suggestion.author}</span>
+                              </div>
                               <div className="flex items-center space-x-2">
                                 <button
                                   onClick={() => handleVoteSuggestion(suggestion.id)}
@@ -801,8 +1066,92 @@ const ProductionFeedbackSection: React.FC = () => {
                                   <ThumbsUp className={`h-4 w-4 ${votedSuggestions.includes(suggestion.id) ? 'text-green-500 fill-current' : ''}`} />
                                   <span>{suggestion.votes || 0}</span>
                                 </button>
+                                <button
+                                  onClick={() => toggleSuggestionReplies(suggestion.id)}
+                                  className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                                >
+                                  <MessageSquare className="h-4 w-4" />
+                                  <span>Replies</span>
+                                </button>
                               </div>
                             </div>
+                            {/* Suggestion replies */}
+                            {openReplyForSuggestion === suggestion.id && (
+                              <div className="mt-4 bg-gray-50 dark:bg-gray-800 p-3 rounded">
+                                <div className="space-y-2 max-h-48 overflow-y-auto pr-2 hide-scrollbar">
+                                  {(suggestionReplies[suggestion.id] && suggestionReplies[suggestion.id].length > 0) ? (
+                                    suggestionReplies[suggestion.id].map(r => (
+                                      <div key={r.id} className="py-2 border-b border-gray-200 dark:border-gray-700">
+                                        <div className={`flex items-start space-x-3 mb-1 ${isAdminAuthor(r.author, (r as any).email) ? 'pl-2' : ''}`}>
+                                          <img src={isAdminAuthor(r.author, (r as any).email) ? '/me.png' : '/profile.png'} alt="avatar" className={`rounded-full object-cover ${isAdminAuthor(r.author, (r as any).email) ? 'h-6 w-6 ring-2 ring-orange-400' : 'h-5 w-5'}`} />
+                                          <div className="flex-1">
+                                            <div className="flex items-center gap-2">
+                                              <div className="text-sm font-medium text-gray-900 dark:text-white">{r.author}</div>
+                                              {isAdminAuthor(r.author, (r as any).email) && (
+                                                <span className="text-xs bg-orange-500 text-white px-2 py-0.5 rounded-full">Admin</span>
+                                              )}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400">{formatTimestamp(new Date(r.timestamp))}</div>
+                                          </div>
+                                        </div>
+                                        <div className={`text-gray-700 dark:text-gray-300 ${isAdminAuthor(r.author, (r as any).email) ? 'bg-white dark:bg-gray-700 p-3 rounded-l-md rounded-r-lg border-l-4 border-orange-400' : ''}`}>{r.content}</div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="text-sm text-gray-500">No replies yet.</div>
+                                  )}
+                                </div>
+
+                                <form onSubmit={(e) => submitSuggestionReply(suggestion.id, e)} className="mt-3 space-y-2">
+                                  <div className="flex items-center space-x-2">
+                                    <input
+                                      type="checkbox"
+                                      checked={replyInputs[suggestion.id]?.isAnonymous || false}
+                                      onChange={(e) => setReplyInputs(prev => ({ ...prev, [suggestion.id]: { ...(prev[suggestion.id] || { content: '' }), isAnonymous: e.target.checked } }))}
+                                      className="rounded border-gray-300 text-blue-600"
+                                    />
+                                    <label className="text-sm text-gray-700 dark:text-gray-300">Reply anonymously</label>
+                                  </div>
+
+                                  {!replyInputs[suggestion.id]?.isAnonymous && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                      <input
+                                        type="text"
+                                        placeholder="Your name"
+                                        value={replyInputs[suggestion.id]?.name || ''}
+                                        onChange={(e) => setReplyInputs(prev => ({ ...prev, [suggestion.id]: { ...(prev[suggestion.id] || { content: '' }), name: e.target.value } }))}
+                                        className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                      />
+                                      <input
+                                        type="email"
+                                        placeholder="Your email"
+                                        value={replyInputs[suggestion.id]?.email || ''}
+                                        onChange={(e) => setReplyInputs(prev => ({ ...prev, [suggestion.id]: { ...(prev[suggestion.id] || { content: '' }), email: e.target.value } }))}
+                                        className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                      />
+                                    </div>
+                                  )}
+
+                                  <textarea
+                                    rows={2}
+                                    placeholder="Write a reply..."
+                                    value={replyInputs[suggestion.id]?.content || ''}
+                                    onChange={(e) => setReplyInputs(prev => ({ ...prev, [suggestion.id]: { ...(prev[suggestion.id] || { content: '' }), content: e.target.value } }))}
+                                    className="w-full px-2 py-1 border rounded bg-white dark:bg-gray-700 text-sm"
+                                  />
+
+                                  <div className="flex justify-end">
+                                    <button
+                                      type="submit"
+                                      disabled={submittingReplyFor === suggestion.id}
+                                      className="bg-green-600 text-white px-3 py-1 rounded text-sm disabled:opacity-60"
+                                    >
+                                      {submittingReplyFor === suggestion.id ? 'Posting...' : 'Reply'}
+                                    </button>
+                                  </div>
+                                </form>
+                              </div>
+                            )}
                           </div>
                         ))
                       )}

@@ -411,6 +411,233 @@ const likeComment = async (req, res) => {
   }
 };
 
+// ===== PUBLIC: COMMENT REPLIES =====
+const getCommentReplies = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params; // comment id
+    if (!id) return res.status(400).json({ success: false, error: 'Comment ID is required.' });
+
+    const repliesRef = adminDb.collection('comments').doc(id).collection('replies');
+    const snapshot = await repliesRef.where('approved', '==', true).orderBy('timestamp', 'asc').get();
+    const replies = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        content: data.content,
+        isAnonymous: data.isAnonymous,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
+    });
+    res.status(200).json({ success: true, data: replies });
+  } catch (error) {
+    console.error(`Error fetching replies for comment ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to fetch replies' });
+  }
+};
+
+const addCommentReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params; // comment id
+    const { author, email, content, isAnonymous, userFingerprint } = req.body;
+    if (!id) return res.status(400).json({ success: false, error: 'Comment ID is required.' });
+    if (!content || content.trim().length < 3) return res.status(400).json({ success: false, error: 'Reply must be at least 3 characters long' });
+
+    const replyData = {
+      author: isAnonymous ? 'Anonymous' : (author || 'Anonymous'),
+      email: isAnonymous ? null : (email || null),
+      content: content.trim(),
+      isAnonymous: Boolean(isAnonymous),
+      userFingerprint: userFingerprint || 'unknown',
+      timestamp: Timestamp.now(),
+      approved: false,
+    };
+
+    const docRef = await adminDb.collection('comments').doc(id).collection('replies').add(replyData);
+    res.status(201).json({ success: true, data: { id: docRef.id, ...replyData } });
+  } catch (error) {
+    console.error(`Error adding reply to comment ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to add reply' });
+  }
+};
+
+// ===== ADMIN: COMMENT REPLIES =====
+const adminGetCommentReplies = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    // Router may set either `id` or `commentId` depending on which match branch ran.
+    const id = req.params.commentId || req.params.id;
+    if (!id) return res.status(400).json({ success: false, error: 'Comment ID is required.' });
+    const repliesRef = adminDb.collection('comments').doc(id).collection('replies');
+    const snapshot = await repliesRef.orderBy('timestamp', 'desc').get();
+    const replies = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        email: data.email || null,
+        content: data.content,
+        isAnonymous: data.isAnonymous,
+        approved: data.approved,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
+    });
+    res.status(200).json({ success: true, data: replies });
+  } catch (error) {
+    console.error(`Error fetching admin replies for comment ${req.params.commentId || req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to fetch replies' });
+  }
+};
+
+const adminUpdateCommentReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { commentId, replyId } = req.params;
+    const updateData = req.body;
+    if (!commentId || !replyId) return res.status(400).json({ success: false, error: 'Comment ID and Reply ID are required.' });
+    if (Object.keys(updateData).length === 0) return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
+
+    // Ensure approved is boolean if present
+    if (typeof updateData.approved !== 'undefined') {
+      updateData.approved = (updateData.approved === true || updateData.approved === 'true');
+    }
+
+    await adminDb.collection('comments').doc(commentId).collection('replies').doc(replyId).update(updateData);
+    res.status(200).json({ success: true, message: 'Reply updated successfully' });
+  } catch (error) {
+    console.error(`Error updating reply ${req.params.replyId} for comment ${req.params.commentId}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to update reply' });
+  }
+};
+
+const adminDeleteCommentReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { commentId, replyId } = req.params;
+    if (!commentId || !replyId) return res.status(400).json({ success: false, error: 'Comment ID and Reply ID are required.' });
+    await adminDb.collection('comments').doc(commentId).collection('replies').doc(replyId).delete();
+    res.status(200).json({ success: true, message: 'Reply deleted successfully' });
+  } catch (error) {
+    console.error(`Error deleting reply ${req.params.replyId} for comment ${req.params.commentId}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to delete reply' });
+  }
+};
+
+// ===== PUBLIC: SUGGESTION REPLIES =====
+const getSuggestionReplies = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params; // suggestion id
+    if (!id) return res.status(400).json({ success: false, error: 'Suggestion ID is required.' });
+
+    const repliesRef = adminDb.collection('suggestions').doc(id).collection('replies');
+    const snapshot = await repliesRef.where('approved', '==', true).orderBy('timestamp', 'asc').get();
+    const replies = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        content: data.content,
+        isAnonymous: data.isAnonymous,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
+    });
+    res.status(200).json({ success: true, data: replies });
+  } catch (error) {
+    console.error(`Error fetching replies for suggestion ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to fetch replies' });
+  }
+};
+
+const addSuggestionReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { id } = req.params; // suggestion id
+    const { author, email, content, isAnonymous, userFingerprint } = req.body;
+    if (!id) return res.status(400).json({ success: false, error: 'Suggestion ID is required.' });
+    if (!content || content.trim().length < 3) return res.status(400).json({ success: false, error: 'Reply must be at least 3 characters long' });
+
+    const replyData = {
+      author: isAnonymous ? 'Anonymous' : (author || 'Anonymous'),
+      email: isAnonymous ? null : (email || null),
+      content: content.trim(),
+      isAnonymous: Boolean(isAnonymous),
+      userFingerprint: userFingerprint || 'unknown',
+      timestamp: Timestamp.now(),
+      approved: false,
+    };
+
+    const docRef = await adminDb.collection('suggestions').doc(id).collection('replies').add(replyData);
+    res.status(201).json({ success: true, data: { id: docRef.id, ...replyData } });
+  } catch (error) {
+    console.error(`Error adding reply to suggestion ${req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to add reply' });
+  }
+};
+
+// ===== ADMIN: SUGGESTION REPLIES =====
+const adminGetSuggestionReplies = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    // Router may set either `id` or `suggestionId` depending on which match branch ran.
+    const id = req.params.suggestionId || req.params.id;
+    if (!id) return res.status(400).json({ success: false, error: 'Suggestion ID is required.' });
+    const repliesRef = adminDb.collection('suggestions').doc(id).collection('replies');
+    const snapshot = await repliesRef.orderBy('timestamp', 'desc').get();
+    const replies = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        author: data.author,
+        email: data.email || null,
+        content: data.content,
+        isAnonymous: data.isAnonymous,
+        approved: data.approved,
+        timestamp: data.timestamp.toDate().toISOString(),
+      };
+    });
+    res.status(200).json({ success: true, data: replies });
+  } catch (error) {
+    console.error(`Error fetching admin replies for suggestion ${req.params.suggestionId || req.params.id}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to fetch replies' });
+  }
+};
+
+const adminUpdateSuggestionReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { suggestionId, replyId } = req.params;
+    const updateData = req.body;
+    if (!suggestionId || !replyId) return res.status(400).json({ success: false, error: 'Suggestion ID and Reply ID are required.' });
+    if (Object.keys(updateData).length === 0) return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
+
+    if (typeof updateData.approved !== 'undefined') {
+      updateData.approved = (updateData.approved === true || updateData.approved === 'true');
+    }
+
+    await adminDb.collection('suggestions').doc(suggestionId).collection('replies').doc(replyId).update(updateData);
+    res.status(200).json({ success: true, message: 'Reply updated successfully' });
+  } catch (error) {
+    console.error(`Error updating reply ${req.params.replyId} for suggestion ${req.params.suggestionId}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to update reply' });
+  }
+};
+
+const adminDeleteSuggestionReply = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const { suggestionId, replyId } = req.params;
+    if (!suggestionId || !replyId) return res.status(400).json({ success: false, error: 'Suggestion ID and Reply ID are required.' });
+    await adminDb.collection('suggestions').doc(suggestionId).collection('replies').doc(replyId).delete();
+    res.status(200).json({ success: true, message: 'Reply deleted successfully' });
+  } catch (error) {
+    console.error(`Error deleting reply ${req.params.replyId} for suggestion ${req.params.suggestionId}:`, error);
+    res.status(500).json({ success: false, error: 'Failed to delete reply' });
+  }
+};
+
 // ===== PUBLIC: STATS FUNCTION =====
 const getStats = async (req, res) => {
   if (!checkDb(res)) return;
@@ -463,14 +690,56 @@ const getStats = async (req, res) => {
   }
 };
 
+// ===== SITE SETTINGS =====
+const getSiteSettings = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const doc = await adminDb.collection('config').doc('site').get();
+    if (!doc.exists) {
+      // default settings
+      return res.status(200).json({ success: true, data: { filters: { hue: 0, saturate: 100, brightness: 100, contrast: 100, sepia: 0 } } });
+    }
+    return res.status(200).json({ success: true, data: doc.data() });
+  } catch (error) {
+    console.error('Error fetching site settings:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch site settings' });
+  }
+};
+
+const adminUpdateSiteSettings = async (req, res) => {
+  if (!checkDb(res)) return;
+  try {
+    const updateData = req.body;
+    if (!updateData || Object.keys(updateData).length === 0) return res.status(400).json({ success: false, error: 'Request body cannot be empty.' });
+    await adminDb.collection('config').doc('site').set(updateData, { merge: true });
+    res.status(200).json({ success: true, message: 'Site settings updated' });
+  } catch (error) {
+    console.error('Error updating site settings:', error);
+    res.status(500).json({ success: false, error: 'Failed to update site settings' });
+  }
+};
+
 // ===== MAIN HANDLER =====
 
 export default async function handler(req, res) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // Set CORS headers and basic security headers
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173,http://localhost:5174').split(',').map(s=>s.trim()).filter(Boolean);
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    // No wildcard; if origin not allowed, do not set credentials
+    res.setHeader('Access-Control-Allow-Origin', 'null');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+
+  // Basic HTTP security headers (can be adjusted for your deployment needs)
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'; base-uri 'none';");
 
   // Disable caching for all API routes
   res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -500,6 +769,18 @@ export default async function handler(req, res) {
           if (method === 'PUT') return await adminUpdateComment(req, res);
           if (method === 'DELETE') return await adminDeleteComment(req, res);
         }
+        // Admin Comment Replies
+        const adminCommentRepliesMatch = url.match(/^\/api\/admin\/comments\/([a-zA-Z0-9_-]+)\/replies$/);
+        if (adminCommentRepliesMatch) {
+          req.params = { commentId: adminCommentRepliesMatch[1] };
+          if (method === 'GET') return await adminGetCommentReplies(req, res);
+        }
+        const adminCommentReplyMatch = url.match(/^\/api\/admin\/comments\/([a-zA-Z0-9_-]+)\/replies\/([a-zA-Z0-9_-]+)$/);
+        if (adminCommentReplyMatch) {
+          req.params = { commentId: adminCommentReplyMatch[1], replyId: adminCommentReplyMatch[2] };
+          if (method === 'PUT') return await adminUpdateCommentReply(req, res);
+          if (method === 'DELETE') return await adminDeleteCommentReply(req, res);
+        }
         if (url === '/api/admin/comments') {
           if (method === 'GET') return await adminGetComments(req, res);
         }
@@ -511,8 +792,25 @@ export default async function handler(req, res) {
           if (method === 'PUT') return await adminUpdateSuggestion(req, res);
           if (method === 'DELETE') return await adminDeleteSuggestion(req, res);
         }
+        // Admin Suggestion Replies
+        const adminSuggestionRepliesMatch = url.match(/^\/api\/admin\/suggestions\/([a-zA-Z0-9_-]+)\/replies$/);
+        if (adminSuggestionRepliesMatch) {
+          req.params = { suggestionId: adminSuggestionRepliesMatch[1] };
+          if (method === 'GET') return await adminGetSuggestionReplies(req, res);
+        }
+        const adminSuggestionReplyMatch = url.match(/^\/api\/admin\/suggestions\/([a-zA-Z0-9_-]+)\/replies\/([a-zA-Z0-9_-]+)$/);
+        if (adminSuggestionReplyMatch) {
+          req.params = { suggestionId: adminSuggestionReplyMatch[1], replyId: adminSuggestionReplyMatch[2] };
+          if (method === 'PUT') return await adminUpdateSuggestionReply(req, res);
+          if (method === 'DELETE') return await adminDeleteSuggestionReply(req, res);
+        }
         if (url === '/api/admin/suggestions') {
           if (method === 'GET') return await adminGetSuggestions(req, res);
+        }
+
+        // Admin: update site settings
+        if (url === '/api/admin/site-settings' && method === 'PUT') {
+          return await adminUpdateSiteSettings(req, res);
         }
 
         return res.status(404).json({ success: false, error: 'Admin route not found' });
@@ -532,10 +830,26 @@ export default async function handler(req, res) {
       if (method === 'POST') return await addComment(req, res);
     }
 
+    // Comment replies
+    const commentRepliesMatch = url.match(/^\/api\/feedback\/comments\/([a-zA-Z0-9_-]+)\/replies$/);
+    if (commentRepliesMatch) {
+      req.params = { id: commentRepliesMatch[1] };
+      if (method === 'GET') return await getCommentReplies(req, res);
+      if (method === 'POST') return await addCommentReply(req, res);
+    }
+
     // Suggestions routes  
     if (url === '/api/suggestions' || url === '/api/feedback/suggestions') {
       if (method === 'GET') return await getSuggestions(req, res);
       if (method === 'POST') return await addSuggestion(req, res);
+    }
+
+    // Suggestion replies
+    const suggestionRepliesMatch = url.match(/^\/api\/feedback\/suggestions\/([a-zA-Z0-9_-]+)\/replies$/);
+    if (suggestionRepliesMatch) {
+      req.params = { id: suggestionRepliesMatch[1] };
+      if (method === 'GET') return await getSuggestionReplies(req, res);
+      if (method === 'POST') return await addSuggestionReply(req, res);
     }
 
     // Vote suggestion route
@@ -552,9 +866,16 @@ export default async function handler(req, res) {
       return await likeComment(req, res);
     }
 
+  // Vote suggestion route (already earlier) - keep ordering
+
     // Stats route
     if (url === '/api/stats' || url === '/api/feedback/stats') {
       if (method === 'GET') return await getStats(req, res);
+    }
+
+    // Public site settings
+    if (url === '/api/site-settings') {
+      if (method === 'GET') return await getSiteSettings(req, res);
     }
 
     // Contact form is now handled by api/contact.js

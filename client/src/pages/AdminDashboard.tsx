@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { onAuthStateChanged, User, signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { FilterSettings } from '../components/ColorFilter';
 import { useLocation } from 'wouter';
 
 // A simple API client to handle authenticated requests
@@ -39,9 +40,16 @@ const AdminDashboard = () => {
   const [apiClient, setApiClient] = useState<ReturnType<typeof createApiClient> | null>(null);
   const [comments, setComments] = useState<any[]>([]);
   const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [commentReplies, setCommentReplies] = useState<Record<string, any[]>>({});
+  const [suggestionReplies, setSuggestionReplies] = useState<Record<string, any[]>>({});
+  const [openRepliesFor, setOpenRepliesFor] = useState<{ type: 'comment' | 'suggestion'; id: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState('comments');
+  const defaultFilters: FilterSettings = { hue: 0, saturate: 100, brightness: 100, contrast: 100, sepia: 0 };
+  const [siteFilters, setSiteFilters] = useState<FilterSettings | null>(null);
+  const [savingSiteFilters, setSavingSiteFilters] = useState(false);
+  const [saveResult, setSaveResult] = useState<string | null>(null);
 
   const [, setLocation] = useLocation();
 
@@ -64,6 +72,53 @@ const AdminDashboard = () => {
     }
   }, []);
 
+  const fetchCommentReplies = async (client: ReturnType<typeof createApiClient>, commentId: string) => {
+    try {
+      const res = await client.get(`/api/admin/comments/${commentId}/replies`);
+      setCommentReplies(prev => ({ ...prev, [commentId]: res.data }));
+    } catch (err) {
+      console.error('Failed to fetch comment replies:', err);
+    }
+  };
+
+  const fetchSuggestionReplies = async (client: ReturnType<typeof createApiClient>, suggestionId: string) => {
+    try {
+      const res = await client.get(`/api/admin/suggestions/${suggestionId}/replies`);
+      setSuggestionReplies(prev => ({ ...prev, [suggestionId]: res.data }));
+    } catch (err) {
+      console.error('Failed to fetch suggestion replies:', err);
+    }
+  };
+
+  const handleApproveReply = async (path: string) => {
+    if (!apiClient) return;
+    try {
+      await apiClient.put(path, { approved: true });
+      // Refresh lists
+      if (openRepliesFor) {
+        if (openRepliesFor.type === 'comment') await fetchCommentReplies(apiClient, openRepliesFor.id);
+        else await fetchSuggestionReplies(apiClient, openRepliesFor.id);
+      }
+      fetchData(apiClient);
+    } catch (err) {
+      console.error('Failed to approve reply:', err);
+    }
+  };
+
+  const handleDeleteReply = async (path: string) => {
+    if (!apiClient || !window.confirm('Delete this reply?')) return;
+    try {
+      await apiClient.del(path);
+      if (openRepliesFor) {
+        if (openRepliesFor.type === 'comment') await fetchCommentReplies(apiClient, openRepliesFor.id);
+        else await fetchSuggestionReplies(apiClient, openRepliesFor.id);
+      }
+      fetchData(apiClient);
+    } catch (err) {
+      console.error('Failed to delete reply:', err);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
@@ -72,6 +127,16 @@ const AdminDashboard = () => {
         const client = createApiClient(token);
         setApiClient(client);
         fetchData(client);
+        // fetch existing site settings for admin editor
+        try {
+          const res = await client.get('/api/site-settings');
+          const payload = res?.data ?? res?.settings ?? res;
+          const filters = payload?.filters ?? payload ?? defaultFilters;
+          setSiteFilters(filters);
+        } catch (e) {
+          // ignore — admin can still edit
+          setSiteFilters(defaultFilters);
+        }
       } else {
         setLocation('/login');
       }
@@ -112,6 +177,35 @@ const AdminDashboard = () => {
       fetchData(apiClient); // Refresh data to get new order
     } catch (error) {
       console.error("Failed to pin comment:", error);
+    }
+  };
+
+  const handleSaveSiteFilters = async () => {
+    if (!apiClient || !siteFilters) return;
+    setSavingSiteFilters(true);
+    setSaveResult('Saving...');
+    // Optimistic: broadcast new settings to other open tabs so they can apply immediately
+    try {
+      const optimisticPayload = { filters: siteFilters, ts: Date.now(), optimistic: true };
+      try { localStorage.setItem('site-settings-updated', JSON.stringify(optimisticPayload)); } catch {}
+
+      // Send to server
+      await apiClient.put('/api/admin/site-settings', { filters: siteFilters });
+
+  // Confirmed: broadcast confirmed update and persist a confirmed cache so visitors don't flash
+  const confirmedPayload = { filters: siteFilters, ts: Date.now(), optimistic: false };
+  try { localStorage.setItem('site-settings-updated', JSON.stringify(confirmedPayload)); } catch {}
+  try { localStorage.setItem('site-settings-confirmed', JSON.stringify(siteFilters)); } catch {}
+
+  setSaveResult('Saved');
+    } catch (err: any) {
+      console.error('Failed to save site settings', err);
+      setSaveResult(err?.message ?? 'Failed to save');
+      // Notify other tabs of failure so they can refetch
+      try { localStorage.setItem('site-settings-update-failed', JSON.stringify({ ts: Date.now() })); } catch {}
+    } finally {
+      setSavingSiteFilters(false);
+      setTimeout(() => setSaveResult(null), 3000);
     }
   };
 
@@ -167,6 +261,67 @@ const AdminDashboard = () => {
         </div>
       </header>
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        {/* Admin site settings editor */}
+        <section className="mb-6">
+          <div className="bg-white shadow sm:rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Site Settings</h2>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setSiteFilters(defaultFilters)} className="text-sm px-3 py-1 bg-gray-100 rounded">Reset</button>
+                <button onClick={handleSaveSiteFilters} disabled={savingSiteFilters} className="text-sm px-3 py-1 bg-blue-600 text-white rounded">{savingSiteFilters ? 'Saving...' : 'Save'}</button>
+              </div>
+            </div>
+            <div className="mt-3">
+              <p className="text-sm text-gray-600">Configure site-wide color filters that apply to all visitors.</p>
+              <div className="mt-3">
+                {siteFilters ? (
+                  <div className="space-y-3">
+                    {/* Inline slider controls similar to ColorFilter */}
+                    <div className="text-xs">
+                      <label className="block mb-1">Hue: <span className="font-mono">{siteFilters.hue}°</span></label>
+                      <input type="range" min={0} max={360} value={siteFilters.hue} onChange={e => setSiteFilters({ ...siteFilters, hue: Number(e.target.value) })} className="w-full" />
+                    </div>
+
+                    <div className="text-xs">
+                      <label className="block mb-1">Saturate: <span className="font-mono">{siteFilters.saturate}%</span></label>
+                      <input type="range" min={0} max={300} value={siteFilters.saturate} onChange={e => setSiteFilters({ ...siteFilters, saturate: Number(e.target.value) })} className="w-full" />
+                    </div>
+
+                    <div className="text-xs">
+                      <label className="block mb-1">Brightness: <span className="font-mono">{siteFilters.brightness}%</span></label>
+                      <input type="range" min={0} max={200} value={siteFilters.brightness} onChange={e => setSiteFilters({ ...siteFilters, brightness: Number(e.target.value) })} className="w-full" />
+                    </div>
+
+                    <div className="text-xs">
+                      <label className="block mb-1">Contrast: <span className="font-mono">{siteFilters.contrast}%</span></label>
+                      <input type="range" min={0} max={200} value={siteFilters.contrast} onChange={e => setSiteFilters({ ...siteFilters, contrast: Number(e.target.value) })} className="w-full" />
+                    </div>
+
+                    <div className="text-xs">
+                      <label className="block mb-1">Sepia: <span className="font-mono">{siteFilters.sepia}%</span></label>
+                      <input type="range" min={0} max={100} value={siteFilters.sepia} onChange={e => setSiteFilters({ ...siteFilters, sepia: Number(e.target.value) })} className="w-full" />
+                    </div>
+
+                    <div className="mt-2">
+                      <div className="text-xs font-semibold mb-2">Presets</div>
+                      <div className="flex flex-wrap gap-2">
+                        <button onClick={() => setSiteFilters({ hue: 0, saturate: 100, brightness: 100, contrast: 100, sepia: 0 })} className="px-2 py-1 text-xs bg-gray-100 rounded border">Default</button>
+                        <button onClick={() => setSiteFilters({ hue: 15, saturate: 120, brightness: 105, contrast: 105, sepia: 6 })} className="px-2 py-1 text-xs bg-gray-100 rounded border">Warm</button>
+                        <button onClick={() => setSiteFilters({ hue: 200, saturate: 120, brightness: 95, contrast: 100, sepia: 0 })} className="px-2 py-1 text-xs bg-gray-100 rounded border">Cool</button>
+                        <button onClick={() => setSiteFilters({ hue: 0, saturate: 140, brightness: 100, contrast: 130, sepia: 0 })} className="px-2 py-1 text-xs bg-gray-100 rounded border">High Contrast</button>
+                        <button onClick={() => setSiteFilters({ hue: 0, saturate: 0, brightness: 100, contrast: 110, sepia: 0 })} className="px-2 py-1 text-xs bg-gray-100 rounded border">Monochrome</button>
+                      </div>
+                    </div>
+
+                    {saveResult && <div className="mt-2 text-sm text-green-600">{saveResult}</div>}
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-500">Loading settings...</div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex flex-wrap space-x-8" aria-label="Tabs">
             <button
@@ -217,8 +372,41 @@ const AdminDashboard = () => {
                       <button onClick={() => handlePinComment(comment.id)} className="text-xs font-medium text-white bg-blue-500 hover:bg-blue-600 px-2 py-1 rounded-md flex items-center">
                         {comment.isPinned ? 'Unpin' : 'Pin'}
                       </button>
+                      <button onClick={async () => {
+                        const target = { type: 'comment', id: comment.id } as const;
+                        setOpenRepliesFor(target);
+                        if (apiClient) await fetchCommentReplies(apiClient, comment.id);
+                      }} className="text-xs font-medium text-white bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded-md">
+                        Manage Replies
+                      </button>
                     </div>
                     {comment.isPinned && <div className="absolute top-2 right-2 text-blue-500" title="Pinned"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 17v5"/><path d="M12 9v8"/><path d="M16 9h-2a2 2 0 0 0-4 0H8"/><path d="M16 4L9 4"/><path d="M16 4L9 4"/><path d="M12 2L12 4"/></svg></div>}
+                    {openRepliesFor && openRepliesFor.type === 'comment' && openRepliesFor.id === comment.id && (
+                      <div className="mt-3 bg-gray-50 p-3 rounded">
+                        <h4 className="text-sm font-semibold">Replies</h4>
+                        <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-2">
+                          {(commentReplies[comment.id] && commentReplies[comment.id].length > 0) ? (
+                            commentReplies[comment.id].map(r => (
+                              <div key={r.id} className="p-2 bg-white rounded border border-gray-200">
+                                <div className="flex justify-between items-start">
+                                  <div>
+                                    <div className="text-sm font-medium">{r.author} {r.email ? `(${r.email})` : ''}</div>
+                                    <div className="text-xs text-gray-500">{r.timestamp}</div>
+                                  </div>
+                                  <div className="flex space-x-2">
+                                    {!r.approved && <button onClick={() => handleApproveReply(`/api/admin/comments/${comment.id}/replies/${r.id}`)} className="text-xs font-medium text-white bg-green-600 px-2 py-1 rounded-md">Approve</button>}
+                                    <button onClick={() => handleDeleteReply(`/api/admin/comments/${comment.id}/replies/${r.id}`)} className="text-xs font-medium text-white bg-red-500 px-2 py-1 rounded-md">Delete</button>
+                                  </div>
+                                </div>
+                                <p className="mt-2 text-sm text-gray-700">{r.content}</p>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-sm text-gray-500">No replies yet.</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -260,8 +448,41 @@ const AdminDashboard = () => {
                         <button onClick={() => handleDeleteSuggestion(suggestion.id)} className="text-xs font-medium text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-md">
                           Delete
                         </button>
+                        <button onClick={async () => {
+                          const target = { type: 'suggestion', id: suggestion.id } as const;
+                          setOpenRepliesFor(target);
+                          if (apiClient) await fetchSuggestionReplies(apiClient, suggestion.id);
+                        }} className="text-xs font-medium text-white bg-gray-500 hover:bg-gray-600 px-2 py-1 rounded-md">
+                          Manage Replies
+                        </button>
                        </div>
                      </div>
+                      {openRepliesFor && openRepliesFor.type === 'suggestion' && openRepliesFor.id === suggestion.id && (
+                        <div className="mt-3 bg-gray-50 p-3 rounded">
+                          <h4 className="text-sm font-semibold">Replies</h4>
+                          <div className="mt-2 space-y-2 max-h-48 overflow-y-auto pr-2">
+                            {(suggestionReplies[suggestion.id] && suggestionReplies[suggestion.id].length > 0) ? (
+                              suggestionReplies[suggestion.id].map(r => (
+                                <div key={r.id} className="p-2 bg-white rounded border border-gray-200">
+                                  <div className="flex justify-between items-start">
+                                    <div>
+                                      <div className="text-sm font-medium">{r.author} {r.email ? `(${r.email})` : ''}</div>
+                                      <div className="text-xs text-gray-500">{r.timestamp}</div>
+                                    </div>
+                                    <div className="flex space-x-2">
+                                      {!r.approved && <button onClick={() => handleApproveReply(`/api/admin/suggestions/${suggestion.id}/replies/${r.id}`)} className="text-xs font-medium text-white bg-green-600 px-2 py-1 rounded-md">Approve</button>}
+                                      <button onClick={() => handleDeleteReply(`/api/admin/suggestions/${suggestion.id}/replies/${r.id}`)} className="text-xs font-medium text-white bg-red-500 px-2 py-1 rounded-md">Delete</button>
+                                    </div>
+                                  </div>
+                                  <p className="mt-2 text-sm text-gray-700">{r.content}</p>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="text-sm text-gray-500">No replies yet.</div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                   </li>
                 ))}
               </ul>

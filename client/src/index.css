@@ -74,6 +74,19 @@
   body > div:first-child:not([id]):not([class]):not([data-component]) {
     display: none !important;
   }
+
+  /* Desktop-only: hide scrollbars but keep scrolling */
+  @media (min-width: 768px) {
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
 }
 
 @keyframes fadeInUp {
@@ -214,4 +227,9 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+/* Make sure the main content doesn't hide under the fixed header */
+header + main, header + .container {
+  padding-top: 4.5rem; /* header height (approx) to offset fixed header */
 }
