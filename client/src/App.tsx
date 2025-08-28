@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Switch, Route } from "wouter";
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -20,6 +20,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 const HomePage = () => {
   const [showProjectStructure, setShowProjectStructure] = useState(false);
+  const aboutSectionRef = useRef<HTMLElement>(null);
 
   const handleProjectStructureToggle = () => {
     setShowProjectStructure(!showProjectStructure);
@@ -31,7 +32,7 @@ const HomePage = () => {
       <main>
         <Hero />
         <AnimatedSection>
-          <About />
+          <About ref={aboutSectionRef} />
         </AnimatedSection>
         <AnimatedSection delay={100}>
           <Skills />
@@ -57,7 +58,7 @@ const HomePage = () => {
         isOpen={showProjectStructure}
         onClose={() => setShowProjectStructure(false)} 
       />
-      <FloatingFeedbackButton />
+      <FloatingFeedbackButton aboutSectionRef={aboutSectionRef} />
     </>
   );
 };
