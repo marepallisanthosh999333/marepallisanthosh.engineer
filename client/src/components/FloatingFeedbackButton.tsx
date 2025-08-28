@@ -24,19 +24,10 @@ const FloatingFeedbackButton: React.FC = () => {
       const footerSectionRect = footerSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      console.log('--- Scroll Debug ---');
-      console.log('About Section Rect:', aboutSectionRect);
-      console.log('Footer Section Rect:', footerSectionRect);
-      console.log('Window Height:', windowHeight);
-
       const shouldBeVisible = aboutSectionRect.top < windowHeight / 2 && footerSectionRect.top > windowHeight;
-
-      console.log('Should be visible:', shouldBeVisible);
 
       setIsVisible(shouldBeVisible);
     } else {
-      console.log('--- Scroll Debug ---');
-      console.log('About or Footer section not found');
       setIsVisible(false);
     }
   };
@@ -53,6 +44,7 @@ const FloatingFeedbackButton: React.FC = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.button
+          key="feedback-button"
           onClick={scrollToFeedback}
           className="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg z-50 flex items-center justify-center"
           initial={{ opacity: 0, y: 50, scale: 0.5 }}
