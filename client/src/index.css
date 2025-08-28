@@ -151,7 +151,8 @@
   /* Fix mobile navigation menu background and positioning */
   header.fixed {
     background-color: #ffffff !important;
-    backdrop-filter: blur(8px);
+    backdrop-filter: none !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     border-bottom: 1px solid rgba(229, 231, 235, 0.3);
   }
   
@@ -184,7 +185,8 @@
 
   /* Fix header overlap - add top padding to main content */
   #home {
-    padding-top: 80px;
+    padding-top: 4.5rem;
+    min-height: auto !important;
   }
   
   /* Stack the main content - change grid to single column */
