@@ -109,8 +109,6 @@ const About = React.forwardRef<HTMLElement>((props, ref) => {
       </div>
     </section>
   );
-};
-
 });
 
 export default About;
