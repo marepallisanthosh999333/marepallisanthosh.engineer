@@ -2,13 +2,13 @@ import React from 'react';
 import { Code2, Palette, Rocket } from 'lucide-react';
 import { useScrollAnimation } from '../hooks/useScrollAnimation';
 
-const About = React.forwardRef<HTMLElement>((props, ref) => {
+const About = () => {
   const [titleRef, titleVisible] = useScrollAnimation();
   const [contentRef, contentVisible] = useScrollAnimation();
   const [cardsRef, cardsVisible] = useScrollAnimation();
 
   return (
-    <section id="about" ref={ref} className="py-20 bg-white">
+    <section id="about" className="py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="max-w-6xl mx-auto">
           <div 
@@ -109,6 +109,6 @@ const About = React.forwardRef<HTMLElement>((props, ref) => {
       </div>
     </section>
   );
-});
+};
 
 export default About;

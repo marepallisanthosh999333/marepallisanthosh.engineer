@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare } from 'lucide-react';
 
-interface FloatingFeedbackButtonProps {
-  aboutSectionRef: React.RefObject<HTMLElement>;
-}
-
-const FloatingFeedbackButton: React.FC<FloatingFeedbackButtonProps> = ({ aboutSectionRef }) => {
+const FloatingFeedbackButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   const scrollToFeedback = () => {
@@ -20,22 +16,30 @@ const FloatingFeedbackButton: React.FC<FloatingFeedbackButtonProps> = ({ aboutSe
   };
 
   const handleScroll = () => {
-    const aboutSection = aboutSectionRef.current;
+    const aboutSection = document.getElementById('about');
     const footerSection = document.getElementById('footer');
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+
+    console.log('--- Scroll Event ---');
+    console.log('ScrollY:', scrollY);
+    console.log('About Section:', aboutSection);
+    console.log('Footer Section:', footerSection);
 
     if (aboutSection && footerSection) {
       const aboutSectionTop = aboutSection.offsetTop;
       const footerSectionTop = footerSection.offsetTop;
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
 
-      // Show the button if the user has scrolled past the top of the "About" section
-      // and the top of the footer is not yet visible.
-      if (scrollY > aboutSectionTop - windowHeight / 2 && scrollY + windowHeight < footerSectionTop) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      console.log('About Section Top:', aboutSectionTop);
+      console.log('Footer Section Top:', footerSectionTop);
+
+      const shouldBeVisible = scrollY > aboutSectionTop - windowHeight / 2 && scrollY + windowHeight < footerSectionTop;
+
+      console.log('Should be visible:', shouldBeVisible);
+
+      setIsVisible(shouldBeVisible);
+    } else {
+      setIsVisible(false);
     }
   };
 
@@ -45,7 +49,7 @@ const FloatingFeedbackButton: React.FC<FloatingFeedbackButtonProps> = ({ aboutSe
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [aboutSectionRef]);
+  }, []);
 
   return (
     <AnimatePresence>
