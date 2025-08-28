@@ -57,7 +57,6 @@ const HomePage = () => {
         isOpen={showProjectStructure}
         onClose={() => setShowProjectStructure(false)} 
       />
-      <FloatingFeedbackButton />
     </>
   );
 };
@@ -163,27 +162,30 @@ function App() {
   }
 
   return (
-    <div style={{ filter: cssFilter }} className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden hide-scrollbar">
-      <Switch>
-        <Route path="/" component={HomePage} />
-        <Route path="/login" component={LoginPage} />
-        <Route path="/admin">
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        </Route>
-        <Route>
-          <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-4xl font-bold">404 - Not Found</h1>
-            <p className="text-xl mt-4">The page you are looking for does not exist.</p>
-            <a href="/" className="mt-8 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              Go Home
-            </a>
-          </div>
-        </Route>
-      </Switch>
-  {/* Site colors are controlled by the owner via Admin Dashboard. No visitor controls are shown. */}
-    </div>
+    <>
+      <div style={{ filter: cssFilter }} className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden hide-scrollbar">
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/admin">
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          </Route>
+          <Route>
+            <div className="flex flex-col items-center justify-center h-screen">
+              <h1 className="text-4xl font-bold">404 - Not Found</h1>
+              <p className="text-xl mt-4">The page you are looking for does not exist.</p>
+              <a href="/" className="mt-8 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Go Home
+              </a>
+            </div>
+          </Route>
+        </Switch>
+    {/* Site colors are controlled by the owner via Admin Dashboard. No visitor controls are shown. */}
+      </div>
+      <FloatingFeedbackButton />
+    </>
   );
 }
 
