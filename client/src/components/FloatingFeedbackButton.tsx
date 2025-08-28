@@ -18,24 +18,15 @@ const FloatingFeedbackButton: React.FC = () => {
   const handleScroll = () => {
     const aboutSection = document.getElementById('about');
     const footerSection = document.getElementById('footer');
-    const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-
-    console.log('--- Scroll Event ---');
-    console.log('ScrollY:', scrollY);
-    console.log('About Section:', aboutSection);
-    console.log('Footer Section:', footerSection);
 
     if (aboutSection && footerSection) {
-      const aboutSectionTop = aboutSection.offsetTop;
-      const footerSectionTop = footerSection.offsetTop;
+      const aboutSectionRect = aboutSection.getBoundingClientRect();
+      const footerSectionRect = footerSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
 
-      console.log('About Section Top:', aboutSectionTop);
-      console.log('Footer Section Top:', footerSectionTop);
-
-      const shouldBeVisible = scrollY > aboutSectionTop - windowHeight / 2 && scrollY + windowHeight < footerSectionTop;
-
-      console.log('Should be visible:', shouldBeVisible);
+      // Show the button if the top of the "About" section is in the upper half of the viewport
+      // and the top of the "Footer" section is still below the viewport.
+      const shouldBeVisible = aboutSectionRect.top < windowHeight / 2 && footerSectionRect.top > windowHeight;
 
       setIsVisible(shouldBeVisible);
     } else {
