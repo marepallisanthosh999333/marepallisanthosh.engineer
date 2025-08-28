@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
   // Handle preflight requests
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // Only handle POST requests to /api/contact
+  // Only handle POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -36,8 +36,8 @@ export default async function handler(req, res) {
     const { name, email, subject, message } = req.body;
 
     if (!name || !email || !message) {
-      return res.status(400).json({ 
-        message: "Name, email, and message are required" 
+      return res.status(400).json({
+        message: "Name, email, and message are required"
       });
     }
 
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
               <h1>📧 New Contact Form Submission</h1>
               <p>Someone reached out through your portfolio website</p>
             </div>
-            
+
             <div class="content">
               <div class="section">
                 <h3>👤 Contact Information</h3>
@@ -144,9 +144,8 @@ export default async function handler(req, res) {
     res.json({ message: "Email sent successfully!" });
   } catch (error) {
     console.error("Failed to send email:", error);
-    res.status(500).json({ 
-      message: "Failed to send email",
-      error: error.message 
+    res.status(500).json({
+      message: "An internal server error occurred while sending the email."
     });
   }
 }
