@@ -190,7 +190,8 @@
 
   /* Fix header overlap - add top padding to main content */
   #home {
-    min-height: calc(100vh - 4.5rem);
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
   }
   
   /* Stack the main content - change grid to single column */

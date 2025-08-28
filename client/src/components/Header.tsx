@@ -79,15 +79,6 @@ interface HeaderProps {
 
 const Header = ({ onProjectStructureClick }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navItems = [
     { label: 'Home', href: '#home' },
@@ -100,9 +91,7 @@ const Header = ({ onProjectStructureClick }: HeaderProps) => {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 transform translate-y-0' : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b border-gray-100"
     >
       <nav className="container mx-auto px-6 py-6">
         <div className="flex items-center justify-between">
