@@ -146,6 +146,11 @@
   animation: float 3s ease-in-out infinite;
 }
 
+#home {
+  padding-top: 4.5rem;
+  min-height: 100vh;
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
   /* Fix mobile navigation menu background and positioning */
@@ -185,8 +190,7 @@
 
   /* Fix header overlap - add top padding to main content */
   #home {
-    padding-top: 4.5rem;
-    min-height: auto !important;
+    min-height: calc(100vh - 4.5rem);
   }
   
   /* Stack the main content - change grid to single column */
@@ -229,9 +233,4 @@
     padding-left: 1rem;
     padding-right: 1rem;
   }
-}
-
-/* Make sure the main content doesn't hide under the fixed header */
-header + main, header + .container {
-  padding-top: 4.5rem; /* header height (approx) to offset fixed header */
 }

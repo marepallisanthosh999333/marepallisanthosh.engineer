@@ -4,7 +4,7 @@ import LeetCodeIcon from './LeetCodeIcon';
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative bg-white">
+    <section id="home" className="flex items-center justify-center relative bg-white">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           {/* Left Content */}
