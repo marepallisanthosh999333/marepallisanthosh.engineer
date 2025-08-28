@@ -24,7 +24,7 @@ const FloatingFeedbackButton: React.FC = () => {
       const footerSectionRect = footerSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      const shouldBeVisible = aboutSectionRect.top < windowHeight / 2 && footerSectionRect.top > windowHeight;
+      const shouldBeVisible = aboutSectionRect.top < windowHeight / 2;
 
       setIsVisible(shouldBeVisible);
     } else {
