@@ -162,7 +162,7 @@ function App() {
   }
 
   return (
-    <>
+    <div>
       <div style={{ filter: cssFilter }} className="min-h-screen bg-gray-50 text-gray-900 overflow-x-hidden hide-scrollbar">
         <Switch>
           <Route path="/" component={HomePage} />
@@ -185,7 +185,7 @@ function App() {
     {/* Site colors are controlled by the owner via Admin Dashboard. No visitor controls are shown. */}
       </div>
       <FloatingFeedbackButton />
-    </>
+    </div>
   );
 }
 
